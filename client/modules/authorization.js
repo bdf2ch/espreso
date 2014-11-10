@@ -16,7 +16,13 @@ var Authorization = angular.module("Authorization", ["ngCookies"])
             /* Отсылает индентификационные данные пользователя на сервер */
             module.login = function () {
                 $http.post("server/controllers/authorization.php", module.authData).success(function (data) {
+                    if (data) {
+                        if (data != 0) {
 
+                        } else {
+
+                        }
+                    }
                 });
             };
 
