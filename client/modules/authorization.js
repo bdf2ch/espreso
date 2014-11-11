@@ -18,7 +18,8 @@ var Authorization = angular.module("Authorization", ["ngCookies"])
                 $http.post("server/controllers/authorization.php", module.authData).success(function (data) {
                     if (data) {
                         if (data != 0) {
-
+                            $cookies.user_id = parseInt(data["ID"]);
+                            $window.location.reload();
                         } else {
 
                         }
