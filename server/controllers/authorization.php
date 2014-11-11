@@ -1,6 +1,10 @@
 <?php
+<<<<<<< HEAD
 
     include("server/config.php");
+=======
+    include("serverside/config.php");
+>>>>>>> development
 
     $postdata = json_decode(file_get_contents('php://input'));
     $email = $postdata -> email;
@@ -28,5 +32,8 @@
         } else
             echo "fail";
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
 ?>
