@@ -1,39 +1,35 @@
 <?php
-<<<<<<< HEAD
-
-    include("server/config.php");
-=======
-    include("serverside/config.php");
->>>>>>> development
+    include "server/config.php";
 
     $postdata = json_decode(file_get_contents('php://input'));
-    $email = $postdata -> email;
-    $passwd = $postdata -> password;
+    $action = $postdata -> action;
+    $result = 0;
 
-    $connection = oci_connect("espreso", "espreso", "192.168.50.68/orcldev", 'AL32UTF8');
+    $connection = oci_connect($dbuser, $dbpassword, $dbhost, 'AL32UTF8');
     if (!$connection){
         oci_close($connection);
         die('Не удалось подключиться к БД');
     } else {
-        $result = "";
-        $query = "SELECT *
-                  FROM users
-                  WHERE users.email = '$email' AND
-                        users.password = '$passwd'";
-        $statement = oci_parse($connection, $query);
-        if(oci_execute($statement, OCI_DEFAULT)){
-            $result = oci_fetch_array($statement);
-        } else {
-            $error = oci_error();
-            die("Не удалось выполнить запрос : ".$err[message]);
-        }
-        if ($result != "") {
-            echo json_encode($result);
-        } else
-            echo "fail";
-    }
-<<<<<<< HEAD
+        switch ($action) {
+            case "login":
+                $email = $params -> email;
+                $passwd = $params -> password;
+                
+                $cursor = oci_new_cursor($connection);
+                $statement = oci_parse($connection, "begin P_AUTH_USER(:email, :passwd, :data); end;");
+                oci_bind_by_name($statement, ":email", $cursor, -1, OCI_B_CURSOR);
+                oci_bind_by_name($statement, ":passwd", $cursor, -1, OCI_B_CURSOR);
+                oci_bind_by_name($statement, ":data", $cursor, -1, OCI_B_CURSOR);
+                oci_execute($statement);
+                oci_execute($cursor);
+                $result = oci_fetch_assoc($cursor);
 
-=======
->>>>>>> development
+                oci_free_statement($statement);
+                oci_free_statement($cursor);
+                oci_close($connection);
+                break;
+        }
+        echo json_encode($result);
+    }
+
 ?>

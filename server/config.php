@@ -1,8 +1,7 @@
 <?php
 
-    $host = "192.168.50.68";    // Адрес сервера БД
-    $dbname = "espreso";        // Имя БД
-    $user = "espreso";          // Пользователь
-    $password = "espreso";      // Пароль
+    $dbhost = "192.168.50.68/orcldev";    // Адрес БД
+    $dbuser = "espreso";                  // Пользователь
+    $dbpassword = "espreso";              // Пароль
 
 ?>
