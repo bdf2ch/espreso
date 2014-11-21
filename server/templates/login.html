@@ -3,14 +3,33 @@
 <html ng-app="Authorization">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>ESPRESO: Вход в систему</title>
+    <title>ЭСпрЭСО: Вход в систему</title>
 </head>
-<body>
-    NOT LOGGED IN
-
+<body class="loginBody">
+    <div class="thinHeader"></div>
+    <div class="sepX35"></div>
+    <div class="logoHolder">
+               <img src="client/resources/img/login_form_logo_210x198.png" alt="МРСК Северо-Запада"/>
+    </div>
+    <div class="sepX15"></div>
+    <h3>Войти в систему</h3>
+    <div class="formHolder">
+        <div class="sepX15"></div>
+        <form action="logme.php" method="GET">
+            <label for="login">Имя пользователя</label>
+            <input id="login" type="text" />
+            <div class="sepX15"></div>
+            <label for="passwd">Пароль</label><br/>
+            <input id="passwd" type="password" />
+            <div class="sepX35"></div>
+            <input type="submit" value="Войти" />
+            <div class="sepX35"></div>
+        </form>        
+    </div>
+    
     <!-- Подключение стилей, библиотек модуля авторизации -->
-    <link rel="stylesheet" href="client/resources/styles/login.css"/>
     <link rel="stylesheet" href="client/resources/styles/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="client/resources/styles/application.css"/>
     <script src="client/libs/angularjs/angular.min.js"></script>
     <script src="client/libs/angularjs/angular-cookies.min.js"></script>
     <script src="client/modules/authorization.js"></script>

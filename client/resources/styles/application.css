@@ -1,0 +1,47 @@
+body.loginBody {
+    font-family: Verdana, Geneva, sans-serif;
+    background-color: #f2f3f6;
+    color:#4d5ea5;
+    text-align: center; 
+
+}
+
+.loginBody .formHolder{
+    margin: 50px auto;
+    width:350px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.formHolder input{
+    width: 300px;
+    padding-bottom: 25;
+    
+}
+
+.formHolder label{
+    font-size: 14px;
+    font-weight: normal;
+    float: left;
+    padding-left: 24px;
+    
+}
+
+
+.sepX5{ clear: both; width: 5px; height: 5px; }
+
+.sepX10{ clear: both; width: 10px; height: 10px; }
+
+.sepX15{ clear: both; width: 15px; height: 15px; }
+
+.sepX35{ clear: both; width: 35px; height: 35px; }
+
+
+.thinHeader{
+    width:100%;
+    line-height: 1px;
+    height: 4px;
+    background-color: #4d5ea5;      
+}
+
