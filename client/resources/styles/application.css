@@ -1,3 +1,13 @@
+#msgField{
+    width: 300px;
+    margin: 0px auto;
+    color: #ff4802;
+    font-size: 12px;
+    border: 1px solid #ff4802;
+    background-color: #ffdacc;
+}
+
+
 body.loginBody {
     font-family: Verdana, Geneva, sans-serif;
     background-color: #f2f3f6;
@@ -7,7 +17,7 @@ body.loginBody {
 }
 
 .loginBody .formHolder{
-    margin: 50px auto;
+    margin: 25px auto;
     width:350px;
     background-color: #fff;
     border: 1px solid #ccc;
