@@ -2,42 +2,68 @@
  *  Модуль авторизации пользователя
 ***/
 
-var Authorization = angular.module("Authorization", ["ngCookies"])
+var Authorization = angular.module("Authorization", ["ngCookies", "ngRoute"])
     .config(function ($provide) {
-        $provide.factory("Authorization", ["$log", "$http", "$cookies", "$cookieStore", "$window", function ($log, $http, $cookies, $cookieStore, $window) {
+        $provide.factory("Authorization", ["$log", "$http", "$cookies", "$cookieStore", "$window", "$document", "$route",function ($log, $http, $cookies, $cookieStore, $window, $document, $route) {
             var module = {};
 
+            module.email = "";
+            module.password = "";
+            module.errors = [];
+
             /* Отсылает индентификационные данные пользователя на сервер */
-            module.login = function (parameters) {
-                if (parameters) {
-                    parameters.action = "login";
+            module.login = function () {
+                var parameters = {
+                    action: "login",
+                    email: module.email,
+                    password: module.password
+                };
+
+                module.errors.splice(0, module.errors.length);
+                if (module.email == "")
+                    module.errors.push("Вы не ввели имя пользователя");
+                if (module.password == "")
+                    module.errors.push("Вы не ввели пароль");
+
+                if (module.errors.length == 0) {
                     $http.post("server/controllers/authorization.php", parameters).success(function (data) {
                         if (data) {
-                            if (data != 0) {
-                                //$cookies.user_id = parseInt(data["ID"]);
-                                //$window.location.reload();
-                                $log.log(data);
+                            $log.log(data);
+                            if (data.length > 0) {
+                                var user = new User();
+                                user.fromJSON(data[0]);
+                                $cookies.user = JSON.stringify(user);
+                                $window.location.reload(true);
                             } else {
-
+                                $log.log("no such user");
+                                module.errors.push("Неправильное имя пользователя или пароль");
                             }
                         }
                     });
                 }
             };
 
+            /* разлогинивает пользователя и удаляет информацию из кук */
+            module.logout = function () {
+                $log.log("logout");
+                $cookieStore.remove("user");
+                $window.location.reload(true);
+            };
+
             return module;
         }])
-    })
-    .run(function ($log, Authorization) {
+    }).run(function ($log, Authorization, $cookies, $window) {
         $log.log("AUTHORIZATION EXECUTED");
-        Authorization.login({email: 'savoronov@kolenergo.ru', password: '111'});
     });
 
 /* Контроллер модуля авторизации */
-Authorization.controller("AuthorizationCtrl", ["$log", "$scope", "Authorization", function ($log, $scope, Authorization) {
+Authorization.controller("AuthorizationCtrl", ["$log", "$scope", "Authorization", "$cookies", "$window", function ($log, $scope, Authorization, $cookies, $window) {
     $scope.auth = Authorization;
-    $scope.email = "";
-    $scope.password = "";
+    if ($cookies.user)
+        $window.location.reload();
+}]);
 
-
+Authorization.controller("AuthCtrl", ["$log", "$scope", "Authorization", "$cookies", "$window", function ($log, $scope, Authorization, $cookies, $window) {
+    $log.log("auth controller");
+    $scope.auth = Authorization;
 }]);

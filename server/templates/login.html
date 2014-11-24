@@ -14,20 +14,23 @@
     </div>
     <div class="sepX15"></div>
     <h3>Войти в систему</h3>
-    <div class="formHolder">
+    <div class="formHolder" ng-controller="AuthorizationCtrl">
         <div class="sepX15"></div>
-        <form action="logme.php" method="GET">
+        <form ng-submit="auth.login()" name="loginForm">
             <label for="login">Имя пользователя</label>
-            <input id="login" type="text" />
+            <input id="login" type="text" ng-model="auth.email" />
             <div class="sepX15"></div>
             <label for="passwd">Пароль</label><br/>
-            <input id="passwd" type="password" />
+            <input id="passwd" type="password" ng-model="auth.password" />
             
-            <div id="msgField" class="alertMsg">
-                <div class="sepX10"></div>
-                    Неправильное имя пользователя, или пароль
-                <div class="sepX10"></div>
-            </div>            
+            <div id="msgField" class="alertMsg" ng-show="auth.errors.length > 0">
+                <div ng-repeat="error in auth.errors track by $index">
+                    <div class="sepX10"></div>
+                    {{ error }}
+                    <div class="sepX10"></div>
+                </div>
+
+            </div>
             
             <div class="sepX35"></div>
             <input type="submit" value="Войти" />
@@ -41,6 +44,7 @@
     <link rel="stylesheet" href="client/resources/styles/application.css"/>
     <script src="client/libs/angularjs/angular.min.js"></script>
     <script src="client/libs/angularjs/angular-cookies.min.js"></script>
+    <script src="client/libs/angularjs/angular-route.min.js"></script>
     <script src="client/modules/authorization.js"></script>
     <script src="client/libs/classes.js"></script>
 </body>

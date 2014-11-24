@@ -121,8 +121,8 @@ function DataModel () {
         if (JSONdata) {
             for (var data in JSONdata) {
                 for (var field in this) {
-                    if (this[field][source] == data) {
-                        this[field][value] = JSONdata[data];
+                    if (this[field]["source"] == data) {
+                        this[field]["value"] = JSONdata[data];
                     }
                 }
             }

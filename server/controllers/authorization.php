@@ -3,33 +3,53 @@
 
     $postdata = json_decode(file_get_contents('php://input'));
     $action = $postdata -> action;
-    $result = 0;
+    $result = array();
 
-    $connection = oci_connect($dbuser, $dbpassword, $dbhost, 'AL32UTF8');
+    $connection = oci_connect('espreso', 'espreso', '192.168.50.68/orcldev', 'AL32UTF8');
     if (!$connection){
         oci_close($connection);
+        print_r(oci_error());
         die('Не удалось подключиться к БД');
     } else {
         switch ($action) {
             case "login":
-                $email = $params -> email;
-                $passwd = $params -> password;
+                $email = $postdata -> email;
+                $passwd = $postdata -> password;
                 
                 $cursor = oci_new_cursor($connection);
                 $statement = oci_parse($connection, "begin P_AUTH_USER(:email, :passwd, :data); end;");
-                oci_bind_by_name($statement, ":email", $cursor, -1, OCI_B_CURSOR);
-                oci_bind_by_name($statement, ":passwd", $cursor, -1, OCI_B_CURSOR);
-                oci_bind_by_name($statement, ":data", $cursor, -1, OCI_B_CURSOR);
-                oci_execute($statement);
-                oci_execute($cursor);
-                $result = oci_fetch_assoc($cursor);
+
+                if (!oci_bind_by_name($statement, ":email", $email, -1, OCI_DEFAULT)) {
+                    $error = oci_error();
+                    echo $error["message"];
+                }
+                if (!oci_bind_by_name($statement, ":passwd", $passwd, -1, OCI_DEFAULT)) {
+                    $error = oci_error();
+                    echo $error["message"];
+                }
+                if (!oci_bind_by_name($statement, ":data", $cursor, -1, OCI_B_CURSOR)) {
+                    $error = oci_error();
+                    echo $error["message"];
+                }
+                if (!oci_execute($statement)) {
+                    $error = oci_error();
+                    echo $error["message"];
+                };
+                if (!oci_execute($cursor)) {
+                    $error = oci_error();
+                    echo $error["message"];
+                }
+
+                while ($data = oci_fetch_assoc($cursor))
+                    array_push($result, $data);
 
                 oci_free_statement($statement);
                 oci_free_statement($cursor);
                 oci_close($connection);
+
+                echo json_encode($result);
                 break;
         }
-        echo json_encode($result);
     }
 
 ?>
