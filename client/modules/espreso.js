@@ -29,7 +29,7 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
         else
             $log.log("localStorage is disabled");
 
-        /* firefox window reload bug */
+        /* Firefox window reload bug */
         if (!$cookies.user)
             $window.location.reload();
     });
