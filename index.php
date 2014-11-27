@@ -4,9 +4,9 @@
     include "server/libs/xtemplate/xtemplate.class.php";
     include "server/config.php";
 
-    unset($_COOKIE["user_id"]);
+    //unset($_COOKIE["user"]);
     /* Проверка, залогинен ли пользователь */
-    if (isset($_COOKIE["user_id"])) {
+    if (isset($_COOKIE["user"])) {
         /* Если пользователь залогинен - цепляем шаблон приложения */
         $template = new XTemplate("server/templates/application.html");
         /* Соединение с БД */

@@ -2,7 +2,7 @@
  * Модуль основного приложения
  ***/
 
-var espreso = angular.module("Espreso", ["ngRoute", "Users"])
+var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
     .config(function ($provide) {
         $provide.factory("Espreso", ["$log", "Users", function ($log, Users) {
             var module = {};
@@ -13,10 +13,8 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users"])
             return module;
         }]);
     })
-    .run(function ($log, $window, Espreso) {
+    .run(function ($log, $window, Espreso, $cookies) {
         $log.log("ESPRESO EXECUTED");
-
-        //$log.log(Espreso.currentUser);
 
         if ($window.localStorage) {
             $log.log("localStorage is enabled");
@@ -30,4 +28,13 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users"])
         }
         else
             $log.log("localStorage is disabled");
+
+        /* firefox window reload bug */
+        if (!$cookies.user)
+            $window.location.reload();
     });
+
+
+espreso.controller("TestCtrl", ["$log", "$scope", "Authorization", function ($log, $scope, Authorization) {
+    $scope.auth = Authorization;
+}]);
