@@ -5,10 +5,29 @@
     <meta charset="UTF-8">
     <title>ESPRESO</title>
 </head>
-<body>
-    LOGGED IN
-    <div ng-controller="TestCtrl">
-        <button ng-click="auth.logout()">logout</button>
+<body class="appBody">
+    <div id="appHeader">
+        <div id="appHeaderLogo">ЭСпрЭСО</div>
+        <div id="appHeaderControls">
+            <div id="appHeaderControlUser">Герасим Владислав Янович</div>
+            <div id="appHeaderControlLogout" ng-controller="TestCtrl" ng-click="auth.logout()">Выход</div>
+        </div>
+    </div>
+    
+    <div id="appWorkSheet">
+        <div id="appSideBarLeft">
+            <ul>
+                <li class="itemActive"><img src="client/resources/img/house_32x32.png" alt="Домашняя страница"/></li>
+                <li><img src="client/resources/img/transmit_blue_32x32.png" alt="Учёт ВОЛС"/></li>
+                <li><img src="client/resources/img/group_32x32.png" alt="Управление пользователями"/></li>
+            </ul>
+        </div>
+        <div id="appContent">123</div>        
+    </div>
+    
+    
+    <div >
+        <button >logout</button>
     </div>
 
 
