@@ -3,7 +3,18 @@
  ***/
 
 var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
-    .config(function ($provide) {
+    .config(function ($provide, $routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'client/templates/dashboard/dashboard.html',
+                controller: 'DashboardCtrl'
+            })
+            .when('/users', {
+                templateUrl: 'client/templates/users/users.html',
+                controller: 'UsersCtrl'
+            })
+            .otherwise({ redirectTo: '/' });
+
         $provide.factory("Espreso", ["$log", "Users", function ($log, Users) {
             var module = {};
 
@@ -18,9 +29,8 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
 
         if ($window.localStorage) {
             $log.log("localStorage is enabled");
-            $window.localStorage.setItem("test", JSON.stringify(Espreso.currentUser));
-            $log.log(JSON.parse($window.localStorage.test));
 
+            /* Если справочник пользователей отсутствует в localStorage - загружаем его */
             if ($window.localStorage.users) {
 
             } else
@@ -32,9 +42,19 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
         /* Firefox window reload bug */
         if (!$cookies.user)
             $window.location.reload();
+        else {
+            Espreso.currentUser = JSON.parse($cookies.user);
+        }
     });
 
 
-espreso.controller("TestCtrl", ["$log", "$scope", "Authorization", function ($log, $scope, Authorization) {
+espreso.controller("HeaderCtrl", ["$log", "$scope", "Authorization", "Espreso", "$cookies", function ($log, $scope, Authorization, Espreso, $cookies) {
+    $scope.app = Espreso;
     $scope.auth = Authorization;
+    $log.log("HeaderCtrl");
+    $log.log(JSON.parse($cookies.user));
+}]);
+
+espreso.controller("DashboardCtrl", ["$log", "$scope", function ($log, $scope) {
+
 }]);

@@ -6,11 +6,11 @@
     <title>ESPRESO</title>
 </head>
 <body class="appBody">
-    <div id="appHeader">
+    <div id="appHeader" ng-controller="HeaderCtrl">
         <div id="appHeaderLogo">ЭСпрЭСО</div>
         <div id="appHeaderControls">
-            <div id="appHeaderControlUser">Герасим Владислав Янович</div>
-            <div id="appHeaderControlLogout" ng-controller="TestCtrl" ng-click="auth.logout()">Выход</div>
+            <div id="appHeaderControlUser">{{ app.currentUser.surname.value + " " + app.currentUser.name.value + " " + app.currentUser.fname.value }}</div>
+            <div id="appHeaderControlLogout" ng-click="auth.logout()">Выход</div>
         </div>
     </div>
     
@@ -22,14 +22,8 @@
                 <li><img src="client/resources/img/group_32x32.png" alt="Управление пользователями"/></li>
             </ul>
         </div>
-        <div id="appContent">123</div>        
+        <div id="appContent" ng-view></div>
     </div>
-    
-    
-    <div >
-        <button >logout</button>
-    </div>
-
 
     <!-- Подключение стилей, библиотек и модулей проекта -->
     <link rel="stylesheet" href="client/resources/styles/application.css"/>
