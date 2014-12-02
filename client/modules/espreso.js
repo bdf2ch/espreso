@@ -2,7 +2,7 @@
  * Модуль основного приложения
  ***/
 
-var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
+var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "ngCookies"])
     .config(function ($provide, $routeProvider) {
         $routeProvider
             .when('/', {
@@ -18,6 +18,7 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
         $provide.factory("Espreso", ["$log", "Users", function ($log, Users) {
             var module = {};
 
+            module.activePartition = "";
             module.currentUser = new User();
             module.users = Users;
 
@@ -48,13 +49,18 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization"])
     });
 
 
-espreso.controller("HeaderCtrl", ["$log", "$scope", "Authorization", "Espreso", "$cookies", function ($log, $scope, Authorization, Espreso, $cookies) {
+espreso.controller("EspresoCtrl", ["$log", "$scope", "Espreso", "Authorization", function ($log, $scope, Espreso, Authorization) {
     $scope.app = Espreso;
     $scope.auth = Authorization;
-    $log.log("HeaderCtrl");
-    $log.log(JSON.parse($cookies.user));
+    $log.log("Espreso Controller");
+
+
+    $scope.$on("partition", function (event, data) {
+        $scope.app.activePartition = data;
+    });
 }]);
 
-espreso.controller("DashboardCtrl", ["$log", "$scope", function ($log, $scope) {
 
+espreso.controller("DashboardCtrl", ["$log", "$scope", function ($log, $scope) {
+    $scope.$emit("partition", "dashboard");
 }]);

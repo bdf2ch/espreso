@@ -10,6 +10,7 @@ var users = angular.module('Users', [])
         $provide.factory("Users", ["$log", "$http", "$window", function ($log, $http, $window) {
             var module = {};
 
+            module.moduleId = "users";
             module.users = new Collection();
             module.groups = new Collection();
 
@@ -74,8 +75,12 @@ var users = angular.module('Users', [])
 
 
 /* Контроллер для доступа к данным модуля пользователей */
-users.controller("UsersCtrl", ["$scope", "$log", "Espresso", "Users", function ($scope, $log, Espreso, Users) {
+users.controller("UsersCtrl", ["$scope", "$log", "Espreso", "Users", function ($scope, $log, Espreso, Users) {
     $scope.app = Espreso;
-    $scope.usersModule = Users;
+    $scope.users = Users;
+
+    $log.log("Users controller");
+
+    $scope.$emit("partition", $scope.users.moduleId);
 }]);
 
