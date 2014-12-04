@@ -19,7 +19,7 @@
             <ul>
                 <a href="#/" target=""><li ng-class="{'itemActive': app.activePartition == 'dashboard'}"><img src="client/resources/img/house_32x32.png" alt="Домашняя страница"/></li></a>
                 <li><a href=""><img src="client/resources/img/transmit_blue_32x32.png" alt="Учёт ВОЛС"/></a></li>
-                <li ng-class="{'itemActive': app.activePartition == 'users'}"><a href="#/users"><img src="client/resources/img/group_32x32.png" alt="Управление пользователями"/></a></li>
+                <a href="#/users"><li ng-class="{'itemActive': app.activePartition == 'users'}"><img src="client/resources/img/group_32x32.png" alt="Управление пользователями"/></li></a>
             </ul>
         </div>
         <div id="appContent" ng-view></div>
