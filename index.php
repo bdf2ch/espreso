@@ -2,7 +2,7 @@
 
     /* Подключение библиотек */
     include "server/libs/xtemplate/xtemplate.class.php";
-    include "../server/config.php";
+    include "server/config.php";
 
     //unset($_COOKIE["user"]);
     /* Проверка, залогинен ли пользователь */

@@ -1,7 +1,8 @@
 <?php
-    include "../server/config.php";
-
     $postdata = json_decode(file_get_contents('php://input'));
+    include "../config.php";
+
+    //$postdata = json_decode(file_get_contents('php://input'));
     $action = $postdata -> action;
     $result = array();
 
