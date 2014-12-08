@@ -16,34 +16,37 @@
             case "login":
                 $email = $postdata -> email;
                 $passwd = $postdata -> password;
-
-                $statement = oci_parse($connection, "begin P_AUTH_USER(:email, :passwd, :data); end;");
                 $cursor = oci_new_cursor($connection);
 
-                if (!oci_bind_by_name($statement, ":email", $email, -1, OCI_DEFAULT)) {
-                    $error = oci_error();
-                    echo $error["message"];
-                }
-                if (!oci_bind_by_name($statement, ":passwd", $passwd, -1, OCI_DEFAULT)) {
-                    $error = oci_error();
-                    echo $error["message"];
-                }
-                if (!oci_bind_by_name($statement, ":data", $cursor, -1, OCI_B_CURSOR)) {
-                    $error = oci_error();
-                    echo $error["message"];
-                }
-                if (!oci_execute($statement)) {
+                if (!$statement = oci_parse($connection, "begin P_AUTH_USER(:email, :passwd, :data); end;")) {
                     $error = oci_error();
                     echo $error["message"];
                 } else {
-                     if (!oci_execute($cursor)) {
+                    if (!oci_bind_by_name($statement, ":email", $email, -1, OCI_DEFAULT)) {
                         $error = oci_error();
                         echo $error["message"];
-                     } else {
-                         while ($data = oci_fetch_assoc($cursor)) {
-                            array_push($result, $data);
-                         }
-                     }
+                    }
+                    if (!oci_bind_by_name($statement, ":passwd", $passwd, -1, OCI_DEFAULT)) {
+                        $error = oci_error();
+                        echo $error["message"];
+                    }
+                    if (!oci_bind_by_name($statement, ":data", $cursor, -1, OCI_B_CURSOR)) {
+                        $error = oci_error();
+                        echo $error["message"];
+                    }
+                    if (!oci_execute($statement)) {
+                        $error = oci_error();
+                        echo $error["message"];
+                    } else {
+                        if (!oci_execute($cursor)) {
+                            $error = oci_error();
+                                echo $error["message"];
+                            } else {
+                                while ($data = oci_fetch_assoc($cursor)) {
+                                    array_push($result, $data);
+                            }
+                        }
+                    }
                 }
 
                 oci_free_statement($statement);
