@@ -48,7 +48,10 @@
                 oci_free_statement($cursor);
                 oci_close($connection);
 
-                echo json_encode($result);
+                if (sizeof($result) == 0)
+                    echo json_encode(0);
+                else
+                    echo json_encode($result);
                 break;
         }
     }
