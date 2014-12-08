@@ -35,15 +35,15 @@
                 if (!oci_execute($statement)) {
                     $error = oci_error();
                     echo $error["message"];
-                };
-
-                if (!oci_execute($cursor)) {
-                    $error = oci_error();
-                    echo $error["message"];
-                }
-
-                while ($data = oci_fetch_assoc($cursor)) {
-                    array_push($result, $data);
+                } else {
+                     if (!oci_execute($cursor)) {
+                        $error = oci_error();
+                        echo $error["message"];
+                     } else {
+                         while ($data = oci_fetch_assoc($cursor)) {
+                            array_push($result, $data);
+                         }
+                     }
                 }
 
                 oci_free_statement($statement);
