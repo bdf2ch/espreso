@@ -18,7 +18,7 @@
                 $passwd = $postdata -> password;
                 $cursor = oci_new_cursor($connection);
 
-                if (!$statement = oci_parse($connection, "begin P_AUTH_USER(:email, :passwd, :data); end;")) {
+                if (!$statement = oci_parse($connection, "begin espreso.P_AUTH_USER(:email, :passwd, :data); end;")) {
                     $error = oci_error();
                     echo $error["message"];
                 } else {
