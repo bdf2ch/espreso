@@ -16,9 +16,9 @@
             case "login":
                 $email = $postdata -> email;
                 $passwd = $postdata -> password;
-                
-                $cursor = oci_new_cursor($connection);
+
                 $statement = oci_parse($connection, "begin P_AUTH_USER(:email, :passwd, :data); end;");
+                $cursor = oci_new_cursor($connection);
 
                 if (!oci_bind_by_name($statement, ":email", $email, -1, OCI_DEFAULT)) {
                     $error = oci_error();
@@ -36,13 +36,15 @@
                     $error = oci_error();
                     echo $error["message"];
                 };
+
                 if (!oci_execute($cursor)) {
                     $error = oci_error();
                     echo $error["message"];
                 }
 
-                while ($data = oci_fetch_assoc($cursor))
+                while ($data = oci_fetch_assoc($cursor)) {
                     array_push($result, $data);
+                }
 
                 oci_free_statement($statement);
                 oci_free_statement($cursor);
