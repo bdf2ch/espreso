@@ -29,7 +29,7 @@ var Authorization = angular.module("Authorization", ["ngCookies", "ngRoute"])
                     $http.post("server/controllers/authorization.php", parameters).success(function (data) {
                         if (data) {
                             $log.log(data);
-                            if (data.length > 0) {
+                            if (parseInt(data) != 0) {
                                 var user = new User();
                                 user.fromJSON(data[0]);
                                 $log.log(user);
