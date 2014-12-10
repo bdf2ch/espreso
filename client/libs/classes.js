@@ -1,69 +1,6 @@
-"use strict";
+//"use strict";
 
 
-/*****
- * Структура, описывающая коллекцию данных
- *****/
-function Collection () {
-    this.items = []; // Массив элементов коллекции
-    this.isLoaded = false; // Флаг загрузки коллекции
-    this.isLoading = false;
-
-    /* Добавляет элемент в коллекцию */
-    Collection.prototype.add = function(item){
-        if (item) {
-            this.items.push(item);
-        }
-    };
-
-    /* Удаляет элемент из коллекции */
-    Collection.prototype.remove = function (field, value) {
-        if (field && value) {
-            for (var i = 0; i < this.items.length; i++){
-                if(this.items[i][field] == value){
-                    this.items.splice(i, 1);
-                    return this.items.length;
-                }
-            }
-            return false;
-        }
-    };
-
-    /* Находит элемент в коллекции по наименованию поля и значению поля */
-    Collection.prototype.find = function (field, value) {
-        for (var i = 0; i < this.items.length; i++) {
-            if(this.items[i][field] && this.items[i][field] == value)
-                return this.items[i];
-        }
-        return false;
-    };
-
-    /* Возвращает количество элементов в коллекции */
-    Collection.prototype.length = function () {
-        return this.items.length;
-    };
-
-    /* Удаляет все элементы из коллекции */
-    Collection.prototype.clear = function () {
-        this.items.splice(0, this.items.length);
-    };
-
-    /* Возвращает массив с элементами коллекции */
-    Collection.prototype.toArray = function () {
-        return this.items;
-    };
-    Collection.prototype.fromArray = function (array) {
-        if (array && array.constructor == Array) {
-            this.items.splice(0, this.items.length);
-            for (var i = 0; i < array.length; i++) {
-                this.items.push(array[i]);
-            }
-            console.log("end");
-            console.log(this.items);
-        }
-    };
-
-};
 
 
 /*****
@@ -117,14 +54,23 @@ function DataModel () {
     };
 
     /* Инициализация объекта на основе JSON-данных */
+    this.fromSOURCE = function (SRCdata) {
+        if (SRCdata) {
+            for (var data in SRCdata) {
+                for (var field in this) {
+                    if (this[field]["source"] == data) {
+                        this[field]["value"] = SRCdata[data];
+                    }
+                }
+            }
+        }
+    };
+
     this.fromJSON = function (JSONdata) {
         if (JSONdata) {
             for (var data in JSONdata) {
-                for (var field in this) {
-                    if (this[field]["source"] == data) {
-                        this[field]["value"] = JSONdata[data];
-                    }
-                }
+                if (this.hasOwnProperty(data))
+                    this[data]["value"] = JSONdata[data]["value"];
             }
         }
     };
@@ -168,6 +114,7 @@ function User () {
     this.phone = new Field({ source: "PHONE", value: "" });                 // Контактный телефон
 };
 User.prototype = new DataModel();
+User.prototype.constructor = User;
 
 
 
@@ -420,3 +367,93 @@ function TracePart () {
     this.tension = new Field({ source: "TENSION", value: 0 });
 };
 TracePart.prototype = new DataModel();
+
+
+
+
+
+/*****
+ * Структура, описывающая коллекцию данных
+ *****/
+function Collection (mdl) {
+    this.items = []; // Массив элементов коллекции
+    this.isLoaded = false; // Флаг загрузки коллекции
+    this.isLoading = false;
+    this.model = undefined;
+
+    if (mdl) {
+        this.model = mdl;
+        this.model.constructor = mdl.constructor;
+    }
+
+    /* Добавляет элемент в коллекцию */
+    Collection.prototype.add = function(item){
+        if (item) {
+            this.items.push(item);
+        }
+    };
+
+    /* Удаляет элемент из коллекции */
+    Collection.prototype.remove = function (field, value) {
+        if (field && value) {
+            for (var i = 0; i < this.items.length; i++){
+                if(this.items[i][field] == value){
+                    this.items.splice(i, 1);
+                    return this.items.length;
+                }
+            }
+            return false;
+        }
+    };
+
+    /* Находит элемент в коллекции по наименованию поля и значению поля */
+    Collection.prototype.find = function (field, value) {
+        for (var i = 0; i < this.items.length; i++) {
+            if(this.items[i][field] && this.items[i][field] == value)
+                return this.items[i];
+        }
+        return false;
+    };
+
+    /* Возвращает количество элементов в коллекции */
+    Collection.prototype.length = function () {
+        return this.items.length;
+    };
+
+    /* Удаляет все элементы из коллекции */
+    Collection.prototype.clear = function () {
+        this.items.splice(0, this.items.length);
+    };
+
+    /* Возвращает массив с элементами коллекции */
+    Collection.prototype.toArray = function () {
+        return this.items;
+    };
+    Collection.prototype.fromArray = function (array) {
+        if (array && array.constructor == Array) {
+            this.items.splice(0, this.items.length);
+            for (var i = 0; i < array.length; i++) {
+                this.items.push(array[i]);
+            }
+            console.log("end");
+            console.log(this.items);
+        }
+    };
+
+    Collection.prototype.fromJSON = function (JSONdata) {
+        if (JSONdata) {
+            console.log(JSONdata);
+            for (var i = 0; i < JSONdata.length; i++) {
+                if (this.model) {
+                    var temp_obj = new(this.model.constructor);
+                    temp_obj.fromJSON(JSONdata[i]);
+                    this.items.push(temp_obj);
+                } else {
+                    var temp_obj = JSONdata[i];
+                    this.items.push(temp_obj);
+                }
+            }
+        }
+    };
+
+};

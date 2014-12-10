@@ -11,7 +11,13 @@ var users = angular.module('Users', [])
             var module = {};
 
             module.moduleId = "users";
-            module.users = new Collection();
+            module.includes = {
+                list: "client/templates/users/includes/users_list_table.html",
+                add: "client/templates/users/includes/users_add_form.html",
+                edit: "client/templates/users/includes/users_edit_form.html"
+            };
+            module.currentInclude = "";
+            module.users = new Collection(new User());
             module.groups = new Collection();
 
             /* Получает список пользователей */
@@ -23,10 +29,10 @@ var users = angular.module('Users', [])
                 module.users.isLoaded = false;
                 $http.post("server/controllers/users.php", params).success(function (data) {
                     module.users.isLoading = true;
-                    if (data) {
+                    if (data && parseInt(data) != 0) {
                         angular.forEach(data, function (user) {
                             var temp_user = new User();
-                            temp_user.fromJSON(user);
+                            temp_user.fromSOURCE(user);
                             module.users.add(temp_user);
                         });
                     }
@@ -37,6 +43,8 @@ var users = angular.module('Users', [])
                     if ($window.localStorage) {
                         $window.localStorage.setItem("users", JSON.stringify(module.users.items));
                     }
+
+                    $log.log(module.users.items);
                 });
             };
 
@@ -68,7 +76,7 @@ var users = angular.module('Users', [])
             return module;
         }]);
     })
-    .run(function ($log) {
+    .run(function ($log, Espreso) {
         $log.log("USERS EXECUTED");
     });
 
@@ -82,5 +90,6 @@ users.controller("UsersCtrl", ["$scope", "$log", "Espreso", "Users", function ($
     $log.log("Users controller");
 
     $scope.$emit("partition", $scope.users.moduleId);
+    $scope.users.currentInclude = $scope.users.includes.list;
 }]);
 

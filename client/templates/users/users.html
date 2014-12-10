@@ -4,7 +4,6 @@
         <ul id="editItemsList">
             <li class="itemActive">Пользователи</li>
             <li><a href="#">Группы</a></li>
-            <li>Акт ункт без ссылки</li>
         </ul>
     </div>
     
@@ -13,7 +12,7 @@
         <input type="button" value="Добавить нового пользователя" />
         <div class="sepX15"></div>
         
-        <div id="editObjects">
+        <div id="editObjects" ng-include="users.currentInclude">
             От тута таблица со списком манипулируемых объектов
         </div>
     </div>

@@ -4,6 +4,7 @@
 
 var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "ngCookies"])
     .config(function ($provide, $routeProvider) {
+        /* Установка и настройка адресов-переходов */
         $routeProvider
             .when('/', {
                 templateUrl: 'client/templates/dashboard/dashboard.html',
@@ -15,30 +16,59 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
             })
             .otherwise({ redirectTo: '/' });
 
+        /* Сервис основного приложения - каркаса */
         $provide.factory("Espreso", ["$log", "Users", function ($log, Users) {
             var module = {};
 
             module.activePartition = "";
             module.currentUser = new User();
             module.users = Users;
+            module.updates = {
+                users: 0,
+                userGroups: 0
+            };
 
             return module;
         }]);
     })
-    .run(function ($log, $window, Espreso, $cookies) {
+    .run(function ($log, $window, Espreso, $cookies, Users) {
         $log.log("ESPRESO EXECUTED");
 
         if ($window.localStorage) {
-            $log.log("localStorage is enabled");
+            if ($window.localStorage.updates) {
+                var updates = JSON.parse($window.localStorage.updates);
 
-            /* Если справочник пользователей отсутствует в localStorage - загружаем его */
-            if ($window.localStorage.users) {
+                /* Если локальная версия коллекции пользователей старше удаленной - скачиваем себе свежую версию */
+                if ($window.localStorage.users) {
+                    if (updates.users && $cookies.USERS && updates.users < parseInt($cookies.USERS)) {
+                        updates.users = parseInt($cookies.USERS);
+                        Users.getUsers();
+                    } else if (updates.users && $cookies.USERS && updates.users == parseInt($cookies.USERS)) {
+                        var users = JSON.parse($window.localStorage.users);
+                        Users.users.fromJSON(users);
+                    }
+                } else {
+                    Users.getUsers();
+                }
 
-            } else
-                $log.log("Users dataset not found in localStorage");
+
+            } else {
+                var updates = {};
+
+                /* Устанавливаем дату последнего изменения коллекции пользователей */
+                if ($cookies.USERS)
+                    updates.users = parseInt($cookies.USERS);
+                Users.getUsers();
+
+                /* Устанавливаем дату последнего изменения коллекции групп пользователей */
+                if ($cookies.USER_GROUPS)
+                    updates.userGroups = parseInt($cookies.USER_GROUPS);
+
+                /* Записываем информацию об изменениях коллекций в localStorage */
+                $window.localStorage.updates = JSON.stringify(updates);
+            }
         }
-        else
-            $log.log("localStorage is disabled");
+
 
         /* Firefox window reload bug */
         if (!$cookies.user)

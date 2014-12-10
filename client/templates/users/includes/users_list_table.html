@@ -8,11 +8,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Герасим Владислав Янович</td>
-            <td>vygerasim@kolenergo.ru</td>
-            <td>20-93</td>
-            <td>Администраторы</td>
+        <tr ng-repeat="user in users.users.items track by $index">
+            <td ng-bind="user.name.value"></td>
+            <td ng-bind="user.email.value"></td>
+            <td ng-bind="user.phone.value"></td>
+            <td ng-bind="user.groupId.value"></td>
         </tr>
     </tbody>
 </table>

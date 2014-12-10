@@ -31,7 +31,7 @@ var Authorization = angular.module("Authorization", ["ngCookies", "ngRoute"])
                             $log.log(data);
                             if (parseInt(data) != 0) {
                                 var user = new User();
-                                user.fromJSON(data[0]);
+                                user.fromSOURCE(data[0]);
                                 $log.log(user);
                                 $cookies.user = JSON.stringify(user);
                                 $window.location.reload(true);
