@@ -1,6 +1,12 @@
+body {
+    margin: 0;
+    font-family: "Lato",Calibri,Arial,sans-serif;  
+}
+
 .appBody{
     background-image: url(../img/body_bg_1x4800.gif);
     background-repeat: repeat-y;
+
 }
 
 #appHeader{
@@ -28,7 +34,6 @@
 
 #appSideBarLeft ul li{
     margin-top: 4px;
-    padding-top: 8px;
     padding-left: 4px;
     background-color: #c9d439;
     width: 44px;
@@ -40,12 +45,13 @@
     background-color: #e4ef5e;
 }
 
+    #appSideBarLeft ul li img{
+        padding-top: 8px;
+    }
+
 #appSideBarLeft ul li.itemActive{
-    margin-top: 4px;
     padding-left: 8px;
     background-color: #f2f3f6;
-    width: 48px;
-    height: 46px;
     cursor: default;
 }
 
@@ -146,3 +152,31 @@ body.loginBody {
     background-color: #4d5ea5;      
 }
 
+#userEditor{
+    background-image: url(../img/usr_editor_bg_365x1.png);
+    background-repeat: repeat-y;
+}
+
+
+
+#userEditGroupsList{
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    color: #4d5ea5;
+}
+#userEditGroupsList li{
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    color: #4d5ea5;
+}
+
+#userEditGroupsList a{
+    color: #4d5ea5;
+}
+
+#userEditGroupsList li.itemActive a{
+    text-decoration: none;
+    font-weight: bold;
+}
