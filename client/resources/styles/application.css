@@ -152,6 +152,17 @@ body.loginBody {
     background-color: #4d5ea5;      
 }
 
+#editObjectsList{
+    float: left;
+   
+}
+
+#editItemsHolder{
+    float: left; 
+    heihgt: 100%;
+    width: 200px;
+}
+
 #editItemsList{
     margin: 0;
     padding: 0;
