@@ -152,31 +152,22 @@ body.loginBody {
     background-color: #4d5ea5;      
 }
 
-#userEditor{
-    background-image: url(../img/usr_editor_bg_365x1.png);
-    background-repeat: repeat-y;
-}
-
-
-
-#userEditGroupsList{
+#editItemsList{
     margin: 0;
     padding: 0;
     font-size: 18px;
     color: #4d5ea5;
 }
-#userEditGroupsList li{
+#editItemsList li{
     list-style: none;
     padding: 0;
-    margin: 5px 0;
+    margin: 10px 0;
+}
+
+#editItemsList a{
     color: #4d5ea5;
 }
 
-#userEditGroupsList a{
-    color: #4d5ea5;
-}
-
-#userEditGroupsList li.itemActive a{
-    text-decoration: none;
-    font-weight: bold;
+#editItemsList li.itemActive{
+    font-weight: bold;    
 }
