@@ -160,7 +160,7 @@ body.loginBody {
 #editItemsHolder{
     float: left; 
     heihgt: 100%;
-    width: 200px;
+    width: 180px;
 }
 
 #editItemsList{
@@ -190,7 +190,7 @@ body.loginBody {
 }
 
 #userInfoList th,#userInfoList td{
-    padding: 8px;
+    padding: 5px;
 }
 
 #userInfoList tbody tr:hover{
