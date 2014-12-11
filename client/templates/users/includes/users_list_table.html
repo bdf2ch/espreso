@@ -1,6 +1,7 @@
 <table id="userInfoList">
     <thead>
         <tr>
+            <th></th>
             <th>ФИО</th>
             <th>Электропочта</th>
             <th>Телефон</th>
@@ -9,6 +10,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="user in users.users.items track by $index">
+            <td></td>
             <td ng-bind="user.name.value"></td>
             <td ng-bind="user.email.value"></td>
             <td ng-bind="user.phone.value"></td>

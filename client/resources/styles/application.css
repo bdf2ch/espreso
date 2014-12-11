@@ -197,15 +197,19 @@ body.loginBody {
     text-align: left;
 }
 
+
 #userInfoList thead th:nth-child(1){
-    width:300px;
+    width:20px;
 }
 #userInfoList thead th:nth-child(2){
-    width:200px;
+    width:300px;
 }
 #userInfoList thead th:nth-child(3){
     width:200px;
 }
 #userInfoList thead th:nth-child(4){
+    width:200px;
+}
+#userInfoList thead th:nth-child(5){
     width:100px;
 }
