@@ -185,8 +185,12 @@ body.loginBody {
 
 
 #userInfoList{
-    position: relative;
-    width: 100%;
+    border-collapse: collapse;
+    background-color: #fafafa;
+}
+
+#userInfoList th,#userInfoList td{
+    padding: 8px;
 }
 
 #userInfoList tbody tr:hover{
@@ -195,8 +199,8 @@ body.loginBody {
 
 #userInfoList thead {
     text-align: left;
-}
 
+}
 
 #userInfoList thead th:nth-child(1){
     width:20px;
@@ -205,11 +209,18 @@ body.loginBody {
     width:300px;
 }
 #userInfoList thead th:nth-child(3){
-    width:200px;
+    width:250px;
 }
 #userInfoList thead th:nth-child(4){
     width:200px;
 }
 #userInfoList thead th:nth-child(5){
-    width:100px;
+    width:70px;
+}
+
+#userInfoList tbody td:nth-child(2){
+    color: #1f3178;
+    text-decoration: underline;
+    cursor: pointer;
+    
 }
