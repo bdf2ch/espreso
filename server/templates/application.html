@@ -9,20 +9,34 @@
     <div id="appHeader">
         <div id="appHeaderLogo">ЭСпрЭСО</div>
         <div id="appHeaderControls">
-            <div id="appHeaderControlUser">{{ app.currentUser.surname.value + " " + app.currentUser.name.value + " " + app.currentUser.fname.value }}</div>
+            <div id="appHeaderControlUser">{{ currentUser.surname.value + " " + currentUser.name.value + " " + currentUser.fname.value }}</div>
             <div id="appHeaderControlLogout" ng-click="auth.logout()">Выход</div>
         </div>
     </div>
     
     <div id="appWorkSheet">
-        <div id="appSideBarLeft">
+        <div id="appSideBarLeft" ng-controller="MenuCtrl">
             <ul>
+                <a href="{{ '#' + item.url }}" ng-repeat="item in menu.menuItems | orderBy:item.order">
+                    <li ng-class="{'itemActive': item.isActive }"><img ng-src="{{ item.icon }}" alt="Домашняя страница"/></li>
+                </a>
+                <!--
                 <a href="#/" target=""><li ng-class="{'itemActive': app.activePartition == 'dashboard'}"><img src="client/resources/img/house_32x32.png" alt="Домашняя страница"/></li></a>
                 <a href=""><li><img src="client/resources/img/transmit_blue_32x32.png" alt="Учёт ВОЛС"/></li></a>
                 <a href="#/users"><li ng-class="{'itemActive': app.activePartition == 'users'}"><img src="client/resources/img/group_32x32.png" alt="Управление пользователями"/></li></a>
+                -->
             </ul>
         </div>
-        <div id="appContent" ng-view></div>
+        <div id="appContent">
+            <div id="subMenu" ng-show="menu.subMenu.length > 0" ng-controller="MenuCtrl">
+                <ul id="editItemsList">
+                    <li ng-class="{itemActive: sb.isActive}" ng-repeat="sb in menu.subMenu track by $index">
+                        <a href="{{ '#' + sb.url }}" ng-click="menu.setActive(sb.parentId)">{{ sb.title }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="content" ng-view></div>
+        </div>
     </div>
 
     <!-- Подключение стилей, библиотек и модулей проекта -->
@@ -31,10 +45,15 @@
     <script src="client/libs/angularjs/angular.min.js"></script>
     <script src="client/libs/angularjs/angular-route.min.js"></script>
     <script src="client/libs/angularjs/angular-cookies.min.js"></script>
+    <script src="client/libs/momentjs/moment-with-locales.min.js"></script>
     <script src="client/libs/classes.js"></script>
     <script src="client/modules/espreso.js"></script>
+    <script src="client/modules/espreso.currentUser.js"></script>
     <script src="client/modules/authorization.js"></script>
+    <script src="client/modules/espreso.menu.js"></script>
     <script src="client/modules/users.js"></script>
+    <script src="client/modules/espreso.dashboard.js"></script>
+    <script src="client/modules/espreso.modules.js"></script>
 </body>
 </html>
 <!-- END: main -->

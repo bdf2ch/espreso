@@ -22,7 +22,7 @@
             oci_execute($cursor);
 
             while ($data = oci_fetch_assoc($cursor))
-                setcookie($data["TABLE_NAME"], $data["UPDATED"]);
+                setcookie(strtolower($data["TABLE_NAME"]), $data["UPDATED"]);
 
             oci_free_statement($statement);
             oci_free_statement($cursor);

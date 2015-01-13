@@ -1,0 +1,27 @@
+<div class="sepX15"></div>
+<input type="button" value="Добавить нового пользователя" ng-click="gotoAddUserForm()" />
+<div class="sepX15"></div>
+
+<table id="userInfoList">
+    <thead>
+        <tr>
+            <th></th>
+            <th>ФИО</th>
+            <th>Электропочта</th>
+            <th>Телефон</th>
+            <th>Группа</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in users.users.items track by $index" ng-click="gotoEditUserForm(user.id.value)">
+            <td></td>
+            <td ng-bind="user.name.value + ' ' + user.fname.value + ' ' + user.surname.value"></td>
+            <td ng-bind="user.email.value"></td>
+            <td ng-bind="user.phone.value"></td>
+            <td ng-bind="users.groups.find('id', user.groupId.value).title.value"></td>
+        </tr>
+        <tr>
+            <td colspan="5" ng-show="users.users.length == 0 && users.users.isLoaded && !users.users.isLoading">В системе не зарегистрировано ни одного пользователя!</td>
+        </tr>
+    </tbody>
+</table>

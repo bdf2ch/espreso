@@ -9,12 +9,14 @@ var Authorization = angular.module("Authorization", ["ngCookies", "ngRoute"])
 
             module.email = "";
             module.password = "";
+            module.inRemindPasswordMode = false;
+            module.passwordSent = false;
             module.errors = [];
 
             /* Отсылает индентификационные данные пользователя на сервер */
             module.login = function () {
                 var parameters = {
-                    action: "login",
+                    action: "sign_in",
                     email: module.email,
                     password: module.password
                 };
@@ -40,6 +42,38 @@ var Authorization = angular.module("Authorization", ["ngCookies", "ngRoute"])
                                 module.errors.push("Неправильное имя пользователя или пароль");
                             }
                         }
+                    });
+                }
+            };
+
+            /* Перевод формы в режим получения нового пароля */
+            module.setToRemindPasswordMode= function () {
+                module.inRemindPasswordMode = true;
+            };
+
+            /* Вывод формы из режима получения нового пароля */
+            module.cancelRemindPasswordMode = function () {
+                module.inRemindPasswordMode = false;
+                module.passwordSent = false;
+                module.errors.length = 0;
+            };
+
+            /* Генерация нового пароля */
+            module.sendPassword = function () {
+                var parameters = {
+                    action: "remind_password",
+                    email: module.email
+                };
+
+                module.errors.length = 0;
+                if (module.email == "")
+                    module.errors.push("Вы не указали имя пользователя");
+
+                if (module.errors.length == 0) {
+                    $http.post("server/controllers/authorization.php", parameters).success(function (data) {
+                        if (data)
+                            $log.log(data);
+                        module.passwordSent = true;
                     });
                 }
             };

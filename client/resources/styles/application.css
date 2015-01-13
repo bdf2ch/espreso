@@ -17,6 +17,8 @@ body {
     background-color: #4d5ea5;
 }
 
+
+
 #appSideBarLeft{
     display: inline-block;
     float: left;
@@ -58,6 +60,24 @@ body {
 #appContent{
     display: inline-block;
     float: left;
+}
+
+#subMenu {
+    display: inline-block;
+    float: left;
+    width: 200px;
+    //background: lightgrey;
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+}
+    #subMenu.ng-show {
+        opacity: 0;
+    }
+
+#content {
+    display: inline-block;
+    float: left;
+
 }
 
 #appHeaderControls {
@@ -133,6 +153,25 @@ body.loginBody {
     float: left;
     padding-left: 24px;
     
+}
+
+.formHolder .remind-password-link {
+    display: inline-block;
+    float: right;
+    margin-right: 25px;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 1px dotted blue;
+}
+.formHolder .remind-password-link:hover {
+    color: darkblue;
+}
+
+.formHolder #password-sent-message {
+    background: #BBE6B8;
+    margin-right: 22px;
+    margin-left: 24px;
+    padding: 10px;
 }
 
 
@@ -223,4 +262,45 @@ body.loginBody {
     text-decoration: underline;
     cursor: pointer;
     
+}
+
+
+
+
+
+
+.error-container {
+    margin-top: 10px;
+    padding: 10px;
+    background: pink;
+}
+
+    .error-item {
+        margin-bottom: 10px;
+    }
+
+.success-message {
+    margin-top: 30px;
+    padding: 10px;
+    background: #BBE6B8;
+}
+
+.form-body {
+    float: left;
+    width: 300px;
+}
+.form-body input {
+    width: 100%;
+}
+
+.controls {
+    float: left;
+    width: 200px;
+    padding-left: 20px;
+    padding-top: 20px;
+}
+.controls input,select {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
 }

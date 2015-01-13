@@ -17,11 +17,11 @@
     <h3>Войти в систему</h3>
     <div class="formHolder" ng-controller="AuthorizationCtrl">
         <div class="sepX15"></div>
-        <form ng-submit="auth.login()" name="loginForm">
+        <form ng-submit="auth.login()" name="loginForm" ng-show="!auth.inRemindPasswordMode">
             <label for="login">Имя пользователя</label>
             <input id="login" type="text" ng-model="auth.email" />
             <div class="sepX15"></div>
-            <label for="passwd">Пароль</label><br/>
+            <label for="passwd">Пароль</label><a class="remind-password-link" ng-click="auth.setToRemindPasswordMode()">Забыли пароль?</a><br/>
             <input id="passwd" type="password" ng-model="auth.password" />
             
             <div id="msgField" class="alertMsg" ng-show="auth.errors.length > 0">
@@ -36,7 +36,29 @@
             <div class="sepX35"></div>
             <input type="submit" value="Войти" />
             <div class="sepX35"></div>
-        </form>        
+        </form>
+
+        <!-- Форма генерирования нового пароля -->
+        <form ng-submit="auth.sendPassword()" name="loginForm" ng-show="auth.inRemindPasswordMode">
+            <label for="login" ng-show="!auth.passwordSent">Имя пользователя</label>
+            <input id="login" type="text" ng-model="auth.email" ng-show="!auth.passwordSent"/>
+
+            <div id="msgField" class="alertMsg" ng-show="auth.errors.length > 0">
+                <div ng-repeat="error in auth.errors track by $index">
+                    <div class="sepX10"></div>
+                    {{ error }}
+                    <div class="sepX10"></div>
+                </div>
+            </div>
+            <div id="password-sent-message" ng-show="auth.passwordSent">
+                Новый пароль отправлен на Ваш email
+            </div>
+
+            <div class="sepX35"></div>
+            <input type="submit" value="Получить новый пароль" ng-show="!auth.passwordSent"/><br>
+            <input type="button" value="Вернуться к авторизации" ng-click="auth.cancelRemindPasswordMode()""/>
+            <div class="sepX35"></div>
+        </form>
     </div>
     
     

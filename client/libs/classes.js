@@ -1,14 +1,12 @@
 //"use strict";
 
 
-
-
 /*****
  * Класс поля данных
  *****/
 function Field (parameters) {
     this.source = "";   // Источник данных поля
-    this.value = 0;     // Значение поля
+    this.value = "";     // Значение поля
 
     if (parameters) {
         for (var param in parameters) {
@@ -43,6 +41,88 @@ function Field (parameters) {
  *****/
 function DataModel () {
 
+    /* Создвние и инициализация бэкапа */
+    this.setupBackup = function () {
+        this.backup = {};
+        for (prop in this) {
+            if (this[prop].constructor == Field) {
+                this.backup[prop] = this[prop]["value"];
+            }
+        }
+        this.isChanged = false;
+        this.inEditMode = false;
+        this.inDeleteMode = false;
+        this.deleteInProgress = false;
+        this.deleted = false;
+    };
+
+    /* Восстанавливает объект из бэкапа */
+    this.restoreFromBackup = function () {
+        if (this.backup) {
+            for (var prop in this.backup) {
+                if (this.hasOwnProperty(prop) && this[prop].constructor == Field)
+                    this[prop]["value"] = this.backup[prop];
+            }
+            this.setupBackup();
+            this.isChanged = false;
+        }
+    };
+
+    /**/
+    this.setToChanged = function () {
+        //if (this.isChanged != undefined)
+            this.isChanged = true;
+    };
+
+    /**/
+    this.setToNotChanged = function () {
+        //if (this.isChanged != undefined)
+            this.isChanged = false;
+    };
+
+    this.setToDeleteMode = function () {
+        //if (this.inDeleteMode != undefined)
+            this.inDeleteMode = true;
+    };
+
+    this.cancelDeleteMode = function () {
+        //if (this.inDeleteMode != undefined) {
+            this.inDeleteMode = false;
+        //}
+    };
+
+    this.setDeleteProgress = function (flag) {
+        if (flag) {
+            switch (flag) {
+                case true:
+                    this.deleteInProgress = true;
+                    break;
+                case false:
+                    this.deleteInProgress = false;
+                    break;
+            }
+        }
+    };
+
+    /**/
+    this.setToEditMode = function () {
+        //if (this.inEditMode != undefined)
+            this.inEditMode = true;
+    };
+
+    this.cancelEditMode = function () {
+        this.inEditMode = false;
+    };
+
+    this.cancelModes = function () {
+        if (this.inEditMode) {
+            this.cancelEditMode();
+            this.restoreFromBackup();
+        }
+        if (this.inDeleteMode)
+            this.cancelDeleteMode();
+    };
+
     /* Инициализация объекта на основе переданного объекта с параметрами */
     this.init = function (parameters) {
         if (parameters) {
@@ -53,7 +133,7 @@ function DataModel () {
         }
     };
 
-    /* Инициализация объекта на основе JSON-данных */
+    /* Инициализация объекта на основе данных из удаленного хранилища */
     this.fromSOURCE = function (SRCdata) {
         if (SRCdata) {
             for (var data in SRCdata) {
@@ -63,18 +143,159 @@ function DataModel () {
                     }
                 }
             }
+            this.setupBackup();
         }
     };
 
+    /* Инициализация объекта на основе JSON-данных */
     this.fromJSON = function (JSONdata) {
         if (JSONdata) {
             for (var data in JSONdata) {
                 if (this.hasOwnProperty(data))
                     this[data]["value"] = JSONdata[data]["value"];
             }
+            this.setupBackup();
         }
     };
 
+    /**/
+    //this.toJSON = function () {
+    //    var result = [];
+    //    for (var prop in this) {
+    //        if (this[prop].constructor == Field) {
+    //            result.push(this[prop])
+    //        }
+    //    }
+    //    return result;
+    //};
+
+    this.setId = function (id) {
+        if (id) {
+            if (this.hasOwnProperty("id") && this["id"].constructor == "Field")
+                this["id"]["value"] = id;
+        }
+    };
+
+};
+
+
+/* Класс модуля */
+function Module (parameters) {
+    this.info = {
+        id: "",
+        title: "",
+        description: ""
+    };
+    this.models = [];
+
+
+    this.model = function (model) {
+        if (model && model.constructor == Model) {
+            this.models.push(model);
+            return this;
+        }
+    };
+
+    if (parameters) {
+        for (var param in parameters) {
+            if (this.info.hasOwnProperty(param))
+                this.info[param] = parameters[param];
+        }
+        return this;
+    }
+
+};
+
+
+
+function Model () {
+    this.class = undefined;
+    this.links = {
+        view: "",
+        edit: "",
+        delete: ""
+    };
+};
+
+
+/* Класс раздела меню */
+function Menu (parameters) {
+    this.id = "";
+    this.url = "";
+    this.template = "";
+    this.controller = "";
+    this.isActive = false;
+    this.icon = "";
+    this.order = 0;
+    this.submenuItems = [];
+    this.links = [];
+
+    if (parameters) {
+        for (var param in parameters) {
+            if (this.hasOwnProperty(param))
+                this[param] = parameters[param];
+        }
+    }
+
+    this.submenu = function (parameters) {
+        if (parameters) {
+            var submenu = new SubMenu(parameters);
+            submenu.parentId = this.id;
+            this.submenuItems.push(submenu);
+            return this;
+        }
+    };
+
+    this.link = function (parameters) {
+        if (parameters) {
+            var link = new Link(parameters);
+            if (!parameters["parentId"])
+                link.parentId = this.id;
+            this.links.push(link);
+            return this;
+        }
+    };
+
+    return this;
+};
+
+
+function SubMenu (parameters) {
+    this.id = "";
+    this.parentId = "";
+    this.url = "";
+    this.title = "";
+    this.template = "";
+    this.controller = "";
+    this.isActive = false;
+
+    if (parameters) {
+        for (var param in parameters) {
+            if (this.hasOwnProperty(param))
+                this[param] = parameters[param];
+        }
+    }
+
+    return this;
+};
+
+
+function Link (parameters) {
+    this.id = "";
+    this.parentMenuId = "";
+    this.parentSubMenuId = "";
+    this.url = "";
+    this.title = "";
+    this.template = "";
+    this.controller = "";
+    this.isActive = false;
+
+    if (parameters) {
+        for (var param in parameters) {
+            if (this.hasOwnProperty(param))
+                this[param] = parameters[param];
+        }
+    }
 };
 
 
@@ -112,6 +333,20 @@ function User () {
     this.fname = new Field({ source: "SNAME", value: "" });                 // Отчество
     this.surname = new Field({ source: "SURNAME", value: "" });             // Фамилия
     this.phone = new Field({ source: "PHONE", value: "" });                 // Контактный телефон
+    this.password = new Field({ source: "PASSWD", value: "" });             // Пароль
+    this.permissions = {};
+
+    /* Сбрасывает значения полей объектов на первоначальные */
+    this.reset = function () {
+        this.id.value = 0;
+        this.groupId.value = 0;
+        this.email.value = "";
+        this.name.value = "";
+        this.fname.value = "";
+        this.surname.value = "";
+        this.phone.value = "";
+        this.password.value = "";
+    };
 };
 User.prototype = new DataModel();
 User.prototype.constructor = User;
@@ -125,8 +360,16 @@ function UserGroup () {
     this.id = new Field({ source: "ID", value: 0 });                        // Идентификатор
     this.title = new Field({ source: "TITLE", value: "" });                 // Наименование
     this.description = new Field({ source: "DESCRIPTION", value: "" });     // Описание
+
+    /* Сбрасывает значения полей объектов на первоначальные */
+    this.reset = function () {
+        this.id.value = 0;
+        this.title.value = "";
+        this.description.value = "";
+    };
 };
 UserGroup.prototype = new DataModel();
+UserGroup.prototype.constructor = UserGroup;
 
 
 
@@ -380,6 +623,7 @@ function Collection (mdl) {
     this.isLoaded = false; // Флаг загрузки коллекции
     this.isLoading = false;
     this.model = undefined;
+    this.errors = [];
 
     if (mdl) {
         this.model = mdl;
@@ -397,7 +641,7 @@ function Collection (mdl) {
     Collection.prototype.remove = function (field, value) {
         if (field && value) {
             for (var i = 0; i < this.items.length; i++){
-                if(this.items[i][field] == value){
+                if(this.items[i][field] && this.items[i][field].constructor == Field && this.items[i][field]["value"] == value){
                     this.items.splice(i, 1);
                     return this.items.length;
                 }
@@ -409,7 +653,7 @@ function Collection (mdl) {
     /* Находит элемент в коллекции по наименованию поля и значению поля */
     Collection.prototype.find = function (field, value) {
         for (var i = 0; i < this.items.length; i++) {
-            if(this.items[i][field] && this.items[i][field] == value)
+            if(this.items[i][field] && this.items[i][field]["value"] == value)
                 return this.items[i];
         }
         return false;
@@ -442,18 +686,38 @@ function Collection (mdl) {
 
     Collection.prototype.fromJSON = function (JSONdata) {
         if (JSONdata) {
-            console.log(JSONdata);
+            //console.log(JSONdata);
             for (var i = 0; i < JSONdata.length; i++) {
                 if (this.model) {
-                    var temp_obj = new(this.model.constructor);
+                    var temp_obj = new this.model.constructor;
                     temp_obj.fromJSON(JSONdata[i]);
+                    //console.log(temp_obj);
                     this.items.push(temp_obj);
                 } else {
                     var temp_obj = JSONdata[i];
                     this.items.push(temp_obj);
                 }
             }
+            this.isLoaded = true;
+            this.isLoading = false;
         }
     };
+
+    Collection.prototype.clearErrors = function () {
+        this.errors.length = 0;
+    };
+
+    /**/
+    //Collection.prototype.toJSON = function () {
+    //    var result = [];
+    //    for (var item in this.items) {
+    //        for (var prop in this.items[item]) {
+    //            if (this.items[item][prop].constructor == Field) {
+    //                result.push(this.items[item][prop])
+    //            }
+    //        }
+    //    }
+    //    return result;
+    //};
 
 };

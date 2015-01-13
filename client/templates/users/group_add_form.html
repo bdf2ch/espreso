@@ -1,0 +1,15 @@
+<form ng-submit="users.addGroup()">
+    <label for="groupTitle">Наименование</label><br>
+    <input id="groupTitle" name="groupTitle" type="text" placeholder="Наименование" ng-model="users.newGroup.title.value" /><br /><br />
+    <label for="groupDescription">Описание</label><br>
+    <input id="groupDescription" name="groupDescription" type="text" placeholder="Описание" ng-model="users.newGroup.description.value" /><br /><br />
+    <input id="formSubmit" type="submit" value="Добавить группу">
+</form>
+
+<!-- Ошибки при валидации формы -->
+<div class="error-container" ng-show="users.groups.errors.length > 0">
+    <div class="error-item" ng-repeat="error in users.groups.errors track by $index">{{ error }}</div>
+</div>
+
+<div class="success-message" ng-show="users.groupAddedSuccessfully">Группа успешно добавлена</div>
+

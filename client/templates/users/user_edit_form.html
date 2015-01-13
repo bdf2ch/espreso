@@ -1,0 +1,32 @@
+<div class="form-body" ng-show="!users.currentUserIsDeleted">
+    <form>
+        <label for="name">Имя</label><br>
+        <input type="text" name="name" id="name" ng-model="users.currentUser.name.value" ng-change="users.currentUser.setToChanged()" ng-change="users.currentUser.setToChanged()" ng-disabled="!users.currentUser.inEditMode"/><br><br>
+        <label for="fname">Отчество</label><br>
+        <input type="text" name="fname" id="fname" ng-model="users.currentUser.fname.value" ng-change="users.currentUser.setToChanged()" ng-change="users.currentUser.setToChanged()" ng-disabled="!users.currentUser.inEditMode"/><br><br>
+        <label for="surname">Фамилия</label><br>
+        <input type="text" name="surname" id="surname" ng-model="users.currentUser.surname.value" ng-change="users.currentUser.setToChanged()" ng-change="users.currentUser.setToChanged()" ng-disabled="!users.currentUser.inEditMode"/><br><br>
+        <label for="group">Группа</label><br>
+        <select name="group" id="group" ng-model="users.currentUser.groupId.value" ng-options="group.id.value as group.title.value for group in users.groups.items" ng-change="users.currentUser.setToChanged()" ng-disabled="!users.currentUser.inEditMode"></select><br><br>
+        <label for="email">Электронная почта</label><br>
+        <input type="text" name="email" id="email" ng-model="users.currentUser.email.value" ng-change="users.currentUser.setToChanged()"ng-change="users.currentUser.setToChanged()" ng-disabled="!users.currentUser.inEditMode"/><br><br>
+        <label for="phone">Телефон</label><br>
+        <input type="text" name="phone" id="phone" ng-model="users.currentUser.phone.value" ng-change="users.currentUser.setToChanged()" ng-change="users.currentUser.setToChanged()" ng-disabled="!users.currentUser.inEditMode"/></form></br>
+    </form>
+
+    <!-- Ошибки при валидации формы -->
+    <div class="error-container" ng-show="users.users.errors.length > 0">
+        <div class="error-item" ng-repeat="error in users.users.errors track by $index">{{ error }}</div>
+    </div>
+</div>
+
+<!-- Сообщение об успешном удалении группы -->
+<div class="success-message" ng-show="users.currentUserIsDeleted">Пользователь успешно удален</div>
+
+<div class="controls" ng-show="!users.currentUserIsDeleted">
+    <input type="button" value="Изменить" ng-show="!users.currentUser.inEditMode && !users.currentUser.inDeleteMode" ng-click="users.currentUser.setToEditMode()"/>
+    <input type="button" ng-show="!users.currentUser.inDeleteMode && !users.currentUser.inEditMode" value="Удалить" ng-click="users.currentUser.setToDeleteMode()"/>
+    <input type="button" ng-show="users.currentUser.inEditMode && users.currentUser.isChanged" value="Сохранить изменения" ng-click="users.editUser(users.currentUser.id.value)"/>
+    <input type="button" ng-show="users.currentUser.inDeleteMode" value="Подтвердить удаление" ng-disabled="users.currentUser.deleteInProgress" ng-click="users.deleteUser(users.currentUser)"/>
+    <input type="button" ng-show="users.currentUser.inDeleteMode || users.currentUser.inEditMode" value="Отмена" ng-click="users.currentUser.cancelModes();"/>
+</div>
