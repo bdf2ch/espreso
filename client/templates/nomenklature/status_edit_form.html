@@ -1,0 +1,25 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editStatus()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="statusTitle">Наименование</label>
+            <input type="text" name="statusTitle" id="statusTitle"  placeholder="Наименование" ng-model="stuff.currentStatus.title.value" ng-change="stuff.currentStatus.setToChanged()" ng-disabled="!stuff.currentStatus.inEditMode"/>
+
+            <div class="controls" ng-show="!stuff.currentStatusIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentStatus.inEditMode && !stuff.currentStatus.inDeleteMode" ng-click="stuff.currentStatus.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentStatus.inDeleteMode && !stuff.currentStatus.inEditMode" value="Удалить" ng-click="stuff.currentStatus.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentStatus.inEditMode && stuff.currentStatus.isChanged" value="Сохранить изменения" ng-click="stuff.editStatus(stuff.currentStatus.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentStatus.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentStatus.deleteInProgress" ng-click="stuff.deleteStatus(stuff.currentStatus)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentStatus.inDeleteMode || stuff.currentStatus.inEditMode" value="Отмена" ng-click="stuff.currentStatus.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.statuses.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.statuses.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

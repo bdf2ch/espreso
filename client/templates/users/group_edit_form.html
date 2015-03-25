@@ -1,24 +1,32 @@
-<div class="form-body" ng-show="!users.currentGroupIsDeleted">
-    <form ng-submit="users.editGroup(currentGroup.id.value)">
-        <label for="groupTitle">Наименование</label><br>
-        <input id="groupTitle" name="groupTitle" type="text" placeholder="Наименование" ng-model="users.currentGroup.title.value" ng-change="users.currentGroup.setToChanged()" ng-disabled="!users.currentGroup.inEditMode"/><br /><br />
-        <label for="groupDescription">Описание</label><br>
-        <input id="groupDescription" name="groupDescription" type="text" placeholder="Описание" ng-model="users.currentGroup.description.value" ng-change="users.currentGroup.setToChanged()" ng-disabled="!users.currentGroup.inEditMode"/><br /><br />
+<div class="container">
+
+    <form class="form" ng-submit="users.editGroup()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="groupTitle">Наименование</label>
+            <input type="text" name="groupTitle" id="groupTitle"  placeholder="Наименование" ng-model="users.currentGroup.title.value" ng-change="users.currentGroup.setToChanged()" ng-disabled="!users.currentGroup.inEditMode"/>
+
+            <label for="groupDescription">Описание</label>
+            <input type="text" name="groupDescription" id="groupDescription"  placeholder="Описание" ng-model="users.currentGroup.description.value" ng-change="users.currentGroup.setToChanged()" ng-disabled="!users.currentGroup.inEditMode"/>
+
+            <div class="controls" ng-show="!users.currentGroupIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!users.currentGroup.inEditMode && !users.currentGroup.inDeleteMode" ng-click="users.currentGroup.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!users.currentGroup.inDeleteMode && !users.currentGroup.inEditMode" value="Удалить" ng-click="users.currentGroup.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="users.currentGroup.inEditMode && users.currentGroup.isChanged" value="Сохранить изменения" ng-click="users.editGroup(users.currentGroup.id.value)"/>
+                <input type="button" class="button-link" ng-show="users.currentGroup.inDeleteMode" value="Подтвердить удаление" ng-disabled="users.currentGroup.deleteInProgress" ng-click="users.deleteGroup(users.currentGroup)"/>
+                <input type="button" class="button-link" ng-show="users.currentGroup.inDeleteMode || users.currentGroup.inEditMode" value="Отмена" ng-click="users.currentGroup.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="users.groups.errors.length > 0">
+                <div class="error-item" ng-repeat="error in users.groups.errors track by $index">{{ error }}</div>
+            </div>
+
+            <div class="success" ng-show="users.currentGroupIsDeleted">
+                Группа пользователей успешно удалена
+            </div>
+        </fieldset>
     </form>
 
-    <!-- Ошибки при валидации формы -->
-    <div class="error-container" ng-show="users.groups.errors.length > 0">
-        <div class="error-item" ng-repeat="error in users.groups.errors track by $index">{{ error }}</div>
-    </div>
-</div>
-
-<!-- Сообщение об успешном удалении группы -->
-<div class="success-message" ng-show="users.currentGroupIsDeleted">Группа успешно удалена</div>
-
-<div class="controls" ng-show="!users.currentGroupIsDeleted">
-    <input type="button" value="Изменить" ng-show="!users.currentGroup.inEditMode && !users.currentGroup.inDeleteMode" ng-click="users.currentGroup.setToEditMode()"/>
-    <input type="button" ng-show="!users.currentGroup.inDeleteMode && !users.currentGroup.inEditMode" value="Удалить" ng-click="users.currentGroup.setToDeleteMode()"/>
-    <input type="button" ng-show="users.currentGroup.inEditMode && users.currentGroup.isChanged" value="Сохранить изменения" ng-click="users.editGroup(users.currentGroup.id.value)"/>
-    <input type="button" ng-show="users.currentGroup.inDeleteMode" value="Подтвердить удаление" ng-disabled="users.currentGroup.deleteInProgress" ng-click="users.deleteGroup(users.currentGroup)"/>
-    <input type="button" ng-show="users.currentGroup.inDeleteMode || users.currentGroup.inEditMode" value="Отмена" ng-click="users.currentGroup.cancelModes();"/>
 </div>

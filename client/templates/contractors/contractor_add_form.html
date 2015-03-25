@@ -1,0 +1,28 @@
+<div class="container">
+
+    <form class="form" ng-submit="contractors.addContractor()">
+        <fieldset>
+            <legend>Новый контрагент</legend>
+
+            <label for="contractorTitle">Наименование</label>
+            <input type="text" name="contractorTitle" id="contractorTitle"  placeholder="Наименование" ng-model="contractors.newContractor.title.value" />
+
+            <label for="contractorFullTitle">Полное наименование</label>
+            <input type="text" name="contractorFullTitle" id="contractorFullTitle"  placeholder="Полное наименование" ng-model="contractors.newContractor.fullTitle.value" />
+
+            <label for="contractorType">Тип контрагента</label><br>
+            <select name="contractorType" id="contractorType" placeholder="Выберите тип" ng-model="contractors.newContractor.contractorTypeId.value" ng-options="type.id.value as type.title.value for type in contractors.contractorTypes.items"></select>
+
+            <input type="submit" class="button-link block" value="Добавить контрагента"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="contractors.contractors.errors.length > 0">
+                <div class="error-item" ng-repeat="error in contractors.contractors.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="contractors.contractorAddedSuccessfully">Контрагент успешно добавлен</div>
+        </fieldset>
+    </form>
+
+</div>

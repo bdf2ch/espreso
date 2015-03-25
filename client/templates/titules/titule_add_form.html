@@ -1,0 +1,108 @@
+<div class="container">
+
+    <form class="form" ng-submit="add()">
+        <fieldset>
+            <legend>Новый титул</legend>
+
+            <label for="tituleTitle">Наименование</label><span class="required">*</span>
+            <input
+                    id="tituleTitle"
+                    name="tituleTitle"
+                    type="text"
+                    placeholder="Наименование"
+                    ng-model="newTitule.title.value" />
+
+            <label for="tituleDescription">Описание</label>
+            <input
+                    id="tituleDescription"
+                    name="tituleDescription"
+                    type="text"
+                    placeholder="Описание"
+                    ng-model="newTitule.description.value" />
+
+            <label for="startPoint">Начальная точка</label><span class="required">*</span>
+            <typeahead id="startPoint"
+                       placeholder="Начальная точка"
+                       ng-model="newTitule.startPointId"
+                       collection="stuff.points.items"
+                       collection-value="id">
+            </typeahead>
+
+            <label for="startObjectType">Тип объекта в начальной точке</label>
+            <select name="startObjectType"
+                    id="startObjectType"
+                    ng-init="newTitule.startObjectTypeId.value = 0"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:startPointObjects.objectTypesIds"
+                    ng-model="newTitule.startObjectTypeId.value"
+                    ng-disabled="!startPointObjects.states.ready">
+            </select>
+
+            <!-- Если тип объекта в начальной точке - опора -->
+            <div class="nested-form" ng-show="newTitule.startObjectTypeId.value == 1">
+                <label for="startPylonPowerLine">Линия</label><span class="required">*</span>
+                <select name="startPylonPowerLine"
+                        id="startPylonPowerLine"
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: startPointObjects.powerLinesIds"
+                        ng-model="startPointPowerLineId"
+                        ng-disabled="startPointObjects.states.isReady">
+                </select>
+
+                <label for="startPylonNumber">№ опоры</label><span class="required">*</span>
+                <typeahead id="startPylonNumber"
+                           placeholder="Опора"
+                           ng-model="newTitule.startObjectId.value"
+                           collection="startPointObjects.pylons"
+                           collection-value="id">
+                </typeahead>
+            </div>
+
+            <label for="endPoint">Конечная точка</label><span class="required">*</span>
+            <typeahead id="endPoint"
+                       placeholder="Конечная точка"
+                       ng-model="newTitule.endPointId"
+                       collection="stuff.points.items"
+                       collection-value="id">
+            </typeahead>
+
+            <label for="endObjectType">Тип объекта в конечной точке</label>
+            <select name="endObjectType"
+                    id="endObjectType"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:endPointObjects.objectTypesIds"
+                    ng-model="newTitule.endObjectTypeId.value"
+                    ng-init="newTitule.endObjectTypeId.value = 0"
+                    ng-disabled="!endPointObjects.states.ready">
+            </select>
+
+            <!-- Если тип объекта в конечной точке - опора -->
+            <div class="nested-form" ng-show="newTitule.endObjectTypeId.value == 1">
+                <label for="endPylonPowerLine">Линия</label><span class="required">*</span>
+                <select name="endPylonPowerLine"
+                        id="endPylonPowerLine"
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: endPointObjects.powerLinesIds"
+                        ng-model="endPointPowerLineId"
+                        ng-disabled="endPointObjects.states.isReady">
+                </select>
+
+                <label for="endPylonNumber">№ опоры</label><span class="required">*</span>
+                <typeahead id="endPylonNumber"
+                           placeholder="Опора"
+                           ng-model="newTitule.endObjectId.value"
+                           collection="endPointObjects.pylons"
+                           collection-value="id">
+                </typeahead>
+            </div>
+
+            <input type="submit" class="button-link block" value="Добавить титул"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="errors.length > 0">
+                <div class="error-item" ng-repeat="error in errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="newTitule.tituleAddedSuccessfully">Титул успешно добавлен</div>
+        </fieldset>
+    </form>
+
+</div>
+

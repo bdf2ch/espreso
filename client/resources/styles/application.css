@@ -75,6 +75,7 @@ body {
     }
 
 #content {
+    position: relative;
     display: inline-block;
     float: left;
 
@@ -257,12 +258,17 @@ body.loginBody {
     width:70px;
 }
 
-#userInfoList tbody td:nth-child(2){
+#userInfoList tbody td:nth-child(1){
     color: #1f3178;
-    text-decoration: underline;
+    //text-decoration: underline;
     cursor: pointer;
     
 }
+
+#userInfoList tbody td:nth-child(1){
+    vertical-align: middle;
+}
+
 
 
 
@@ -303,4 +309,30 @@ body.loginBody {
     display: block;
     width: 100%;
     margin-bottom: 15px;
+}
+
+.description {
+    text-decoration: none !important;
+    font-style: italic;
+    color: grey;
+}
+
+
+/***** TITULES *****/
+
+#titules-titules {
+    position: absolute;
+    //float: left;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 450px;
+    //height: 100%;
+    margin-right: 20px;
+    background: #D3EDF5;
+}
+
+#titules-parts {
+    float: left;
+    width: 350px;
 }

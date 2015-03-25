@@ -1,0 +1,24 @@
+<table class="tbl">
+    <caption>Типы кабеля</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить тип кабеля" ng-click="gotoAddCableTypeForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>Наименование</th>
+        <th>Полное наименование</th>
+        <th>Емкость</th>
+        <th>Цветовой код</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="cable_type in stuff.cableTypes.items track by $index" ng-click="gotoEditCableTypeForm(cable_type.id.value)">
+        <td ng-bind="cable_type.title.value"></td>
+        <td ng-bind="cable_type.titleExtra.value"></td>
+        <td ng-bind="cable_type.capacity.value"></td>
+        <td ng-bind="cable_type.colorCode.value"></td>
+    </tr>
+    </tbody>
+</table>

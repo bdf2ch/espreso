@@ -1,0 +1,22 @@
+<table class="tbl">
+    <caption>Контрагенты</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить контрагента" ng-click="gotoAddContractorForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>Наименование</th>
+        <th>Полное наименование</th>
+        <th>Тип контрагента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="contractor in contractors.contractors.items track by $index" ng-click="gotoEditContractorForm(contractor.id.value)">
+        <td ng-bind="contractor.title.value"></td>
+        <td ng-bind="contractor.fullTitle.value"></td>
+        <td ng-bind="contractors.contractorTypes.find('id', contractor.contractorTypeId.value).title.value"></td>
+    </tr>
+    </tbody>
+</table>

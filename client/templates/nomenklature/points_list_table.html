@@ -1,0 +1,30 @@
+<table class="tbl">
+    <caption>Географические точки</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить точку" ng-click="gotoAddPointForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>Наименование</th>
+        <th>Широта</th>
+        <th>Долгота</th>
+        <th>Высота</th>
+        <th>X-координата</th>
+        <th>Y-координата</th>
+        <th>Примечание</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="point in stuff.points.items track by $index" ng-click="gotoEditPointForm(point.id.value)">
+        <td ng-bind="point.title.value"></td>
+        <td ng-bind="point.latitude.value"></td>
+        <td ng-bind="point.longitude.value"></td>
+        <td ng-bind="point.altitude.value"></td>
+        <td ng-bind="point.x.value"></td>
+        <td ng-bind="point.y.value"></td>
+        <td ng-bind="point.description.value"></td>
+    </tr>
+    </tbody>
+</table>

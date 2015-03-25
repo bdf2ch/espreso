@@ -1,0 +1,913 @@
+body {
+    //height: 100%;
+    margin: 0;
+    font-family: "Lato",Calibri,Arial,sans-serif;
+}
+
+body img {
+    border: none;
+}
+
+#app {
+    //height: 100%;
+}
+
+/*** ШАПКА ПРИЛОЖЕНИЯ ***/
+#app-header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 48px;
+    color: #f2f3f6;
+    background-color: #4d5ea5;
+}
+
+    #logo {
+        float: left;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 7px;
+        margin-left: 14px;
+    }
+
+#app-wrapper {
+    position: fixed;
+    //display: table-row;
+    overflow: auto;
+    top: 48px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    min-width: 1200px;
+    width: 100%;
+    margin-top: 48px;
+    //height: 100%;
+}
+
+
+/*** МЕНЮ ПРИЛОЖЕНИЯ ***/
+#app-menu {
+    position: absolute;
+    top: 48px;
+    left: 0px;
+    bottom: 0px;
+    //display: table-cell;
+    //float: left;
+    width: 48px;
+    //height: 100%;
+    padding-top: 8px;
+    background-color: #c9d439;
+    background: url("../img/menu-bg.png");
+    box-shadow: 0 1px 10px rgba(0,0,0,0.1) inset;
+}
+
+    #app-menu .menu-item {
+        display: block;
+        padding-top: 8px;
+        padding-bottom: 4px;
+        //background-color: #c9d439;
+        text-align: center;
+    }
+
+    #app-menu .menu-item.active {
+        margin-left: 5px;
+        //padding-left: 6px;
+        //background-color: #f2f3f6;
+        background-color: #ffffff;
+        cursor: default;
+        //border-bottom: 2px solid grey;
+        box-shadow: -5px 4px 10px rgba(0,0,0,0.1);
+        border-bottom-left-radius: 2px;
+        border-top-left-radius: 2px;
+    }
+
+
+
+/*** КОНТЕНТ ПРИЛОЖЕНИЯ ***/
+#app-content {
+    position: absolute;
+    //overflow: hidden;
+    top: 48px;
+    left: 48px;
+    right: 0px;
+    bottom: 0px;
+    min-width: 1000px;
+    //z-index: 1;
+    //display: table-cell;
+    //position: relative;
+    //float: left;
+    //height: 100%;
+    //width: auto;
+    //margin-left: 48px;
+}
+
+    /* Подменю активного раздела приложения */
+    #submenu {
+        //position: relative;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        //float: left;
+        width: 200px;
+        //height: 100%;
+        padding-left: 10px;
+        padding-top: 10px;
+        background-color: #f2f3f6;
+    }
+
+        #submenu .submenu-item {
+            display: block;
+            margin-top: 5px;
+            font-size: 18px;
+            color: #4d5ea5;
+        }
+
+        #submenu .submenu-item.active {
+            font-weight: bold;
+        }
+
+    /* Содержание активного раздела приложения */
+    #content {
+        //display: ab;
+        position: absolute;
+        overflow: auto;
+        left: 0px;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        //float: right;
+        //height: 100%;
+        //width: 100%;
+        padding: 10px;
+    }
+        #content.submenu-enabled {
+            margin-left: 210px;
+        }
+
+
+
+/*** РАЗДЕЛ ТИТУЛОВ ***/
+#titules-titules {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 250px;
+    //background: #E9F5F5;
+    //border-right: 1px solid #BAE3E3;
+    border-right: 1px solid #F2F2F2;
+}
+
+    #titules-titules-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        border-bottom: 1px solid lightgrey;
+
+        //background-color: #fafafa;
+        //background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+        //background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+        //background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+        //background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+        //background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    }
+        #titules-titules-controls .btn {
+            width: 70px;
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 3px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            padding-top: 4px;
+            padding-bottom: 3px;
+        }
+    #titules-titules-content {
+        position: absolute;
+        top: 31px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        //padding-top: 10px;
+        padding: 5px;
+    }
+        #titules-titules-content table {
+            width: 100%;
+        }
+
+#titules-parts {
+    position: absolute;
+    left: 250px;
+    top: 0px;
+    bottom: 0px;
+    width: 250px;
+    //background: #F7FBFF;
+    //border-right: 1px solid #CCE5FF;
+    //border-right: 1px solid #F2F2F2;
+}
+    #titules-parts-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        //border-bottom: 1px dotted lightgrey;
+
+        border-bottom: 1px solid lightgrey;
+
+        background-color: #fafafa;
+        background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+        background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+        background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+        background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+        background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    }
+        #titules-parts-controls .btn {
+            width: 70px;
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 3px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            padding-top: 4px;
+            padding-bottom: 3px;
+        }
+
+    #titules-parts-content {
+        position: absolute;
+        top: 31px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        //padding-top: 10px;
+        padding: 5px;
+        border-right: 1px solid #F2F2F2;
+    }
+
+
+
+    #titules-parts table {
+        width: 100%;
+    }
+
+#titules-details {
+    position: absolute;
+    left: 500px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    min-width: 450px;
+    //background: #F4F7EB;
+}
+    #titules-details-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        //border-bottom: 1px dotted lightgrey;
+
+        border-bottom: 1px solid lightgrey;
+
+        background-color: #fafafa;
+        background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+        background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+        background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+        background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+        background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    }
+        #titules-details-controls .btn {
+            width: 70px;
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 3px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            padding-top: 4px;
+            padding-bottom: 3px;
+        }
+
+    #titules-details-content {
+        position: absolute;
+        top: 30px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        padding: 5px;
+    }
+        #titules-details-content-tabs {
+            position: absolute;
+            //top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            height: 35px;
+            //border: 1px solid red;
+        }
+        #titules-details-content-tabs-content {
+            position: absolute;
+            overflow: auto;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 35px;
+            //border: 1px solid red;
+        }
+
+
+    /* Вкладка монтажной схемы */
+    #montage-scheme {
+        padding: 5px;
+    }
+
+    #montage-scheme-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        background: #E8E8E8;
+    }
+    
+    #montage-scheme-content {
+        position: absolute;
+        top: 50px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        //background: #F7FBFF;
+    }
+
+
+
+/*** ОПОРЫ ***/
+#pylons-lines {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 250px;
+    background: #E9F5F5;
+    border-left: 1px solid #BAE3E3;
+    border-right: 1px solid #BAE3E3;
+}
+    #pylons-lines-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        border-bottom: 1px dotted lightgrey;
+    }
+        #pylons-lines-controls .btn {
+            width: 70px;
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 3px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            padding-top: 4px;
+            padding-bottom: 3px;
+        }
+    #pylons-lines-content {
+        position: absolute;
+        top: 31px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        padding-top: 10px;
+    }
+        #pylons-lines-content table {
+            width: 100%;
+        }
+
+
+#pylons-pylons {
+    position: absolute;
+    overflow: auto;
+    left: 252px;
+    top: 0px;
+    bottom: 0px;
+    //right: 0px;
+    width: 250px;
+    background: #F7FBFF;
+    border-right: 1px solid #CCE5FF;
+}
+    #pylons-pylons-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        border-bottom: 1px dotted lightgrey;
+    }
+        #pylons-pylons-controls .btn {
+            width: 70px;
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 3px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            padding-top: 4px;
+            padding-bottom: 3px;
+        }
+
+
+#pylons-pylons-content {
+    position: absolute;
+    top: 31px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding-top: 10px;
+}
+    #pylons-pylons-content table {
+        width: 100%;
+    }
+
+
+#pylons-anchors {
+    position: absolute;
+    top: 0px;
+    left: 503px;
+    right: 0px;
+    bottom: 0px;
+    background: #F4F7EB;
+}
+    #pylons-anchors-controls {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 30px;
+        border-bottom: 1px dotted lightgrey;
+    }
+        #pylons-anchors-controls .btn {
+            width: 70px;
+            font-size: 12px;
+            line-height: 14px;
+            margin-top: 3px;
+            margin-bottom: 2px;
+            margin-right: 5px;
+            padding-top: 4px;
+            padding-bottom: 3px;
+        }
+    #pylons-anchors-content {
+        position: absolute;
+        top: 30px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        padding-top: 10px;
+    }
+        #pylons-anchors-content table {
+            width: 100%;
+        }
+
+
+
+
+
+
+/*** КОМПОНЕНТЫ ***/
+
+/* Таблица */
+.table {
+    position: relative;
+    //display: block;
+    //margin: 5px;
+    border: none;
+    border-spacing: 0px;
+    table-layout: auto;
+}
+    .table caption {
+        padding-bottom: 5px;
+        color: gray;
+        text-transform: uppercase;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .table thead {
+        width: 100%;
+    }
+
+    .table thead tr th {
+        padding-bottom: 5px;
+        color: gray;
+        text-transform: uppercase;
+        text-align: left;
+        font-weight: normal;
+    }
+
+    .table tbody tr.link {
+        cursor: pointer;
+    }
+        .table tbody tr:hover {
+            background: #FAFAFA;
+        }
+        .table tr.active {
+            background: #F5E7D3;
+        }
+            .table tr.active:hover {
+                background: #F5E7D3;
+            }
+
+    .table tbody tr td {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        vertical-align: top;
+        font-family: "Calibri";
+    }
+
+    .table tbody tr td.controls {
+        width: 20px;
+        padding-top: 8px;
+        vertical-align: top;
+        text-align: center;
+    }
+
+    .table tbody tr td.ext-controls {
+        width: 100px;
+        text-align: right;
+        vertical-align: middle;
+    }
+
+    .table tbody tr td.empty {
+        padding-top: 15px;
+        text-align: center;
+        color: gray;
+    }
+        .table tbody tr td.empty:hover {
+            background: transparent;
+        }
+
+
+
+
+
+
+/* Таблица2 */
+.tbl {
+    border-spacing: 0px;
+    //border-color: #FCFBFA;
+}
+    .tbl caption {
+        padding: 10px;
+        padding-left: 0px;
+        padding-top: 0px;
+        text-align: left;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .tbl th {
+        text-align: left;
+        //text-transform: uppercase;
+        //font-weight: normal;
+        padding-left: 10px;
+        color: peru;
+    }
+    .tbl thead tr.controls {
+        padding-top: 10px !important;
+        padding-bottom: 10px;
+        //background: #E8E8E8;
+    }
+    .tbl thead tr.controls th {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .tbl tbody tr {
+        background: #FCFBFA;
+    }
+    .tbl tbody tr:hover {
+        background: #E9F5F5;
+    }
+    .tbl tbody tr.link {
+        cursor: pointer;
+    }
+    .tbl td {
+        padding: 8px 20px;
+        //padding-right: 15px;
+        text-align: left;
+    }
+
+
+/* Вкладки */
+.tabs {
+    display: block;
+    overflow: auto;
+    margin: 5px !important;
+    margin-top: 0px !important;
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top: 1px solid lightgray;
+}
+    .tabs li {
+        display: inline-block;
+        float: left;
+        padding-top: 1px;
+        padding-bottom: 2px;
+        padding-left: 7px;
+        padding-right: 7px;
+        margin-right: 5px;
+        border-left: 1px solid lightgrey;
+        border-right: 1px solid lightgrey;
+        border-bottom: 2px solid lightgrey;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        background: #ffffff;
+        cursor: pointer;
+    }
+
+    .tabs li:hover {
+        background: #FAFAFA;
+    }
+
+    .tabs li.active {
+        padding-top: 5px;
+        padding-bottom: 2px;
+        //background: red;
+    }
+
+
+/* Форма */
+.form {
+    display: block;
+    //width: 350px;
+    //margin-left: 10px;
+}
+    .form fieldset {
+        display: block;
+        width: 350px;
+        border: 1px solid lightgrey;
+        border-bottom: 2px solid lightgrey;
+        background: #FCFBFA;
+    }
+        legend {
+            padding-left: 10px;
+            padding-right: 10px;
+            //text-transform: uppercase;
+            font-weight: bold;
+            color: gray;
+        }
+
+    .form label {
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        padding-bottom: 3px;
+    }
+
+    .form input {
+        padding: 5px;
+    }
+
+
+    .form input[type=text] {
+        //display: block;
+        //width: auto;
+        margin-bottom: 20px;
+        padding: 5px;
+        width: 360px;
+        border: 1px solid lightgrey;
+    }
+
+    .form input[type=button] {
+        width: 374px;
+    }
+
+    .form input[type=submit] {
+        width: 374px;
+    }
+
+    .form select {
+        width: 372px;
+        padding: 5px;
+        margin-bottom: 20px;
+        border: 1px solid lightgrey;
+    }
+        .form select[disabled] {
+            background: #FCFBFA;
+        }
+
+    .form .button-link {
+        margin-bottom: 5px;
+        //padding: 5px;
+    }
+
+    .form .error {
+        margin-top: 10px;
+        margin-left: -12px;
+        margin-right: -12px;
+        margin-bottom: -10px;
+        padding: 10px;
+        background: #ffdacc;
+    }
+
+    .form .success {
+        margin-top: 10px;
+        margin-left: -12px;
+        margin-right: -12px;
+        margin-bottom: -10px;
+        padding: 10px;
+        background: #BBE6B8;
+    }
+
+    .form .nested-form {
+        margin-top: -20px;
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 352px;
+        background: #F5F2F0;
+        border-bottom: 1px solid lightgrey;
+        border-left: 1px solid transparent;
+    }
+
+    .form .nested-form input {
+        width: 340px;
+    }
+    .form .nested-form select {
+        width: 350px;
+    }
+    .form .nested-form input[type=submit] {
+        width: 355px;
+    }
+    .form .nested-form input[type=text] {
+        width: 340px;
+    }
+
+
+
+/*** ВСПОМОГАТЕЛЬНЫЕ ЭЛЕМЕНТЫ ***/
+
+.container {
+    padding: 10px;
+}
+
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.inline {
+    display: inline-block;
+}
+.bold {
+    font-weight: bold !important;
+}
+.text-center {
+    text-align: center;
+}
+
+.no-data {
+    padding-top: 20px;
+    font-size: 18px;
+    color: gray;
+    text-shadow: rgb(255, 255, 255) 0px 1px 0px;
+}
+
+.no-hover {
+    background: transparent !important;
+}
+
+.required {
+    display: inline-block;
+    float: left;
+    color: red;
+}
+    .required:before {
+        content: "\00a0";
+    }
+
+.container-5px {
+    display: table-cell;
+    //position: relative;
+    padding: 5px;
+}
+
+/* Прокручиваемый блок */
+.scrollable-area {
+    display: block;
+    overflow: auto;
+}
+
+/* Описание объекта */
+.description {
+    color: grey;
+    font-size: 15px;
+    line-height: 12px !important;
+    font-style: italic;
+}
+
+/* Заголовок колонки */
+.column-caption {
+    display: block;
+    text-align: left;
+    text-transform: uppercase;
+    color: gray;
+    font-weight: bold;
+    margin: 5px;
+    margin-bottom: 10px;
+}
+
+.button-link {
+    display: inline-block;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    //margin: 5px;
+    text-decoration: none;
+    text-transform: none;
+    text-align: center;
+    font-weight: normal !important;
+    color: black;
+    background: white;
+    border: 1px solid lightgrey;
+    border-bottom: 2px solid lightgrey;
+    border-radius: 4px;
+}
+    .button-link:hover {
+        background: #FAFAFA;
+    }
+
+    .button-link.block {
+        display: block;
+    }
+
+/* Кнопка */
+.btn {
+    //clear: both;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    //margin: 5px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: normal;
+    color: black;
+    background: white;
+    border: 1px solid lightgrey;
+    border-bottom: 2px solid lightgrey;
+    border-radius: 4px;
+    width: 100%;
+}
+    .btn:hover {
+        background: #FAFAFA;
+    }
+
+    .btn.block {
+        display: block;
+    }
+
+    .btn.inline {
+        display: inline-block;
+    }
+
+
+
+
+    .typeahead{
+        margin-bottom: 20px;
+        border-bottom: none;
+    }
+        .typeahead input {
+            width: 100%;
+            margin-bottom: 0px !important;
+        }
+        .typeahead ul {
+            display: block;
+            width: 100%;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+            padding-right: 0px;
+            background: white
+        }
+            .typeahead ul li {
+                display: block;
+                margin-left: 0px;
+                //margin-right: 2px;
+                padding: 5px;
+                border: 1px solid lightgrey;
+                border-bottom: none;
+                cursor: pointer;
+                color: black;
+            }
+                .typeahead ul li:hover {
+                    background: #F5E7D3;;
+                }
+                .typeahead ul li:first-of-type {
+                    border-top: none;
+                }
+                .typeahead ul li:last-of-type {
+                    border-bottom: 1px solid lightgrey;
+                }

@@ -1,0 +1,29 @@
+<div class="container">
+
+    <form class="form" ng-submit="contarctors.editContractorType()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="contractorTypeTitle">Наименование</label>
+            <input type="text" name="contractorTypeTitle" id="contractorTypeTitle"  placeholder="Наименование" ng-model="contractors.currentContractorType.title.value" ng-change="contractors.currentContractorType.setToChanged()" ng-disabled="!contractors.currentContractorType.inEditMode"/>
+
+            <div class="controls" ng-show="!contractors.currentContractorTypeIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!contractors.currentContractorType.inEditMode && !contractors.currentContractorType.inDeleteMode" ng-click="contractors.currentContractorType.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!contractors.currentContractorType.inDeleteMode && !contractors.currentContractorType.inEditMode" value="Удалить" ng-click="contractors.currentContractorType.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="contractors.currentContractorType.inEditMode && contractors.currentContractorType.isChanged" value="Сохранить изменения" ng-click="contractors.editContractorType(contractors.currentContractorType.id.value)"/>
+                <input type="button" class="button-link" ng-show="contractors.currentContractorType.inDeleteMode" value="Подтвердить удаление" ng-disabled="contractors.currentContractorType.deleteInProgress" ng-click="contractors.deleteContarctorType(contractors.currentContractorType)"/>
+                <input type="button" class="button-link" ng-show="contractors.currentContractorType.inDeleteMode || contractors.currentContractorType.inEditMode" value="Отмена" ng-click="contractors.currentContractorType.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="contractors.contractorTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in contractors.contractorTypes.errors track by $index">{{ error }}</div>
+            </div>
+
+            <div class="success" ng-show="contractors.currentContractorTypeIsDeleted">
+                Тип контрагента успешно удален
+            </div>
+        </fieldset>
+    </form>
+
+</div>

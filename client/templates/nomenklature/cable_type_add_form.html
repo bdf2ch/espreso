@@ -1,0 +1,31 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.addCableType()">
+        <fieldset>
+            <legend>Новый тип кабеля</legend>
+
+            <label for="cableTypeTitle">Наименование</label>
+            <input type="text" name="cableTypeTitle" id="cableTypeTitle"  placeholder="Наименование" ng-model="stuff.newCableType.title.value" />
+
+            <label for="cableTypeFullTitle">Полное наименование</label>
+            <input type="text" name="cableTypeFullTitle" id="cableTypeFullTitle"  placeholder="Полное наименование" ng-model="stuff.newCableType.titleExtra.value" />
+
+            <label for="cableTypeCapacity">Емкость кабеля</label>
+            <input type="text" name="cableTypeCapacity" id="cableTypeCapacity"  placeholder="Емкость кабеля" ng-model="stuff.newCableType.capacity.value" />
+
+            <label for="cableTypeColorCode">Цветовой код</label>
+            <input type="text" name="cableTypeColorCode" id="cableTypeColorCode"  placeholder="Цветовой код" ng-model="stuff.newCableType.colorCode.value" />
+
+            <input type="submit" class="button-link block" value="Добавить тип кабеля"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.cableTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.cableTypes.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="stuff.cableTypeAddedSuccessfully">Тип кабеля успешно добавлен</div>
+        </fieldset>
+    </form>
+
+</div>

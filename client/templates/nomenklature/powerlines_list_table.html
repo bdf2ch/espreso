@@ -1,0 +1,20 @@
+<table class="tbl">
+    <caption>Линии</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить линию" ng-click="gotoAddPowerlineForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>Наименование</th>
+        <th>Напряжение</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="powerline in stuff.powerlines.items track by $index" ng-click="gotoEditPowerlineForm(powerline.id.value)">
+        <td ng-bind="powerline.title.value"></td>
+        <td ng-bind="powerline.voltage.value +  ' кВ'"></td>
+    </tr>
+    </tbody>
+</table>

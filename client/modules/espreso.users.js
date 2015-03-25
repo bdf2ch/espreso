@@ -5,19 +5,14 @@
 
 
 
-var usr = angular.module('Users', [])
+var usr = angular.module('espreso.users', [])
     .config(function ($provide) {
         $provide.factory("Users", ["$log", "$http", "$window", "$espreso", function ($log, $http, $window, $espreso) {
-           // var module = {};
-            var users = new Model();
-
             var module = new Module({
                 id: "usersmodule",
                 title: "Пользователи и группы пользователей",
                 description: "Управление пользователями и группами пользователей системы"
             });
-
-            module.model(users);
 
             module.menu = new Menu({
                 id: "users",
@@ -25,7 +20,8 @@ var usr = angular.module('Users', [])
                 template: "client/templates/users/users_list_table.html",
                 controller: "UsersCtrl",
                 icon: "client/resources/img/group_32x32.png",
-                order: 2
+                order: 5,
+                description: "Управление пользователями и группами пользователей системы"
             })
                 .submenu({
                     id: "users",
@@ -89,18 +85,6 @@ var usr = angular.module('Users', [])
             module.groupAddedSuccessfully = false;
             module.userAddedSuccessfully = false;
 
-            module.subMenu = [
-                new SubMenu({
-                    id: "userssubmenu",
-                    url: "#/users",
-                    title: "Пользователи"
-                }),
-                new SubMenu({
-                    id: "groupssubmenu",
-                    url: "#/groups",
-                    title: "Группы"
-                })
-            ];
 
             /* Получает список пользователей */
             module.getUsers = function () {
@@ -226,6 +210,7 @@ var usr = angular.module('Users', [])
                 /* Валидация данных */
                 //module.groups.errors.length = 0;
                 module.groups.clearErrors();
+                module.groupAddedSuccessfully = false;
                 if (module.newGroup.title.value == "")
                     module.groups.errors.push("Вы не указали наименование группы");
 
@@ -389,7 +374,7 @@ var usr = angular.module('Users', [])
             return module;
         }]);
     })
-    .run(function ($log, $espreso, $window, Users, $menu, $modules) {
+    .run(function ($log, $espreso, $window, Users, $menu, $modules, $localData) {
         $menu.register(Users.menu);
         $modules.register(Users);
 
@@ -428,12 +413,8 @@ var usr = angular.module('Users', [])
 
 
 /* Контроллер для доступа к данным модуля пользователей */
-usr.controller("UsersCtrl", ["$scope", "$log", "$espreso", "Users", "$location", function ($scope, $log, $espreso, Users, $location) {
-    $scope.app = $espreso;
+usr.controller("UsersCtrl", ["$scope", "$log", "Users", "$location", function ($scope, $log, Users, $location) {
     $scope.users = Users;
-    $scope.errors = [];
-
-    $log.log("users controller");
 
     /* Загружает шаблон формы добавления пользователя */
     $scope.gotoAddUserForm = function () {
@@ -456,17 +437,16 @@ usr.controller("AddUserCtrl", ["$log", "$scope", "$routeParams", "Users", functi
 
     /* Инициализация подменю и прочее*/
     $scope.users.userAddedSuccessfully = false;
-    $scope.users.userAddedSuccessfully = false;
 }]);
 
 
 
 /* Контроллер редактирования пользователя */
-usr.controller("EditUserCtrl", ["$log", "$scope", "$routeParams", "Users", "$modules", "$menu", function ($log, $scope, $routeParams, Users, $modules, $menu) {
+usr.controller("EditUserCtrl", ["$log", "$scope", "$routeParams", "Users", function ($log, $scope, $routeParams, Users) {
     $scope.users = Users;
-    $scope.modules = $modules;
-    $scope.menu = $menu;
     $scope.currentUserId = $routeParams.userId;
+    $scope.formTitle = "";
+    $scope.users.users.clearErrors();
 
     $log.log($scope.users.users.find("id", $scope.currentUserId));
 
@@ -474,8 +454,10 @@ usr.controller("EditUserCtrl", ["$log", "$scope", "$routeParams", "Users", "$mod
     $scope.users.currentUserIsDeleted = false;
 
     /* Если искомый пользователь сщуествует и коллекция пользователей не пустая */
-    if ($scope.users.users.length() > 0 && $scope.users.users.find("id", $scope.currentUserId) != false)
+    if ($scope.users.users.length() > 0 && $scope.users.users.find("id", $scope.currentUserId) != false) {
         $scope.users.currentUser = $scope.users.users.find("id", $scope.currentUserId);
+        $scope.formTitle = $scope.users.currentUser.surname.value + ' ' + $scope.users.currentUser.name.value + ' ' + $scope.users.currentUser.fname.value;
+    }
 }]);
 
 
@@ -510,6 +492,7 @@ usr.controller("AddGroupCtrl", ["$log", "$scope", "$routeParams", "Users", funct
     $scope.users = Users;
 
     $scope.users.groupAddedSuccessfully = false;
+    $scope.users.groups.clearErrors();
 
 }]);
 
@@ -519,6 +502,7 @@ usr.controller("AddGroupCtrl", ["$log", "$scope", "$routeParams", "Users", funct
 usr.controller("EditGroupCtrl", ["$log", "$scope", "$routeParams", "Users", function ($log, $scope, $routeParams, Users) {
     $scope.users = Users;
     $scope.currentGroupId = $routeParams.groupId;
+    $scope.formTitle = "";
     $scope.users.currentGroupIsDeleted = false;
 
     $log.log($routeParams.groupId);
@@ -527,6 +511,7 @@ usr.controller("EditGroupCtrl", ["$log", "$scope", "$routeParams", "Users", func
     /* Если искомая группа сщуествует и коллекция групп пользователей не пустая */
     if ($scope.users.groups.length() > 0 && $scope.users.groups.find("id", $scope.currentGroupId) != false) {
         $scope.users.currentGroup = $scope.users.groups.find("id", $scope.currentGroupId);
+        $scope.formTitle = $scope.users.currentGroup.title.value;
         $log.log($scope.users.currentGroup);
     }
 }]);

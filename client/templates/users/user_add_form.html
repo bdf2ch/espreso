@@ -1,26 +1,40 @@
-<form ng-submit="users.addUser()">
-    <label for="famName">Фамилия</label><br>
-    <input id="famName" name="famName" type="text" placeholder="Фамилия" ng-model="users.newUser.surname.value" /><br /><br />
-    <label for="fstName">Имя</label><br>
-    <input id="fstName" name="fstName" type="text" placeholder="Имя" ng-model="users.newUser.name.value" /><br /><br />
-    <label for="secName">Отчество</label><br>
-    <input id="secName" name="secName" type="text" placeholder="Отчество" ng-model="users.newUser.fname.value"/><br /><br />
-    <label for="userGroup">Группа</label><br>
-    <select name="userGroup" id="userGroup" placeholder="Выберите группу" ng-model="users.newUser.groupId.value" ng-options="group.id.value as group.title.value for group in users.groups.items"></select><br><br>
-    <label for="phone">Контактный телефон</label><br>
-    <input id="phone" name="phone" type="text" placeholder="Контактный телефон" ng-model="users.newUser.phone.value"/><br /><br />
-    <label for="email">E-mail (он же логин)</label><br>
-    <input id="email" name="email" type="text" placeholder="Элетропочта (она же имя входа)" ng-model="users.newUser.email.value"/><br /><br />
-    <label for="passwd">Пароль</label><br>
-    <input id="passwd" name="passwd" type="text" placeholder="Пароль для входа можно и генерить" ng-model="users.newUser.password.value"/><br /><br />
-    <input id="formSubmit" type="submit" value="Добавить пользователя">
-</form>
+<div class="container">
 
+    <form class="form" ng-submit="users.addUser()">
+        <fieldset>
+            <legend>Новый пользователь</legend>
 
-<!-- Ошибки при валидации формы -->
-<div class="error-container" ng-show="users.users.errors.length > 0">
-    <div class="error-item" ng-repeat="error in users.users.errors track by $index">{{ error }}</div>
+            <label for="groupTitle">Имя</label>
+            <input type="text" name="userName" id="groupTitle"  placeholder="Имя" ng-model="users.newUser.name.value" />
+
+            <label for="userFname">Отчество</label>
+            <input type="text" name="userFname" id="userFname"  placeholder="Отчество" ng-model="users.newUser.fname.value" />
+
+            <label for="userSurname">Фамилия</label>
+            <input type="text" name="userSurname" id="userSurname"  placeholder="Фамилия" ng-model="users.newUser.surname.value" />
+
+            <label for="userGroup">Группа</label>
+            <select name="userGroup" id="userGroup" placeholder="Выберите группу" ng-model="users.newUser.groupId.value" ng-options="group.id.value as group.title.value for group in users.groups.items"></select>
+
+            <label for="userPhone">Контактный телефон</label>
+            <input id="userPhone" name="userPhone" type="text" placeholder="Контактный телефон" ng-model="users.newUser.phone.value"/>
+
+            <label for="userEmail">E-mail (он же логин)</label>
+            <input id="userEmail" name="userEmail" type="text" placeholder="Элетропочта" ng-model="users.newUser.email.value"/>
+
+            <label for="userPasswd">Пароль</label>
+            <input id="userPasswd" name="userPasswd" type="text" placeholder="Пароль" ng-model="users.newUser.password.value"/>
+
+            <input type="submit" class="button-link block" value="Добавить пользователя"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="users.users.errors.length > 0">
+                <div class="error-item" ng-repeat="error in users.users.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="users.userAddedSuccessfully">Пользователь успешно добавлен</div>
+        </fieldset>
+    </form>
+
 </div>
-
-<!-- Сообщение об успешном добавлении пользователя -->
-<div class="success-message" ng-show="users.userAddedSuccessfully">Пользователь успешно добавлен</div>

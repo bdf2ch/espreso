@@ -1,0 +1,31 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editPylon()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="pylonPowerLine">Линия</label>
+            <select name="pylonPowerLine" id="pylonPowerLine" placeholder="Выберите линию" ng-model="stuff.currentPylon.powerLineId.value" ng-options="powerline.id.value as powerline.title.value for powerline in stuff.powerlines.items" ng-change="stuff.currentPylon.setToChanged()" ng-disabled="!stuff.currentPylon.inEditMode"></select>
+
+            <label for="pylonNumber">№ опоры</label>
+            <input type="text" name="pylonNumber" id="pylonNumber"  placeholder="№ опоры" ng-model="stuff.currentPylon.number.value" ng-change="stuff.currentPylon.setToChanged()" ng-disabled="!stuff.currentPylon.inEditMode"/>
+
+            <label for="pylonType">Тип опоры</label>
+            <select name="pylonTypee" id="pylonType" placeholder="Выберите тип опоры" ng-model="stuff.currentPylon.pylonTypeId.value" ng-options="type.id.value as type.title.value for type in stuff.pylonTypes.items" ng-change="stuff.currentPylon.setToChanged()" ng-disabled="!stuff.currentPylon.inEditMode"></select>
+
+            <div class="controls" ng-show="!stuff.currentPylonIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentPylon.inEditMode && !stuff.currentPylon.inDeleteMode" ng-click="stuff.currentPylon.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentPylon.inDeleteMode && !stuff.currentPylon.inEditMode" value="Удалить" ng-click="stuff.currentPylon.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPylon.inEditMode && stuff.currentPylon.isChanged" value="Сохранить изменения" ng-click="stuff.editPylon(stuff.currentPylon.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPylon.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentPylon.deleteInProgress" ng-click="stuff.deletePylon(stuff.currentPylon)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPylon.inDeleteMode || stuff.currentPylon.inEditMode" value="Отмена" ng-click="stuff.currentPylon.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.powerlines.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.powerlines.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

@@ -1,0 +1,25 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editVibroType()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="vibroTypeTitle">Наименование</label>
+            <input type="text" name="vibroTypeTitle" id="vibroTypeTitle"  placeholder="Наименование" ng-model="stuff.currentVibroType.title.value" ng-change="stuff.currentVibroType.setToChanged()" ng-disabled="!stuff.currentVibroType.inEditMode"/>
+
+            <div class="controls" ng-show="!stuff.currentVibroTypeIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentVibroType.inEditMode && !stuff.currentVibroType.inDeleteMode" ng-click="stuff.currentVibroType.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentVibroType.inDeleteMode && !stuff.currentVibroType.inEditMode" value="Удалить" ng-click="stuff.currentVibroType.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentVibroType.inEditMode && stuff.currentVibroType.isChanged" value="Сохранить изменения" ng-click="stuff.editVibroType(stuff.currentVibroType.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentVibroType.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentVibroType.deleteInProgress" ng-click="stuff.deleteVibroType(stuff.currentVibroType)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentVibroType.inDeleteMode || stuff.currentVibroType.inEditMode" value="Отмена" ng-click="stuff.currentVibroType.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.vibroTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.vibroTypes.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

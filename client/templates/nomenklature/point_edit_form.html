@@ -1,0 +1,92 @@
+<div class="container">
+
+    <form class="form" ng-submit="edit()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="pointTitle">Наименование</label>
+            <input
+                    type="text"
+                    name="pointTitle"
+                    id="pointTitle"
+                    placeholder="Наименование"
+                    ng-model="currentPoint.title.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+
+            <label for="pointLatitude">Широта</label>
+            <input
+                    type="text"
+                    name="pointLatitude"
+                    id="pointLatitude"
+                    placeholder="Широта"
+                    ng-model="currentPoint.latitude.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+            
+            <label for="pointLongitude">Долгота</label>
+            <input
+                    type="text"
+                    name="pointLongitude"
+                    id="pointLongitude"
+                    placeholder="Долгота"
+                    ng-model="currentPoint.longitude.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+
+            <label for="pointALtitude">Высота</label>
+            <input
+                    type="text"
+                    name="pointAltitude"
+                    id="pointAltitude"
+                    placeholder="Высота"
+                    ng-model="currentPoint.altitude.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+
+            <label for="pointX">X-координата</label>
+            <input
+                    type="text"
+                    name="pointX"
+                    id="pointX"
+                    placeholder="X-координата"
+                    ng-model="currentPoint.x.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+
+            <label for="pointY">Y-координата</label>
+            <input
+                    type="text"
+                    name="pointY"
+                    id="pointY"
+                    placeholder="Y-координата"
+                    ng-model="currentPoint.y.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+
+            <label for="pointDescription">Примечание</label>
+            <input
+                    type="text"
+                    name="pointDescription"
+                    id="pointDescription"
+                    placeholder="Примечание"
+                    ng-model="currentPoint.description.value"
+                    ng-change="currentPoint.setToChanged()"
+                    ng-disabled="!currentPoint.inEditMode"/>
+
+            <div class="controls" ng-show="!currentPoint.currentPointIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!currentPoint.inEditMode && !currentPoint.inDeleteMode" ng-click="currentPoint.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!currentPoint.inDeleteMode && !currentPoint.inEditMode" value="Удалить" ng-click="currentPoint.setToDeleteMode()"/>
+                <input type="submit" class="button-link" ng-show="currentPoint.inEditMode && currentPoint.isChanged" value="Сохранить изменения" ng-click="edit()"/>
+                <input type="button" class="button-link" ng-show="currentPoint.inDeleteMode" value="Подтвердить удаление" ng-disabled="currentPoint.deleteInProgress" ng-click="deletePoint(currentPoint)"/>
+                <input type="button" class="button-link" ng-show="currentPoint.inDeleteMode || currentPoint.inEditMode" value="Отмена" ng-click="currentPoint.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="errors.length > 0">
+                <div class="error-item" ng-repeat="error in errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

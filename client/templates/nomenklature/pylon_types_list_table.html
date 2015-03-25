@@ -1,0 +1,22 @@
+<table class="tbl">
+    <caption>Типы опор</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить тип опоры" ng-click="gotoAddPylonTypeForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>
+            Наименование
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="pylon_type in stuff.pylonTypes.items track by $index" ng-click="gotoEditPylonTypeForm(pylon_type.id.value)">
+        <td>
+            {{ pylon_type.title.value }}
+        </td>
+    </tr>
+    </tbody>
+</table>

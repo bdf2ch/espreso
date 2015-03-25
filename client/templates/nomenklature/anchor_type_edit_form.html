@@ -1,0 +1,25 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editAnchorType()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="anchorTypeTitle">Наименование</label>
+            <input type="text" name="anchorTypeTitle" id="anchorTypeTitle"  placeholder="Наименование" ng-model="stuff.currentAnchorType.title.value" ng-change="stuff.currentAnchorType.setToChanged()" ng-disabled="!stuff.currentAnchorType.inEditMode"/>
+
+            <div class="controls" ng-show="!stuff.currentAnchorTypeIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentAnchorType.inEditMode && !stuff.currentAnchorType.inDeleteMode" ng-click="stuff.currentAnchorType.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentAnchorType.inDeleteMode && !stuff.currentAnchorType.inEditMode" value="Удалить" ng-click="stuff.currentAnchorType.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentAnchorType.inEditMode && stuff.currentAnchorType.isChanged" value="Сохранить изменения" ng-click="stuff.editAnchorType(stuff.currentAnchorType.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentAnchorType.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentAnchorType.deleteInProgress" ng-click="stuff.deleteAnchorType(stuff.currentAnchorType)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentAnchorType.inDeleteMode || stuff.currentAnchorType.inEditMode" value="Отмена" ng-click="stuff.currentAnchorType.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.anchorTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.anchorTypes.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

@@ -11,6 +11,7 @@ var menu = angular.module("espreso.menu", [])
             /* Регистрация раздела меню */
             module.register = function (menu) {
                 if (menu && menu.constructor == Menu) {
+
                     /* Регистрация раздела главного меню */
                     $routeProvider.when(menu.url, {
                         templateUrl: menu.template,

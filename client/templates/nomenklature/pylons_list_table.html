@@ -1,0 +1,78 @@
+<div id="pylons-lines">
+    <div id="pylons-lines-controls">
+        <span class="column-caption left inline">Линии</span>
+        <button class="btn inline right" ng-click="gotoAddLineForm()">Добавить</button>
+    </div>
+    <div id="pylons-lines-content" class="scrollable-area">
+        <table class="table">
+            <tbody>
+            <tr class="link" ng-class="{'active': powerline.isActive}" ng-repeat="powerline in stuff.powerlines.items track by $index" ng-click="stuff.setCurrentPowerline(powerline.id.value)">
+                <td class="controls">
+                    <a ng-href="{{ '#/powerlines/' + powerline.id.value }}">
+                        <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
+                    </a>
+                </td>
+                <td>
+                    {{ powerline.title.value }}<br>
+                    <span class="description">{{ powerline.voltage.value + ' кВ'}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div id="pylons-pylons">
+    <div id="pylons-pylons-controls">
+        <span class="column-caption left inline">Опоры</span>
+        <button class="btn inline right" ng-click="gotoAddPylonForm()">Добавить</button>
+    </div>
+    <div id="pylons-pylons-content" class="scrollable-area" flexible>
+            <table class="table" flexible>
+                <tbody>
+                <tr class="link" ng-class="{'active': pylon.isActive}" ng-repeat="pylon in stuff.pylons.items track by $index" ng-click="stuff.setCurrentPylon(pylon.id.value)">
+                    <td class="controls">
+                        <a ng-href="{{ '#/pylons/' + pylon.id.value }}">
+                            <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
+                        </a>
+                    </td>
+                    <td>
+                        {{ '#' + pylon.number.value }}<br>
+                        <span class="description">{{ stuff.pylonTypes.find('id', pylon.pylonTypeId.value).title.value }}</span>
+                    </td>
+                </tr>
+                <tr class="no-hover">
+                    <td colspan="2" class="text-center no-data" ng-show="!stuff.currentPowerline">Выберите линию</td>
+                </tr>
+                </tbody>
+            </table>
+
+    </div>
+</div>
+
+<div id="pylons-anchors">
+    <div id="pylons-anchors-controls">
+        <span class="column-caption left inline">Крепления и муфты</span>
+        <button class="btn inline right" ng-click="gotoAddAnchorUnionForm()">Добавить</button>
+    </div>
+    <div id="pylons-anchors-content" class="scrollable-area" flexible>
+        <table class="table" flexible>
+            <tbody>
+            <tr class="link" ng-repeat="anchor in stuff.anchors.items track by $index">
+                <td class="controls">
+                    <a ng-href="{{ '#/anchor/' + anchor.id.value }}">
+                        <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
+                    </a>
+                </td>
+                <td>
+                    {{ stuff.anchorTypes.find('id', anchor.anchorTypeId.value).title.value }}
+                </td>
+            </tr>
+            <tr class="no-hover">
+                <td colspan="2" class="text-center no-data" ng-show="!stuff.currentPylon">Выберите опору</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

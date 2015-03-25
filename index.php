@@ -8,7 +8,7 @@
     /* Проверка, залогинен ли пользователь */
     if (isset($_COOKIE["user"])) {
         /* Если пользователь залогинен - цепляем шаблон приложения */
-        $template = new XTemplate("server/templates/application.html");
+        $template = new XTemplate("server/templates/app2.html");
         /* Соединение с БД */
         $connection = oci_connect($dbuser, $dbpassword, $dbhost, 'AL32UTF8');
         if (!$connection) {
@@ -16,7 +16,7 @@
             die('Не удалось подключиться к БД');
         } else {
             $cursor = oci_new_cursor($connection);
-            $statement = oci_parse($connection, "begin P_GET_UPDATES(:data); end;");
+            $statement = oci_parse($connection, "begin pkg_versions.p_get_versions(:data); end;");
             oci_bind_by_name($statement, ":data", $cursor, -1, OCI_B_CURSOR);
             oci_execute($statement);
             oci_execute($cursor);

@@ -1,0 +1,18 @@
+<table class="tbl">
+    <caption>Типы креплений</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить тип крепления" ng-click="gotoAddAnchorTypeForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>Наименование</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="anchor_type in stuff.anchorTypes.items track by $index" ng-click="gotoEditAnchorTypeForm(anchor_type.id.value)">
+        <td ng-bind="anchor_type.title.value"></td>
+    </tr>
+    </tbody>
+</table>

@@ -2,36 +2,27 @@
  * Модуль основного приложения
  ***/
 
-var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "ngCookies", "espreso.menu", "espreso.currentUser", "espreso.dashboard", "espreso.modules"])
+var espreso = angular.module("Espreso",
+    [
+        "ngRoute",
+        "espreso.users",
+        "Authorization",
+        "ngCookies",
+        "espreso.menu",
+        "espreso.currentUser",
+        "espreso.dashboard",
+        "espreso.modules",
+        "espreso.contractors",
+        "espreso.nomenklature",
+        "espreso.pylons",
+        "espreso.titules",
+        "espreso.localData",
+        "espreso.ui",
+        "espreso.objects",
+        "espreso.filters",
+        "espreso.localData"
+    ])
     .config(function ($provide, $routeProvider) {
-        /* Установка и настройка адресов-переходов */
-        /*
-        $routeProvider
-            .when('/', {
-                templateUrl: "client/templates/dashboard/dashboard.html",
-                controller: "DashboardCtrl"
-            }).when('/users', {
-                templateUrl: "client/templates/users/users_list_table.html",
-                controller: "UsersCtrl"
-            }).when('/users/:userId', {
-                templateUrl: "client/templates/users/user_edit_form.html",
-                controller: "EditUserCtrl"
-            }).when('/new-user', {
-                templateUrl: "client/templates/users/user_add_form.html",
-                controller: "AddUserCtrl"
-            }).when('/groups', {
-                templateUrl: "client/templates/users/groups_list_table.html",
-                controller: "GroupsCtrl"
-            }).when('/groups/:groupId', {
-                templateUrl: "client/templates/users/group_edit_form.html",
-                controller: "EditGroupCtrl"
-            }).when('/new-group', {
-                templateUrl: "client/templates/users/group_add_form.html",
-                controller: "AddGroupCtrl"
-            }).otherwise({ redirectTo: '/' });
-            */
-
-
         /* Сервис основного приложения - каркаса */
         $provide.factory("$espreso", ["$log", "$window", "$cookies", function ($log, $window, $cookies) {
             var module = {};
@@ -40,10 +31,8 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
             module.activeSubMenu = [];
             module.activeSubMenuId = "";
             module.subMenu = [];
-            module.updates = {
-                users: 0,
-                user_groups: 0
-            };
+            module.updates = {};
+            module.sessionId = 0;
 
             /* Сохраняет данные в localStorage */
             module.saveToLocalStorage = function (lsname, data) {
@@ -81,7 +70,7 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
             module.getRemoteDataVersion = function (dtname) {
                 if (dtname) {
                     if ($cookies[dtname]) {
-                        console.log("remote version of '" + dtname + "' = " + parseInt($cookies[dtname]));
+                        //console.log("remote version of '" + dtname + "' = " + parseInt($cookies[dtname]));
                         return parseInt($cookies[dtname]);
                     } else {
                         $log.info("Информация об удаленной версии '" + dtname + "' отсутствует");
@@ -98,7 +87,7 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
                             var updates = module.loadFromLocalStorage("updates");
                             //$log.log(updates);
                             if (updates[dtname]) {
-                                console.log("local version of '" + dtname + "' = " + updates[dtname]);
+                                //console.log("local version of '" + dtname + "' = " + updates[dtname]);
                                 return parseInt(updates[dtname]);
                             } else {
                                 $log.info("В localStorage.updates отсутствует информация об обновлениях для '" + dtname + "'");
@@ -134,14 +123,39 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
                 }
             };
 
-            /* Установка и настройка механизма локального храниения данных */
+            /* Установка и настройка механизма локального хранения данных */
             if ($window.localStorage) {
                 if (!$window.localStorage.updates) {
                     var updates = {};
+                    if ($cookies.object_types)
+                        updates.object_types = parseInt($cookies.object_types);
                     if ($cookies.users)
                         updates.users = parseInt($cookies.users);
                     if ($cookies.user_groups)
                         updates.user_groups = parseInt($cookies.user_groups);
+                    if ($cookies.titules)
+                        updates.titules = parseInt($cookies.titules);
+                    if ($cookies.contractor_types)
+                        updates.contractor_types = parseInt($cookies.contractor_types);
+                    if ($cookies.contractors)
+                        updates.contractors = parseInt($cookies.contractors);
+                    if ($cookies.titule_parts)
+                        updates.titule_parts = parseInt($cookies.titule_parts);
+                    if ($cookies.pylon_types)
+                        updates.pylon_types = parseInt($cookies.pylon_types);
+                    if ($cookies.vibro_types)
+                        updates.vibro_types = parseInt($cookies.vibro_types);
+                    if ($cookies.cable_types)
+                        updates.cable_types = parseInt($cookies.cable_types);
+                    if ($cookies.anchor_types)
+                        updates.anchor_types = parseInt($cookies.anchor_types);
+                    if ($cookies.power_lines)
+                        updates.power_lines = parseInt($cookies.power_lines);
+                    if ($cookies.statuses)
+                        updates.statuses = parseInt($cookies.statuses);
+                    if ($cookies.points)
+                        updates.points = parseInt($cookies.points);
+
                     module.saveToLocalStorage("updates", updates);
                 }
             }
@@ -157,6 +171,9 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
             $espreso.currentUser = JSON.parse($cookies.user);
         }
 
+        $espreso.sessionId = $cookies.PHPSESSID.substr(0, 10);
+        $log.log("phpsessid = ", $espreso.sessionId);
+
         //$currentUser.fromCookie();
         $log.log($menu.items);
     });
@@ -164,12 +181,7 @@ var espreso = angular.module("Espreso", ["ngRoute", "Users", "Authorization", "n
 
 espreso.controller("EspresoCtrl", ["$log", "$scope", "$espreso", "Authorization", "$currentUser", function ($log, $scope, $espreso, Authorization, $currentUser) {
     $scope.app = $espreso;
-    //$scope.menu = $submenu;
     $scope.auth = Authorization;
     $scope.currentUser = $currentUser;
     $log.log("Espreso Controller");
-
-    $scope.$on("partition", function (event, data) {
-        $scope.app.activePartition = data;
-    });
 }]);

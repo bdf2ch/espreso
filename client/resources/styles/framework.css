@@ -1,0 +1,89 @@
+.toolbar {
+  background-color: #fafafa;
+  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  border-right: 1px solid #F2F2F2;
+  border-bottom: 1px solid lightgrey;
+}
+.toolbar .caption {
+  display: inline-block;
+  float: left;
+  text-align: left;
+  text-transform: uppercase;
+  color: gray;
+  font-weight: bold;
+  margin: 5px;
+  margin-bottom: 10px;
+}
+.toolbar .controls {
+  display: inline-block;
+  float: right;
+  height: 100%;
+  padding: 5px;
+  vertical-align: middle;
+}
+.toolbar .controls .separator {
+  display: inline-block;
+  vertical-align: middle;
+  height: 20px;
+  padding-left: 3px;
+  margin-right: 3px;
+  border-right: 1px solid lightgray;
+}
+.round-button {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 7px;
+  font-weight: bold;
+  background: #ffffff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.round-button img {
+  width: 12px;
+  height: 12px;
+  vertical-align: baseline;
+  margin-left: -2px;
+}
+.round-button.success {
+  background-color: #54C478;
+  background-image: -moz-linear-gradient(top, #a9f5c1, #54c478);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#a9f5c1), to(#54c478));
+  background-image: -webkit-linear-gradient(top, #a9f5c1, #54c478);
+  background-image: -o-linear-gradient(top, #79e09a, #54c478);
+  background-image: linear-gradient(to bottom, #79e09a, #54c478);
+  background: #54C478;
+  color: #ffffff;
+}
+.round-button.success:hover {
+  background: #2EAB56;
+}
+.round-button.error {
+  background-color: #F04D4D;
+  background-image: -moz-linear-gradient(top, #f58787, #f04d4d);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f58787), to(#f04d4d));
+  background-image: -webkit-linear-gradient(top, #f58787, #f04d4d);
+  background-image: -o-linear-gradient(top, #f58787, #f04d4d);
+  background-image: linear-gradient(to bottom, #f58787, #f04d4d);
+  background: #F04D4D;
+  color: #ffffff;
+}
+.round-button.error:hover {
+  background: #D41E1E;
+}
+.round-button.action {
+  background-color: #80ABD9;
+  background: #80ABD9;
+  color: #ffffff;
+}
+.round-button.action:hover {
+  background: #4B8CD1;
+}

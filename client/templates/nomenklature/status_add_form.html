@@ -1,0 +1,22 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.addStatus()">
+        <fieldset>
+            <legend>Новый статус</legend>
+
+            <label for="statusTitle">Наименование</label>
+            <input type="text" name="statusTitle" id="statusTitle"  placeholder="Наименование" ng-model="stuff.newStatus.title.value" />
+
+            <input type="submit" class="button-link block" value="Добавить статус"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.statuses.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.statuses.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="stuff.statusAddedSuccessfully">Статус успешно добавлен</div>
+        </fieldset>
+    </form>
+
+</div>

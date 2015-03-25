@@ -17,17 +17,12 @@
     <div id="appWorkSheet">
         <div id="appSideBarLeft" ng-controller="MenuCtrl">
             <ul>
-                <a href="{{ '#' + item.url }}" ng-repeat="item in menu.menuItems | orderBy:item.order">
-                    <li ng-class="{'itemActive': item.isActive }"><img ng-src="{{ item.icon }}" alt="Домашняя страница"/></li>
+                <a href="{{ '#' + item.url }}" ng-repeat="item in menu.menuItems | orderBy:'order'" title="{{ item.description }}">
+                    <li ng-class="{'itemActive': item.isActive }"><img ng-src="{{ item.icon }}" alt="{{ item.description }}" /></li>
                 </a>
-                <!--
-                <a href="#/" target=""><li ng-class="{'itemActive': app.activePartition == 'dashboard'}"><img src="client/resources/img/house_32x32.png" alt="Домашняя страница"/></li></a>
-                <a href=""><li><img src="client/resources/img/transmit_blue_32x32.png" alt="Учёт ВОЛС"/></li></a>
-                <a href="#/users"><li ng-class="{'itemActive': app.activePartition == 'users'}"><img src="client/resources/img/group_32x32.png" alt="Управление пользователями"/></li></a>
-                -->
             </ul>
         </div>
-        <div id="appContent">
+        <div id="appContent" ng-controller="MenuCtrl">
             <div id="subMenu" ng-show="menu.subMenu.length > 0" ng-controller="MenuCtrl">
                 <ul id="editItemsList">
                     <li ng-class="{itemActive: sb.isActive}" ng-repeat="sb in menu.subMenu track by $index">
@@ -35,12 +30,11 @@
                     </li>
                 </ul>
             </div>
-            <div id="content" ng-view></div>
+            <div id="content" ng-class="{'submenu-enabled': menu.subMenu.length > 0}" ng-view></div>
         </div>
     </div>
 
     <!-- Подключение стилей, библиотек и модулей проекта -->
-
     <link rel="stylesheet" href="client/resources/styles/application.css"/>
     <script src="client/libs/angularjs/angular.min.js"></script>
     <script src="client/libs/angularjs/angular-route.min.js"></script>
@@ -52,8 +46,12 @@
     <script src="client/modules/authorization.js"></script>
     <script src="client/modules/espreso.menu.js"></script>
     <script src="client/modules/users.js"></script>
+    <script src="client/modules/espreso.titules.js"></script>
+    <script src="client/modules/espreso.contractors.js"></script>
     <script src="client/modules/espreso.dashboard.js"></script>
     <script src="client/modules/espreso.modules.js"></script>
+    <script src="client/modules/espreso.localData.js"></script>
+    <script src="client/modules/espreso.ui.js"></script>
 </body>
 </html>
 <!-- END: main -->

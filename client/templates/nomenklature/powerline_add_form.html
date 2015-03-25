@@ -1,0 +1,25 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.addPowerline()">
+        <fieldset>
+            <legend>Новая линия</legend>
+
+            <label for="powerlineTitle">Наименование</label>
+            <input type="text" name="powerlineTitle" id="powerlineTitle"  placeholder="Наименование" ng-model="stuff.newPowerline.title.value" />
+
+            <label for="powerlineVoltage">Напряжение</label>
+            <input type="text" name="powerlineVoltage" id="powerlineVoltage"  placeholder="Напряжение" ng-model="stuff.newPowerline.voltage.value" />
+
+            <input type="submit" class="button-link block" value="Добавить линию"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.powerlines.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.powerlines.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="stuff.powerlineAddedSuccessfully">Линия успешно добавлена</div>
+        </fieldset>
+    </form>
+
+</div>

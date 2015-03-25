@@ -1,0 +1,99 @@
+.toolbar {
+  background-color: #fafafa;
+  background-image: -moz-linear-gradient(top, #fff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #fff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #fff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+  border-right: 1px solid #F2F2F2;
+  border-bottom: 1px solid lightgrey;
+
+  .caption {
+    display: inline-block;
+    float: left;
+    text-align: left;
+    text-transform: uppercase;
+    color: gray;
+    font-weight: bold;
+    margin: 5px;
+    margin-bottom: 10px;
+  }
+
+  .controls {
+    display: inline-block;
+    float: right;
+    height: 100%;
+    padding: 5px;
+    vertical-align: middle;
+    .separator {
+      display: inline-block;
+      vertical-align: middle;
+      height: 20px;
+      padding-left: 3px;
+      margin-right: 3px;
+      border-right: 1px solid lightgray;
+    }
+  }
+}
+
+
+.round-button {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle;
+  font-family: Arial;
+  font-size: 15px;
+  line-height: 7px;
+  font-weight: bold;
+  background: #ffffff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+
+  img {
+    width: 12px;
+    height: 12px;
+    vertical-align: baseline;
+    margin-left: -2px;
+    //border: 1px solid #ffffff;
+  }
+
+  &.success {
+    background-color: #54C478;
+    background-image: -moz-linear-gradient(top, #A9F5C1, #54C478);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#A9F5C1), to(#54C478));
+    background-image: -webkit-linear-gradient(top, #A9F5C1, #54C478);
+    background-image: -o-linear-gradient(top, #79E09A, #54C478);
+    background-image: linear-gradient(to bottom, #79E09A, #54C478);
+    background: #54C478;
+    color: #ffffff;
+    &:hover {
+      background: #2EAB56;
+    }
+  }
+
+  &.error {
+    background-color: #F04D4D;
+    background-image: -moz-linear-gradient(top, #F58787, #F04D4D);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F58787), to(#F04D4D));
+    background-image: -webkit-linear-gradient(top, #F58787, #F04D4D);
+    background-image: -o-linear-gradient(top, #F58787, #F04D4D);
+    background-image: linear-gradient(to bottom, #F58787, #F04D4D);
+    background: #F04D4D;
+    color: #ffffff;
+    &:hover {
+      background: #D41E1E;
+    }
+  }
+
+  &.action {
+    background-color: #80ABD9;
+    background: #80ABD9;
+    color: #ffffff;
+    &:hover {
+      background: #4B8CD1;
+    }
+  }
+
+}

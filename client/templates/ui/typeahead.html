@@ -1,0 +1,6 @@
+<div class="typeahead">
+    <input type="text" placeholder="{{ placeholder }}" ng-model="display" ng-change="update()" ng-disabled="ngDisabled" />
+    <ul>
+        <li ng-repeat="item in matches | limitTo:10 track by $index" ng-click="select($index)">{{ item.typeahead }}</li>
+    </ul>
+</div>

@@ -1,0 +1,128 @@
+<div class="container">
+    <form class="form" action="">
+        <fieldset>
+            <legend>Новое соединение</legend>
+
+            <label for="tracePartTitule">Титул</label>
+            <select
+                    name="tracePartTitule"
+                    id="tracePartTitule"
+                    placeholder="Выберите титул"
+                    ng-model="titules.currentTituleId"
+                    ng-options="titule.id.value as titule.title.value for titule in titules.titules.items"
+                    ng-disabled="!titules.currentTituleId == 0">
+            </select>
+
+            <label for="tracePartTitulePart">Участок титула</label>
+            <select
+                    name="tracePartTitulePart"
+                    id="tracePartTitulePart"
+                    placeholder="Выберите участок титула"
+                    ng-model="titules.currentTitulePartId"
+                    ng-options="part.id.value as part.title.value for part in titules.parts.items"
+                    disabled="{{ titules.currentTitulePartId == 0 }}">
+            </select>
+
+            <label for="startPoint">Начальная точка</label><span class="required">*</span>
+            <typeahead
+                    placeholder="Начальная точка"
+                    id="startPoint"
+                    ng-model="startObject.pointId.value"
+                    collection="stuff.points.items"
+                    collection-value="id"
+                    ng-change="currentTitulePart.setToChanged()">
+            </typeahead>
+
+            <label for="startObjectType">Тип объекта в начальной точке</label>
+            <select
+                    name="startObjectType"
+                    id="startObjectType"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:startPointObjects.objectTypesIds"
+                    ng-model="startObject.objectTypeId"
+                    ng-disabled="endPointObjects.states.ready == false"
+                    ng-change="currentTitulePart.setToChanged()">
+            </select>
+
+            <!-- Если тип объекта в начальной точке - опора -->
+            <div class="nested-form" ng-show="startObject.objectTypeId == 1">
+                <label for="startPylonPowerLine">Линия</label><span class="required">*</span>
+                <select
+                        name="startPylonPowerLine"
+                        id="startPylonPowerLine"
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: startPointObjects.powerLinesIds"
+                        ng-model="startObject.powerLineId.value"
+                        ng-disabled="startPointObjects.states.ready == false"
+                        ng-change="currentTitulePart.setToChanged()">
+                </select>
+
+                <label for="startPylonNumber">№ опоры</label><span class="required">*</span>
+                <typeahead
+                        placeholder="Опора"
+                        id="startPylonNumber"
+                        ng-model="startObject.id.value"
+                        collection="startPointObjects.pylons"
+                        collection-value="id"
+                        ng-disabled=" startPointObjects.states.ready == false"
+                        ng-change="currentTitulePart.setToChanged()">
+                </typeahead>
+            </div>
+
+            <label for="endPoint">Конечная точка</label><span class="required">*</span>
+            <typeahead
+                    placeholder="Конечная точка"
+                    id="endPoint"
+                    ng-model="currentTitulePart.endPointId.value"
+                    collection="stuff.points.items"
+                    collection-value="id"
+                    ng-change="currentTitulePart.setToChanged()">
+            </typeahead>
+
+            <label for="endObjectType">Тип объекта в конечной точке</label>
+            <select
+                    name="endObjectType"
+                    id="endObjectType"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:endPointObjects.objectTypesIds"
+                    ng-model="currentTitulePart.endObjectTypeId.value"
+                    ng-disabled="endPointObjects.states.ready == false"
+                    ng-change="currentTitulePart.setToChanged()">
+            </select>
+
+            <!-- Если тип объекта в конечной точке - опора -->
+            <div class="nested-form" ng-show="currentTitulePart.endObjectTypeId.value == 1">
+                <label for="endPylonPowerLine">Линия</label><span class="required">*</span>
+                <select
+                        name="endPylonPowerLine"
+                        id="endPylonPowerLine"
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: endPointObjects.powerLinesIds"
+                        ng-model="endPointPowerLineId"
+                        ng-disabled="endPointObjects.states.ready == false">
+                </select>
+
+                <label for="endPylonNumber">№ опоры</label><span class="required">*</span>
+                <typeahead
+                        placeholder="Опора"
+                        id="endPylonNumber"
+                        ng-model="currentTitulePart.endObjectId.value"
+                        collection="endPointObjects.pylons"
+                        collection-value="id">
+                </typeahead>
+            </div>
+
+            <div class="controls" ng-show="!currentTitulePart.currentTituleIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!currentTitulePart.inEditMode && !currentTitulePart.inDeleteMode && startPointObjects.states.ready && endPointObjects.states.ready" ng-click="currentTitulePart.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!currentTitulePart.inDeleteMode && !currentTitulePart.inEditMode" value="Удалить" ng-click="currentTitulePart.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="currentTitulePart.inEditMode && currentTitulePart.isChanged == true" value="Сохранить изменения" ng-click="edit()"/>
+                <input type="button" class="button-link" ng-show="currentTitulePart.inDeleteMode" value="Подтвердить удаление" ng-disabled="currentTitulePart.deleteInProgress" ng-click="titules.deleteTitule(titules.currentTitulePart)"/>
+                <input type="button" class="button-link" ng-show="currentTitulePart.inDeleteMode || currentTitulePart.inEditMode" value="Отмена" ng-click="currentTitulePart.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="errors.length > 0">
+                <div class="error-item" ng-repeat="error in errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном удалении -->
+            <div class="success" ng-show="currentTitulePart.titulepartDeletedSuccessfully">Участок титула успешно удален</div>
+        </fieldset>
+    </form>
+</div>

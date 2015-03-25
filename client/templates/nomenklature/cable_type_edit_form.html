@@ -1,0 +1,34 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editCableType()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="cableTypeTitle">Наименование</label>
+            <input type="text" name="cableTypeTitle" id="cableTypeTitle"  placeholder="Наименование" ng-model="stuff.currentCableType.title.value" ng-change="stuff.currentCableType.setToChanged()" ng-disabled="!stuff.currentCableType.inEditMode"/>
+
+            <label for="cableTypeFullTitle">Полное наименование</label>
+            <input type="text" name="cableTypeFullTitle" id="cableTypeFullTitle"  placeholder="Полное наименование" ng-model="stuff.currentCableType.titleExtra.value" ng-change="stuff.currentCableType.setToChanged()" ng-disabled="!stuff.currentCableType.inEditMode"/>
+
+            <label for="cableTypeCapacity">Емкость кабеля</label>
+            <input type="text" name="cableTypeCapacity" id="cableTypeCapacity"  placeholder="Емкость кабеля" ng-model="stuff.currentCableType.capacity.value" ng-change="stuff.currentCableType.setToChanged()" ng-disabled="!stuff.currentCableType.inEditMode"/>
+
+            <label for="cableTypeColorCode">Цветовой код</label>
+            <input type="text" name="cableTypeColorCode" id="cableTypeColorCode"  placeholder="Цветовой код" ng-model="stuff.currentCableType.colorCode.value" ng-change="stuff.currentCableType.setToChanged()" ng-disabled="!stuff.currentCableType.inEditMode"/>
+
+            <div class="controls" ng-show="!stuff.currentCableTypeIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentCableType.inEditMode && !stuff.currentCableType.inDeleteMode" ng-click="stuff.currentCableType.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentCableType.inDeleteMode && !stuff.currentCableType.inEditMode" value="Удалить" ng-click="stuff.currentCableType.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentCableType.inEditMode && stuff.currentCableType.isChanged" value="Сохранить изменения" ng-click="stuff.editCableType(stuff.currentCableType.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentCableType.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentCableType.deleteInProgress" ng-click="stuff.deleteCableType(stuff.currentCableType)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentCableType.inDeleteMode || stuff.currentCableType.inEditMode" value="Отмена" ng-click="stuff.currentCableType.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.cableTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.cableTypes.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

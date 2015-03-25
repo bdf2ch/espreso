@@ -1,0 +1,28 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editPowerline()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="powerlineTitle">Наименование</label>
+            <input type="text" name="powerlineTitle" id="powerlineTitle"  placeholder="Наименование" ng-model="stuff.currentPowerline.title.value" ng-change="stuff.currentPowerline.setToChanged()" ng-disabled="!stuff.currentPowerline.inEditMode"/>
+
+            <label for="powerlineVoltage">Напряжение</label>
+            <input type="text" name="powerlineVoltage" id="powerlineVoltage"  placeholder="Напряжение" ng-model="stuff.currentPowerline.voltage.value" ng-change="stuff.currentPowerline.setToChanged()" ng-disabled="!stuff.currentPowerline.inEditMode"/>
+
+            <div class="controls" ng-show="!stuff.currentPowerlineIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentPowerline.inEditMode && !stuff.currentPowerline.inDeleteMode" ng-click="stuff.currentPowerline.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentPowerline.inDeleteMode && !stuff.currentPowerline.inEditMode" value="Удалить" ng-click="stuff.currentPowerline.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPowerline.inEditMode && stuff.currentPowerline.isChanged" value="Сохранить изменения" ng-click="stuff.editPowerline(stuff.currentPowerline.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPowerline.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentPowerline.deleteInProgress" ng-click="stuff.deletePowerline(stuff.currentPowerline)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPowerline.inDeleteMode || stuff.currentPowerline.inEditMode" value="Отмена" ng-click="stuff.currentPowerline.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.powerlines.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.powerlines.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

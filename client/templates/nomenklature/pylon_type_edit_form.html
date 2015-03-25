@@ -1,0 +1,25 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.editPylonType()">
+        <fieldset>
+            <legend>{{ formTitle }}</legend>
+
+            <label for="pylonTypeTitle">Наименование</label>
+            <input type="text" name="pylonTypeTitle" id="pylonTypeTitle"  placeholder="Наименование" ng-model="stuff.currentPylonType.title.value" ng-change="stuff.currentPylonType.setToChanged()" ng-disabled="!stuff.currentPylonType.inEditMode"/>
+
+            <div class="controls" ng-show="!stuff.currentPylonTypeIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!stuff.currentPylonType.inEditMode && !stuff.currentPylonType.inDeleteMode" ng-click="stuff.currentPylonType.setToEditMode()"/>
+                <input type="button" class="button-link" ng-show="!stuff.currentPylonType.inDeleteMode && !stuff.currentPylonType.inEditMode" value="Удалить" ng-click="stuff.currentPylonType.setToDeleteMode()"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPylonType.inEditMode && stuff.currentPylonType.isChanged" value="Сохранить изменения" ng-click="stuff.editPylonType(stuff.currentPylonType.id.value)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPylonType.inDeleteMode" value="Подтвердить удаление" ng-disabled="stuff.currentPylonType.deleteInProgress" ng-click="stuff.deletePylonType(stuff.currentPylonType)"/>
+                <input type="button" class="button-link" ng-show="stuff.currentPylonType.inDeleteMode || stuff.currentPylonType.inEditMode" value="Отмена" ng-click="stuff.currentPylonType.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.pylonTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.pylonTypes.errors track by $index">{{ error }}</div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>

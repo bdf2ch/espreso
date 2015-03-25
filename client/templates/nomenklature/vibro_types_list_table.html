@@ -1,0 +1,22 @@
+<table class="tbl">
+    <caption>Типы виброгасителей</caption>
+    <thead>
+    <tr class="controls">
+        <th>
+            <input type="button" class="button-link" value="Добавить тип виброгасителя" ng-click="gotoAddVibroTypeForm()"/>
+        </th>
+    </tr>
+    <tr>
+        <th>
+            Наименование
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="link" ng-repeat="vibro_type in stuff.vibroTypes.items track by $index" ng-click="gotoEditVibroTypeForm(vibro_type.id.value)">
+        <td>
+        {{ vibro_type.title.value }}
+        </td>
+    </tr>
+    </tbody>
+</table>

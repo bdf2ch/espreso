@@ -1,0 +1,43 @@
+<div class="container">
+
+    <form class="form" ng-submit="addAnchorUnion()">
+        <fieldset>
+            <legend>Новое крепление / муфта</legend>
+
+            <label for="powerLine">Линия</label>
+            <select name="powerLine" id="powerLine" ng-model="stuff.currentPowerline.id.value" ng-options="pwId = powerline.id.value as powerline.title.value for powerline in stuff.powerlines.items" ng-change="stuff.setCurrentPowerline(pwId)"></select>
+
+            <label for="pylon">Опора</label>
+            <select name="pylon" id="pylon" ng-model="stuff.currentPylon.id.value" ng-options="pId = pylon.id.value as ('# ' + pylon.number.value) for pylon in stuff.pylons.items" ng-change="stuff.setCurrentPylon(pId)"></select>
+
+            <label for="objectType">Тип объекта</label>
+            <select name="objectType" id="objectType" placeholder="Выберите тип объекта" ng-model="objectTypeId">
+                <option value="1">Крепление</option>
+                <option value="2">Муфта</option>
+            </select>
+
+
+            <label for="anchorType" ng-show="objectTypeId == 1">Тип крепления</label>
+            <select name="anchorType" id="anchorType" ng-model="stuff.newAnchor.anchorTypeId.value" ng-options="anchorType.id.value as anchorType.title.value for anchorType in stuff.anchorTypes.items" ng-show="objectTypeId == 1"></select>
+
+            <label for="unionType" ng-show="objectTypeId == 2">Тип муфты</label>
+            <select name="unionType" id="unionType" placeholder="Выберите тип муфты" ng-model="stuff.newUnionType.id.value" ng-options="unionType.id.value as unionType.title.value for unionType in stuff.unionTypes.items" ng-show="objectTypeId == 2"></select>
+
+            <input type="submit" class="button-link block" value="Добавить крепление" ng-show="objectTypeId == 1"/>
+            <input type="submit" class="button-link block" value="Добавить муфту" ng-show="objectTypeId == 2"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.anchors.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.anchors.errors track by $index">{{ error }}</div>
+            </div>
+            <div class="error" ng-show="stuff.unions.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.unions.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="stuff.anchorAddedSuccessfully">Крепление успешно добавлено</div>
+            <div class="success" ng-show="stuff.unionAddedSuccessfully">Муфта успешно добавлена</div>
+        </fieldset>
+    </form>
+
+</div>

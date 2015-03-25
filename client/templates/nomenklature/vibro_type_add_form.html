@@ -1,0 +1,22 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.addVibroType()">
+        <fieldset>
+            <legend>Новый тип виброгасителя</legend>
+
+            <label for="vibroTypeTitle">Наименование</label>
+            <input type="text" name="vibroTypeTitle" id="vibroTypeTitle"  placeholder="Наименование" ng-model="stuff.newVibroType.title.value" />
+
+            <input type="submit" class="button-link block" value="Добавить тип виброгасителя"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.vibroTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.vibroTypes.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="stuff.vibroTypeAddedSuccessfully">Тип виброгасителя успешно добавлен</div>
+        </fieldset>
+    </form>
+
+</div>

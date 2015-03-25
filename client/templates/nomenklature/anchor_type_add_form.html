@@ -1,0 +1,22 @@
+<div class="container">
+
+    <form class="form" ng-submit="stuff.addAnchorType()">
+        <fieldset>
+            <legend>Новый тип крепления</legend>
+
+            <label for="anchorTypeTitle">Наименование</label>
+            <input type="text" name="anchorTypeTitle" id="anchorTypeTitle"  placeholder="Наименование" ng-model="stuff.newAnchorType.title.value" />
+
+            <input type="submit" class="button-link block" value="Добавить тип крепления"/>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="stuff.anchorTypes.errors.length > 0">
+                <div class="error-item" ng-repeat="error in stuff.anchorTypes.errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном добавлении -->
+            <div class="success" ng-show="stuff.anchorTypeAddedSuccessfully">Тип крепления успешно добавлен</div>
+        </fieldset>
+    </form>
+
+</div>
