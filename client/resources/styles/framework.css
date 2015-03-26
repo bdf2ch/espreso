@@ -9,11 +9,14 @@
   border-bottom: 1px solid lightgrey;
 }
 .toolbar .caption {
-  display: inline-block;
+  display: block;
   float: left;
+  height: 100%;
   text-align: left;
   text-transform: uppercase;
+  vertical-align: baseline;
   color: gray;
+  font-size: 16px;
   font-weight: bold;
   margin: 5px;
   margin-bottom: 10px;
@@ -55,11 +58,6 @@
 }
 .round-button.success {
   background-color: #54C478;
-  background-image: -moz-linear-gradient(top, #a9f5c1, #54c478);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#a9f5c1), to(#54c478));
-  background-image: -webkit-linear-gradient(top, #a9f5c1, #54c478);
-  background-image: -o-linear-gradient(top, #79e09a, #54c478);
-  background-image: linear-gradient(to bottom, #79e09a, #54c478);
   background: #54C478;
   color: #ffffff;
 }
@@ -68,11 +66,6 @@
 }
 .round-button.error {
   background-color: #F04D4D;
-  background-image: -moz-linear-gradient(top, #f58787, #f04d4d);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f58787), to(#f04d4d));
-  background-image: -webkit-linear-gradient(top, #f58787, #f04d4d);
-  background-image: -o-linear-gradient(top, #f58787, #f04d4d);
-  background-image: linear-gradient(to bottom, #f58787, #f04d4d);
   background: #F04D4D;
   color: #ffffff;
 }
@@ -80,8 +73,8 @@
   background: #D41E1E;
 }
 .round-button.action {
-  background-color: #80ABD9;
-  background: #80ABD9;
+  background-color: #84A8F0;
+  background: #84A8F0;
   color: #ffffff;
 }
 .round-button.action:hover {

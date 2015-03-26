@@ -341,6 +341,11 @@ body img {
         //background: #F7FBFF;
     }
 
+    /* Вкладка документации */
+    #documents {
+        padding: 5px;
+    }
+
 
 
 /*** ОПОРЫ ***/

@@ -59,19 +59,14 @@ var titules = angular.module("espreso.titules", [])
 
             module.titules = new Collection(new Titule());
             module.parts = new Collection(new TitulePart());
-            module.currentTituleId = 0;
+            module.currentTituleId = -1;
+            module.currentTitulePartId = -1;
+            module.currentTitulePartsCount = 0;
+            module.currentObjectId = -1;
             module.currentTituleIsDeleted = false;
             module.currentTituleObjects = [];
             module.newTracePartStartObjectIndex = -1;
-
-            module.currentTitulePartId = 0;
             module.currentTitulePartIsDeleted = false;
-
-
-
-
-
-
 
             /* Получает список титулов */
             module.getTitules = function () {
@@ -277,6 +272,74 @@ var titules = angular.module("espreso.titules", [])
                 }
             };
 
+            /* Сбрасывает активный участок титула */
+            module.resetCurrentTitulePart = function () {
+                angular.forEach(module.parts.items, function (part) {
+                    if (part.isActive === true)
+                        part.setToActive(false);
+                });
+                module.currentTitulePartId = -1;
+            };
+
+            /* Устанавливает текущий титул */
+            module.setCurrentTitule = function (tituleId) {
+                if (tituleId !== undefined) {
+                    angular.forEach(module.titules.items, function (titule) {
+                        if (titule.id.value === tituleId) {
+                            if (titule.isActive === false) {
+                                titule.setToActive(true);
+                                module.currentTituleId = titule.id.value;
+                                module.currentObjectId = -1;
+                                module.getTituleById(tituleId, module.currentTituleObjects);
+                            } else {
+                                titule.setToActive(false);
+                                module.currentTituleId = -1;
+                            }
+                            module.resetCurrentTitulePart();
+                        } else {
+                            titule.setToActive(false);
+                        }
+                    });
+                }
+            };
+
+            /* Устанавливает текущий участок титула */
+            module.setCurrentTitulePart = function (titulePartId) {
+                if (titulePartId !== undefined) {
+                    angular.forEach(module.parts.items, function (part) {
+                        if (part.id.value === titulePartId) {
+                            if (part.isActive === false) {
+                                part.setToActive(true);
+                                module.currentTitulePartId = part.id.value;
+                                module.currentObjectId = -1;
+                            } else {
+                                part.setToActive(false);
+                                module.currentTitulePartId = -1;
+                            }
+                        } else
+                            part.setToActive(false);
+                    });
+                }
+            };
+
+            /* Устанавливает текущий Объект */
+            module.setCurrentObject = function (objectId) {
+                if (objectId !== undefined && module.currentTituleObjects.length !== 0) {
+                    angular.forEach(module.currentTituleObjects, function (object) {
+                        if (object.id.value === objectId) {
+                            if (object.isActive === false) {
+                                object.setToActive(true);
+                                module.currentObjectId = object.id.value;
+                            } else {
+                                object.setToActive(false);
+                                module.currentObjectId = -1;
+                            }
+                        } else
+                            object.setToActive(false);
+                    });
+                }
+            };
+
             return module;
         }]);
     })
@@ -321,29 +384,34 @@ var titules = angular.module("espreso.titules", [])
 /*****
  * Контроллер списка титулов
  *****/
-titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$objects", function ($log, $scope, $location, $titules, $objects) {
+titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$objects", "$nomenklature", "FileUploader", function ($log, $scope, $location, $titules, $objects, $nomenklature, FileUploader) {
     $scope.titules = $titules;
     $scope.objects = $objects;
+    $scope.stuff = $nomenklature;
     $scope.tabs = [
         {
+            id: 1,
             title: "Монтажная ведомость",
             templateUrl: "client/templates/titules/montage_scheme.html",
             controller: "MontageSchemeController",
             active: true
         },
         {
+            id: 2,
             title: "Эскиз",
             templateUrl: "client/templates/titules/virtual_map.html",
             controller: "VirtualMapController",
             active: false
         },
         {
+            id: 3,
             title: "Линейная схема",
             templateUrl: "client/templates/titules/linear_scheme.html",
             controller: "LinearSchemeController",
             active: false
         },
         {
+            id: 4,
             title: "Документация",
             templateUrl: "client/templates/titules/documentation.html",
             controller: "DocumentationController",
@@ -351,45 +419,33 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         }
     ];
     $scope.currentTab = $scope.tabs[0];
+    $scope.currentTabId = 1;
     $scope.currentTituleObjects = [];
+    var uploader = $scope.uploader = new FileUploader({
+        url: "server/uploader.php"
+    });
 
-
-    /* Устанавливает текущий титул */
-    $scope.setCurrentTitule = function (tituleId) {
-        if (tituleId) {
-            angular.forEach($scope.titules.titules.items, function (titule) {
-                if (titule.id.value === tituleId) {
-                    titule.setToActive(true);
-                    $scope.titules.currentTituleId = titule.id.value;
-                    $scope.titules.getTituleById(tituleId, $scope.titules.currentTituleObjects);
-                } else {
-                    titule.setToActive(false);
-                }
-            });
-        }
+    uploader.onCompleteAll = function() {
+        console.info('onCompleteAll');
     };
 
-    /* Устанавливает текущий участок титула */
-    $scope.setCurrentTitulePart = function (titulePartId) {
-        if (titulePartId) {
-            angular.forEach($scope.titules.parts.items, function (part, key) {
-                if (part.id.value === titulePartId) {
-                    part.setToActive(true);
-                    $scope.titules.currentTitulePartId = titulePartId;
-                } else
-                    part.setToActive(false);
-            });
-        }
+    uploader.onAfterAddingFile = function(fileItem) {
+        uploader.formData = {
+            tituleId: $scope.titules.currentTituleId
+        };
+        console.info('onAfterAddingFile', fileItem);
+        uploader.uploadAll();
     };
 
     /* Устанавливает активну вкладку */
     $scope.setActiveTab = function (index) {
-        if (index != undefined ) {
+        if (index !== undefined ) {
             $log.log("$index = ", index);
             angular.forEach($scope.tabs, function (tab, key) {
-                if (key == index) {
+                if (key === index) {
                     tab.active = true;
                     $scope.currentTab = tab;
+                    $scope.currentTabId = tab.id;
                 } else
                     tab.active = false;
             });
@@ -402,9 +458,11 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
     };
 
     /* Загружает шаблон формы редактирования титула */
-    $scope.gotoEditTituleForm = function (id) {
-        $scope.titules.currentTituleId = id;
-        $location.url("/titules/" + id);
+    $scope.gotoEditTituleForm = function () {
+        $log.log("currentTituleId = ", $scope.titules.currentTituleId);
+        //$scope.titules.currentTituleId = id;
+        if ($scope.titules.currentTituleId !== -1)
+            $location.url("/titules/" + $scope.titules.currentTituleId);
     };
 
     /* Загружает шаблон формы добавления участка титула */
@@ -412,10 +470,18 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         $location.url("/new-titule-part");
     };
 
+    /* Загружает шаблон редактирования участка титула */
+    $scope.gotoEditTitulePartForm = function () {
+        if ($scope.titules.currentTitulePartId !== -1)
+            $location.url("/titule-parts/" + $scope.titules.currentTitulePartId);
+    };
+
     $scope.gotoAddTracePartForm = function (objectIndex) {
         $scope.titules.newTracePartStartObjectIndex = objectIndex;
         $location.url("/new-trace-part");
     };
+
+
 
 }]);
 
@@ -966,7 +1032,7 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
 /*****
  * Фильтр участков титулов по ID титула
  *****/
-titules.filter("tituleId", ["$log", function ($log) {
+titules.filter("tituleId", ["$log", "$titules", function ($log, $titules) {
     return function (input, tituleId) {
         var parts = [];
         angular.forEach(input, function (part) {
@@ -974,6 +1040,10 @@ titules.filter("tituleId", ["$log", function ($log) {
                 parts.push(part);
             }
         });
+        if (parts.length === 0)
+            $titules.currentTitulePartsCount = 0;
+        else
+            $titules.currentTitulePartsCount = parts.length;
         return parts;
     }
 }]);

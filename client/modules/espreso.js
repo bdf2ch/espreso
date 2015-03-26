@@ -5,6 +5,7 @@
 var espreso = angular.module("Espreso",
     [
         "ngRoute",
+        "angularFileUpload",
         "espreso.users",
         "Authorization",
         "ngCookies",

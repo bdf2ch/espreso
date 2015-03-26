@@ -9,11 +9,14 @@
   border-bottom: 1px solid lightgrey;
 
   .caption {
-    display: inline-block;
+    display: block;
     float: left;
+    height: 100%;
     text-align: left;
     text-transform: uppercase;
+    vertical-align: baseline;
     color: gray;
+    font-size: 16px;
     font-weight: bold;
     margin: 5px;
     margin-bottom: 10px;
@@ -61,11 +64,6 @@
 
   &.success {
     background-color: #54C478;
-    background-image: -moz-linear-gradient(top, #A9F5C1, #54C478);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#A9F5C1), to(#54C478));
-    background-image: -webkit-linear-gradient(top, #A9F5C1, #54C478);
-    background-image: -o-linear-gradient(top, #79E09A, #54C478);
-    background-image: linear-gradient(to bottom, #79E09A, #54C478);
     background: #54C478;
     color: #ffffff;
     &:hover {
@@ -75,11 +73,6 @@
 
   &.error {
     background-color: #F04D4D;
-    background-image: -moz-linear-gradient(top, #F58787, #F04D4D);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F58787), to(#F04D4D));
-    background-image: -webkit-linear-gradient(top, #F58787, #F04D4D);
-    background-image: -o-linear-gradient(top, #F58787, #F04D4D);
-    background-image: linear-gradient(to bottom, #F58787, #F04D4D);
     background: #F04D4D;
     color: #ffffff;
     &:hover {
@@ -88,8 +81,8 @@
   }
 
   &.action {
-    background-color: #80ABD9;
-    background: #80ABD9;
+    background-color: #84A8F0;
+    background: #84A8F0;
     color: #ffffff;
     &:hover {
       background: #4B8CD1;

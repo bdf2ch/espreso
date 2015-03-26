@@ -3,23 +3,35 @@
         <span class="caption">Титулы</span>
         <div class="controls">
            <!-- <button class="btn inline right" ng-click="gotoAddTituleForm()">Добавить</button> -->
-            <button class="round-button action" ng-show="titules.currentTituleId != 0" ng-click="gotoAddTituleForm()" title="Редактировать титул">
+            <button class="round-button action"
+                    title="Редактировать титул"
+                    ng-show="titules.currentTituleId != -1"
+                    ng-click="gotoEditTituleForm()" >
                 <img src="client/resources/img/edit.png"/>
             </button>
-            <span class="separator" ng-show="titules.currentTituleId != 0"></span>
-            <button class="round-button success" ng-click="gotoAddTituleForm()" title="Добавить титул">+</button>
+            <span class="separator" ng-show="titules.currentTituleId != -1"></span>
+            <button class="round-button success"
+                    title="Добавить титул"
+                    ng-click="titules.gotoAddTituleForm()">
+                +
+            </button>
         </div>
 
     </div>
     <div id="titules-titules-content" class="scrollable-area">
         <table class="table">
             <tbody>
-            <tr class="link" ng-class="{'active': titule.isActive}" ng-repeat="titule in titules.titules.items track by $index" ng-click="setCurrentTitule(titule.id.value)">
+            <tr class="link"
+                ng-class="{'active': titule.isActive}"
+                ng-repeat="titule in titules.titules.items track by $index"
+                ng-click="titules.setCurrentTitule(titule.id.value)">
+                <!--
                 <td class="controls">
                     <a ng-href="{{ '#/titules/' + titule.id.value }}">
                         <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
                     </a>
                 </td>
+                -->
                 <td>
                     {{ titule.title.value }}<br>
                     <span class="description">{{ titule.length.value + ' км'}}</span>
@@ -37,33 +49,47 @@
         <span class="caption">Участки</span>
         <div class="controls">
             <!-- <button class="btn right inline" ng-show="titules.currentTituleId != 0" ng-click="gotoAddTitulePartForm()">Добавить</button> -->
-            <button class="round-button action" ng-show="titules.currentTitulePartId != 0" ng-click="gotoAddTituleForm()" title="Редактировать титул">
+            <button class="round-button action"
+                    title="Редактировать участок титула"
+                    ng-show="titules.currentTitulePartId != -1"
+                    ng-click="gotoEditTitulePartForm()">
                 <img src="client/resources/img/edit.png"/>
             </button>
-            <span class="separator" ng-show="titules.currentTituleId != 0"></span>
-            <button class="round-button success" ng-show="titules.currentTituleId != 0" ng-click="gotoAddTitulePartForm()" title="Добавить участок">+</button>
+            <span class="separator" ng-show="titules.currentTitulePartId != -1"></span>
+            <button class="round-button success" ng-show="titules.currentTituleId != -1" ng-click="gotoAddTitulePartForm()" title="Добавить участок">+</button>
         </div>
     </div>
 
     <div id="titules-parts-content" class="scrollable-area">
         <table class="table">
             <tbody>
-            <tr class="link" ng-class="{'active': part.isActive}" ng-repeat="part in parts = titules.parts.items | tituleId:titules.currentTituleId track by $index" ng-click="setCurrentTitulePart(part.id.value)">
+            <tr class="link"
+                ng-class="{'active': part.isActive}"
+                ng-repeat="part in parts = titules.parts.items | tituleId:titules.currentTituleId track by $index"
+                ng-click="titules.setCurrentTitulePart(part.id.value)">
+                <!--
                 <td class="controls">
                     <a ng-href="{{ '#/titule-parts/' + part.id.value }}">
                         <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
                     </a>
                 </td>
+                -->
                 <td>
                     {{ part.title.value }}<br>
                     <span class="description">{{ part.length.value + ' км'}}</span>
                 </td>
             </tr>
             <tr class="no-hover">
-                <td colspan="2" class="text-center no-data" ng-show="titules.currentTituleId == 0">Выберите титул</td>
+                <td colspan="2"
+                    class="text-center no-data"
+                    ng-show="titules.currentTituleId === -1">Выберите титул</td>
             </tr>
             <tr class="no-hover">
-                <td colspan="2" class="text-center no-data" ng-show="titules.currentTitule && parts.length == 0">В выбранном титуле отсутствуют участки</td>
+                <td colspan="2"
+                    class="text-center no-data"
+                    ng-show="titules.currentTituleId !== -1 && titules.currentTitulePartsCount === 0">
+                    В выбранном титуле отсутствуют участки
+                </td>
             </tr>
             </tbody>
         </table>
@@ -72,19 +98,44 @@
 </div>
 
 <div id="titules-details">
-    <div id="titules-details-controls">
-        <span class="column-caption left inline">Подробности</span>
-        <!-- <button class="btn inline right" ng-click="gotoAddTituleForm()">Добавить</button> -->
-    </div>
-    <div id="titules-details-content" class="scrollable-area">
-
-        <div id="titules-details-content-tabs-content" ng-include="currentTab.templateUrl">
+    <div id="titules-details-controls" class="toolbar">
+        <span class="caption">Подробности</span>
+        <!-- Элементы управления разделом монтажной ведомости -->
+        <div class="controls" ng-show="currentTabId === 1">
+            <button class="round-button action"
+                    title="Редактировать объект"
+                    ng-show="titules.currentObjectId !== -1"
+                    ng-click="gotoEditTitulePartForm()">
+                <img src="client/resources/img/edit.png"/>
+            </button>
+            <span class="separator" ng-show="titules.currentObjectId !== -1"></span>
+            <button class="round-button success"
+                    title="Добавить соединение с текущим объектом"
+                    ng-show="titules.currentObjectId !== -1"
+                    ng-click="gotoAddTracePartForm()" >
+                +
+            </button>
+        </div>
+        <!-- Элементы управления разделом документации -->
+        <div class="controls" ng-show="currentTabId === 4">
+            <input type="file"
+                   class="round-button action"
+                   title="Добавить документ"
+                   ng-show="titules.currentTituleId !== -1"
+                   nv-file-select
+                   uploader="uploader"/>
 
         </div>
-
+    </div>
+    <div id="titules-details-content" class="scrollable-area">
+        <div id="titules-details-content-tabs-content" ng-include="currentTab.templateUrl"></div>
         <div id="titules-details-content-tabs">
             <ul class="tabs">
-                <li ng-class="{'active': tab.active}" ng-repeat="tab in tabs track by $index" ng-click="setActiveTab($index)">{{ tab.title }}</li>
+                <li ng-class="{'active': tab.active}"
+                    ng-repeat="tab in tabs track by $index"
+                    ng-click="setActiveTab($index)">
+                    {{ tab.title }}
+                </li>
             </ul>
         </div>
 

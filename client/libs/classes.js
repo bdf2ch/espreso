@@ -1004,3 +1004,14 @@ function TituleObjects (titule) {
         }
     }
 };
+
+
+
+function Document () {
+    this.id = new Field({ source: "", value: 0 });
+    this.title = new Field({ source: "", value: "" });
+    this.url = new Field({ source: "", value: "" });
+    this.size = new Field ({ source: "", value: 0 });
+};
+Document.prototype = new DataModel();
+Document.prototype.constructor = Document;

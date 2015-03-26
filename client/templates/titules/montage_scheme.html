@@ -1,7 +1,10 @@
 <div id="montage-scheme">
     <table class="table" width="100%">
         <tbody>
-            <tr ng-repeat="obj in titules.currentTituleObjects track by $index">
+            <tr class="link"
+                ng-repeat="obj in titules.currentTituleObjects track by $index"
+                ng-class="{'active': obj.isActive}"
+                ng-click="titules.setCurrentObject(obj.id.value)">
                 <td class="controls">
                     <a ng-href="{{ '#/titule-parts/' + part.id.value }}">
                         <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
@@ -10,25 +13,11 @@
 
                 <!-- Если тип объекта - опора -->
                 <td ng-show="obj.objectTypeId == 1">
-                    {{ "Опора #" + obj.number.value }}
+                    {{ "Опора #" + obj.number.value + ",&nbsp; ВЛ: " + stuff.powerlines.find("id", obj.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", obj.powerLineId.value).voltage.value + " кВ),&nbsp; тип опоры: " + stuff.pylonTypes.find("id", obj.pylonTypeId.value).title.value }}
                 </td>
 
                 <!-- Если тип объекта - неформализованный объект -->
 
-
-                <td class="ext-controls">
-                    <button class="round-button error"
-                            title="Удалить элемент"
-                            ng-show="$index != currentTituleObjects.length - 1 ">
-                        -
-                    </button>
-                    <button class="round-button success"
-                            title="Добавить следующий элемент"
-                            ng-show="$index != currentTituleObjects.length - 1 "
-                            ng-click="gotoAddTracePartForm($index)">
-                        +
-                    </button>
-                </td>
             </tr>
         </tbody>
     </table>
