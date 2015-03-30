@@ -5,7 +5,7 @@
  *****/
 var titules = angular.module("espreso.titules", [])
     .config(function ($provide) {
-        $provide.factory("$titules", ["$http", "$window", "$log", "$espreso", function ($http, $window, $log, $espreso) {
+        $provide.factory("$titules", ["$http", "$window", "$log", "$espreso", "$files", function ($http, $window, $log, $espreso, $files) {
             var module = new Module({
                 id: "titules",
                 title: "Титулы",
@@ -65,6 +65,7 @@ var titules = angular.module("espreso.titules", [])
             module.currentObjectId = -1;
             module.currentTituleIsDeleted = false;
             module.currentTituleObjects = [];
+            module.currentTituleFiles = [];
             module.newTracePartStartObjectIndex = -1;
             module.currentTitulePartIsDeleted = false;
 
@@ -291,6 +292,7 @@ var titules = angular.module("espreso.titules", [])
                                 module.currentTituleId = titule.id.value;
                                 module.currentObjectId = -1;
                                 module.getTituleById(tituleId, module.currentTituleObjects);
+                                $files.getFilesByTituleId(module.currentTituleId, module.currentTituleFiles);
                             } else {
                                 titule.setToActive(false);
                                 module.currentTituleId = -1;
@@ -384,10 +386,12 @@ var titules = angular.module("espreso.titules", [])
 /*****
  * Контроллер списка титулов
  *****/
-titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$objects", "$nomenklature", "FileUploader", function ($log, $scope, $location, $titules, $objects, $nomenklature, FileUploader) {
+titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$objects", "$nomenklature", "FileUploader", "$currentUser", "$files", function ($log, $scope, $location, $titules, $objects, $nomenklature, FileUploader, $currentUser, $files) {
     $scope.titules = $titules;
     $scope.objects = $objects;
     $scope.stuff = $nomenklature;
+    $scope.user = $currentUser;
+    $scope.files = $files;
     $scope.tabs = [
         {
             id: 1,
@@ -413,9 +417,13 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         {
             id: 4,
             title: "Документация",
-            templateUrl: "client/templates/titules/documentation.html",
+            templateUrl: "client/templates/titules/files.html",
             controller: "DocumentationController",
             active: false
+            //onSelect: function () {
+            //    console.log("docs selected");
+            //    $scope.files.getFilesByTituleId($scope.titules.currentTituleId, $scope.titules.currentTituleFiles);
+            //}
         }
     ];
     $scope.currentTab = $scope.tabs[0];
@@ -427,12 +435,18 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
 
     uploader.onCompleteAll = function() {
         console.info('onCompleteAll');
+        uploader.clearQueue();
+    };
+
+    uploader.onBeforeUploadItem = function (item) {
+        var formData = [{
+            tituleId: $scope.titules.currentTituleId,
+            userId: $scope.user.id.value
+        }];
+        Array.prototype.push.apply(item.formData, formData);
     };
 
     uploader.onAfterAddingFile = function(fileItem) {
-        uploader.formData = {
-            tituleId: $scope.titules.currentTituleId
-        };
         console.info('onAfterAddingFile', fileItem);
         uploader.uploadAll();
     };

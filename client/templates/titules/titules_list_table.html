@@ -118,18 +118,24 @@
         </div>
         <!-- Элементы управления разделом документации -->
         <div class="controls" ng-show="currentTabId === 4">
-            <input type="file"
-                   class="round-button action"
-                   title="Добавить документ"
-                   ng-show="titules.currentTituleId !== -1"
-                   nv-file-select
-                   uploader="uploader"/>
+            <button class="round-button success"
+                    title="Добавить файл"
+                    ng-show="titules.currentTituleId !== -1">
+                +
+                <input type="file"
+                       title="Добавить файл"
+                       value="dfdsf"
+                       ng-show="titules.currentTituleId !== -1"
+                       nv-file-select
+                       uploader="uploader"/>
+            </button>
+
 
         </div>
     </div>
     <div id="titules-details-content" class="scrollable-area">
         <div id="titules-details-content-tabs-content" ng-include="currentTab.templateUrl"></div>
-        <div id="titules-details-content-tabs">
+        <div id="titules-details-content-tabs" ng-show="titules.currentTituleId !== -1">
             <ul class="tabs">
                 <li ng-class="{'active': tab.active}"
                     ng-repeat="tab in tabs track by $index"

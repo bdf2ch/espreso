@@ -7,19 +7,48 @@ var files = angular.module("espreso.files", [])
         $provide.factory("$files", ["$log", "$http", function ($log, $http) {
             var module = {};
 
-            module.files = new Collection();
-
-            module.getFilesByTituleId = function (tituleId) {
-                if (tituleId !== undefined) {
+            module.getFilesByTituleId = function (tituleId, destination) {
+                if (tituleId !== undefined && destination !== undefined) {
                     var params = {
-                        id: tituleId
+                        action: "filesByTituleId",
+                        data: {
+                            id: tituleId
+                        }
                     };
-                    $http.post("server/controllers/documentation-controller.php", params)
+                    destination.splice(0, destination.length);
+                    $http.post("server/controllers/files-controller.php", params)
                         .success(function (data) {
                             if (data && parseInt(data) !== 0) {
+                                destination.splice(0, destination.length);
+                                angular.forEach(data, function (file) {
+                                    var temp_file = new FileItem();
+                                    temp_file.fromSOURCE(file);
+                                    //temp_file.onInit();
+                                    destination.push(temp_file);
+                                });
+                            }
+                        }
+                    );
+                }
+            };
+
+            /*** Отсылает информацию о загруженном файле на сервер ***/
+            module.add = function (tituleId, userId) {
+                if (tituleId !== undefined && userId !== undefined) {
+                    var params = {
+                        action: "add",
+                        data: {
+                            tituleId: tituleId,
+                            userId: userId
+                        }
+                    };
+                    $http.post("server/controllers/files-controller.php", params)
+                        .success(function (data) {
+                            if (data !== undefined) {
 
                             }
-                        });
+                        }
+                    );
                 }
             };
 

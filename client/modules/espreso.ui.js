@@ -178,3 +178,17 @@ ui.directive("typeahead", ["$log", "$document", function ($log) {
         }
     }
 }]);
+
+
+ui.directive("upload", ["$log", "$timeout", function ($log, $timeout) {
+    return {
+        restrict: "A",
+        link: function (scope, element, attrs) {
+            var input = element.children("input[type=file]").css("border", "1px solid red");
+            element.on("click", function () {
+                $log.log("click bitch");
+                angular.element(input).triggerHandler("click");
+            })
+        }
+    }
+}]);

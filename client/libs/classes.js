@@ -1007,11 +1007,14 @@ function TituleObjects (titule) {
 
 
 
-function Document () {
-    this.id = new Field({ source: "", value: 0 });
-    this.title = new Field({ source: "", value: "" });
-    this.url = new Field({ source: "", value: "" });
-    this.size = new Field ({ source: "", value: 0 });
+function FileItem () {
+    this.id = new Field({ source: "ID", value: 0 });
+    this.tituleId = new Field({ source: "TITULE_ID", value: 0 });
+    this.userId = new Field({ source: "USER_ID", value: 0 });
+    this.added = new Field({ source: "ADDED", value: 0 });
+    this.title = new Field({ source: "TITLE", value: "" });
+    this.url = new Field({ source: "URL", value: "" });
+    this.size = new Field ({ source: "FILESIZE", value: 0 });
 };
-Document.prototype = new DataModel();
-Document.prototype.constructor = Document;
+FileItem.prototype = new DataModel();
+FileItem.prototype.constructor = FileItem;

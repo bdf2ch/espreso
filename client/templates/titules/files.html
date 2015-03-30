@@ -1,0 +1,14 @@
+<div id="documents">
+    <table class="table" width="100%">
+        <tbody>
+        <tr class="link"
+            ng-repeat="file in titules.currentTituleFiles track by $index"
+            ng-class="{'active': file.isActive}"
+            ng-click="titules.setCurrentObject(obj.id.value)">
+            <td>
+                <a href="{{ file.url.value }}">{{ file.title.value }}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
