@@ -168,6 +168,8 @@ function DataModel () {
                 }
             }
             this.setupBackup();
+            if (this.onInit !== undefined)
+                this.onInit();
         }
     };
 
@@ -347,6 +349,7 @@ function User () {
     this.surname = new Field({ source: "SURNAME", value: "" });             // Фамилия
     this.phone = new Field({ source: "PHONE", value: "" });                 // Контактный телефон
     this.password = new Field({ source: "PASSWD", value: "" });             // Пароль
+    this.fio = new Field({ value: "" });
     this.permissions = {};
 
     /* Сбрасывает значения полей объектов на первоначальные */
@@ -359,6 +362,10 @@ function User () {
         this.surname.value = "";
         this.phone.value = "";
         this.password.value = "";
+    };
+
+    this.onInit = function () {
+        this.fio.value = this.name.value + " " + this.fname.value + " " + this.surname.value;
     };
 };
 User.prototype = new DataModel();

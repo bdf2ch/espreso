@@ -186,8 +186,8 @@ ui.directive("upload", ["$log", "$timeout", function ($log, $timeout) {
         link: function (scope, element, attrs) {
             var input = element.children("input[type=file]").css("border", "1px solid red");
             element.on("click", function () {
-                $log.log("click bitch");
-                angular.element(input).triggerHandler("click");
+                //$log.log("click bitch");
+                //angular.element(input).triggerHandler("click");
             })
         }
     }

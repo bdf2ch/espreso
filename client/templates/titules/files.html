@@ -1,12 +1,20 @@
 <div id="documents">
     <table class="table" width="100%">
         <tbody>
+        <tr class="no-hover" ng-show="files.isLoading === true">
+            <td class="loading">
+                <img src="client/resources/img/loader.gif" alt=""/>
+                Подождите, идет загрузка...
+            </td>
+        </tr>
         <tr class="link"
             ng-repeat="file in titules.currentTituleFiles track by $index"
             ng-class="{'active': file.isActive}"
-            ng-click="titules.setCurrentObject(obj.id.value)">
+            ng-click="files.setCurrentFile(file.id.value, titules.currentTituleFiles, titules.currentFileId)">
             <td>
-                <a href="{{ file.url.value }}">{{ file.title.value }}</a>
+                <a href="{{ file.url.value }}">{{ file.title.value }}</a><span>{{" (" + file.size.value + ")" }}</span><br>
+                <span class="description caption">Добавил: </span>
+                <span class="description">{{ users.users.find("id", file.userId.value).fio.value + ", " + (file.added.value | dateDisplay) }}</span>
             </td>
         </tr>
         </tbody>

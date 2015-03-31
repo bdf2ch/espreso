@@ -3,12 +3,14 @@
     /* Подключение библиотек */
     include "server/libs/xtemplate/xtemplate.class.php";
     include "server/config.php";
+    include "server/utils.php";
 
     //unset($_COOKIE["user"]);
     /* Проверка, залогинен ли пользователь */
     if (isset($_COOKIE["user"])) {
         /* Если пользователь залогинен - цепляем шаблон приложения */
         $template = new XTemplate("server/templates/app2.html");
+        setcookie("sessionid", strtolower(generateString(6)));
         /* Соединение с БД */
         $connection = oci_connect($dbuser, $dbpassword, $dbhost, 'AL32UTF8');
         if (!$connection) {

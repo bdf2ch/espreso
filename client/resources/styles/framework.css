@@ -1,4 +1,5 @@
 .toolbar {
+  overflow: visible;
   background-color: #fafafa;
   background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
@@ -6,7 +7,22 @@
   background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
   border-right: 1px solid #F2F2F2;
+}
+.toolbar.top {
+  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
   border-bottom: 1px solid lightgrey;
+}
+.toolbar.bottom {
+  background-image: -moz-linear-gradient(top, #f2f2f2, #ffffff);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #f2f2f2, #ffffff);
+  background-image: -o-linear-gradient(top, #f2f2f2, #ffffff);
+  background-image: linear-gradient(to bottom, #f2f2f2, #ffffff);
+  border-top: 1px solid lightgray;
 }
 .toolbar .caption {
   display: block;
@@ -30,34 +46,34 @@
 }
 .toolbar .controls .separator {
   display: inline-block;
-  vertical-align: middle;
+  clear: both;
+  vertical-align: text-top;
   height: 20px;
   padding-left: 3px;
   margin-right: 3px;
   border-right: 1px solid lightgray;
 }
+.toolbar .controls label {
+  display: inline-block;
+  line-height: 21px !important;
+}
+.toolbar .controls input[type="file"] {
+  display: none;
+}
 .round-button {
+  display: inline-block;
   width: 20px;
   height: 20px;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: text-bottom;
   font-family: Arial;
   font-size: 15px;
-  line-height: 7px;
+  line-height: 20px;
   font-weight: bold;
   background: #ffffff;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-}
-.round-button input {
-  width: 20px;
-  height: 20px;
-  opacity: 1;
-  margin-left: -10px;
-  margin-top: -2px;
-  border: 1px solid #ffffff;
-  background-color: red;
 }
 .round-button img {
   width: 12px;

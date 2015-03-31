@@ -292,7 +292,7 @@ body img {
 
     #titules-details-content {
         position: absolute;
-        top: 30px;
+        top: 31px;
         left: 0px;
         bottom: 0px;
         right: 0px;
@@ -529,6 +529,15 @@ body img {
         vertical-align: top;
         font-family: "Calibri";
     }
+        .table tbody tr td a {
+            color: #2A5B9C;
+            text-decoration: none;
+            border-bottom: 1px dotted #2A5B9C;
+        }
+            .table tbody tr td a:hover {
+                color: #1f3178;
+                border-bottom: 1px dotted #1f3178;
+            }
 
     .table tbody tr td.controls {
         width: 20px;
@@ -536,6 +545,18 @@ body img {
         vertical-align: top;
         text-align: center;
     }
+
+    .table tbody tr td.loading {
+        text-align: center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        vertical-align: middle;
+    }
+        .table tbody tr td.loading img {
+            width: 28px;
+            height: 28px;
+            margin-bottom: -10px;
+        }
 
     .table tbody tr td.ext-controls {
         width: 100px;
@@ -605,27 +626,30 @@ body img {
 /* Вкладки */
 .tabs {
     display: block;
-    overflow: auto;
-    margin: 5px !important;
+    //overflow: auto;
+    margin: 3px !important;
     margin-top: 0px !important;
     padding: 0px;
     padding-left: 5px;
     padding-right: 5px;
-    border-top: 1px solid lightgray;
+    //border-top: 1px solid lightgray;
 }
     .tabs li {
         display: inline-block;
         float: left;
-        padding-top: 1px;
+        padding-top: 3px;
         padding-bottom: 2px;
         padding-left: 7px;
         padding-right: 7px;
         margin-right: 5px;
         border-left: 1px solid lightgrey;
         border-right: 1px solid lightgrey;
-        border-bottom: 2px solid lightgrey;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-bottom: 1px solid lightgrey;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: dotted;
         background: #ffffff;
         cursor: pointer;
     }
@@ -635,9 +659,10 @@ body img {
     }
 
     .tabs li.active {
-        padding-top: 5px;
+        padding-top: 8px;
         padding-bottom: 2px;
         //background: red;
+        margin-top: -1px;
     }
 
 
@@ -810,6 +835,9 @@ body img {
     line-height: 12px !important;
     font-style: italic;
 }
+    .description.caption {
+        color: black;
+    }
 
 /* Заголовок колонки */
 .column-caption {

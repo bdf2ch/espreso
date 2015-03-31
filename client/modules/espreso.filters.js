@@ -20,7 +20,7 @@ var filters = angular.module("espreso.filters", [])
                     return pylons;
                 } else
                     return input;
-            }
+            };
         }]);
 
         /* Фильтр типов объектов по массиву id допустимых типов */
@@ -43,6 +43,12 @@ var filters = angular.module("espreso.filters", [])
                     return types;
                 } else
                     return input;
-            }
+            };
+        });
+
+        $filterProvider.register("dateDisplay", function () {
+           return function (input) {
+                return moment.unix(input).format("DD MMM в HH:mm");
+           };
         });
     });

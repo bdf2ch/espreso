@@ -119,23 +119,19 @@
         <!-- Элементы управления разделом документации -->
         <div class="controls" ng-show="currentTabId === 4">
             <button class="round-button success"
-                    title="Добавить файл"
-                    ng-show="titules.currentTituleId !== -1">
+                    title="Добавить соединение с текущим объектом"
+                    ng-show="titules.currentFileId.value !== -1"
+                    ng-click="gotoAddTracePartForm()" >
                 +
-                <input type="file"
-                       title="Добавить файл"
-                       value="dfdsf"
-                       ng-show="titules.currentTituleId !== -1"
-                       nv-file-select
-                       uploader="uploader"/>
             </button>
-
-
+            <span class="separator" ng-show="titules.currentFileId.value !== -1"></span>
+            <label for="file-upload" class="round-button success" title="Добавить файл"  ng-show="titules.currentTituleId !== -1">+</label>
+            <input type="file" id="file-upload" nv-file-select uploader="uploader"/>
         </div>
     </div>
     <div id="titules-details-content" class="scrollable-area">
         <div id="titules-details-content-tabs-content" ng-include="currentTab.templateUrl"></div>
-        <div id="titules-details-content-tabs" ng-show="titules.currentTituleId !== -1">
+        <div id="titules-details-content-tabs" ng-show="titules.currentTituleId !== -1" class="toolbar bottom">
             <ul class="tabs">
                 <li ng-class="{'active': tab.active}"
                     ng-repeat="tab in tabs track by $index"

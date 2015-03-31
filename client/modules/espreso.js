@@ -173,11 +173,13 @@ var espreso = angular.module("Espreso",
             $espreso.currentUser = JSON.parse($cookies.user);
         }
 
-        $espreso.sessionId = $cookies.PHPSESSID.substr(0, 10);
+        $espreso.sessionId = $cookies.sessionid;
         $log.log("phpsessid = ", $espreso.sessionId);
 
         //$currentUser.fromCookie();
         $log.log($menu.items);
+
+        moment.locale("ru");
     });
 
 

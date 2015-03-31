@@ -14,9 +14,9 @@
                     if (file_exists($upload_folder.DIRECTORY_SEPARATOR.$tituleId)) {
                         $tempPath = $_FILES["file"]["tmp_name"];
                         $fsize = $_FILES["file"]["size"];
-                        $uploadPath = dirname(__FILE__).DIRECTORY_SEPARATOR.$upload_folder.DIRECTORY_SEPARATOR.$tituleId.DIRECTORY_SEPARATOR.$_FILES['file']['name'];
+                        $uploadPath = dirname(__FILE__).DIRECTORY_SEPARATOR.$upload_folder.DIRECTORY_SEPARATOR.$tituleId.DIRECTORY_SEPARATOR.iconv("UTF-8", "windows-1251", $_FILES['file']['name']);
                         move_uploaded_file($tempPath, $uploadPath);
-                        $furl = "server".DIRECTORY_SEPARATOR.$upload_folder.DIRECTORY_SEPARATOR.$tituleId.DIRECTORY_SEPARATOR.$_FILES["file"]["name"];
+                        $furl = "server"."/".$upload_folder."/".$tituleId."/".$_FILES["file"]["name"];
 
                         $connection = oci_connect($dbuser, $dbpassword, $dbhost, 'AL32UTF8');
 
