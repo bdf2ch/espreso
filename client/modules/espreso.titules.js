@@ -69,6 +69,8 @@ var titules = angular.module("espreso.titules", [])
             module.currentFileId = {
                 value: -1
             };
+            module.currentFileUrl = "";
+            module.currentFile = new FileItem();
             module.newTracePartStartObjectIndex = -1;
             module.currentTitulePartIsDeleted = false;
 
@@ -245,7 +247,7 @@ var titules = angular.module("espreso.titules", [])
                 if (tituleId && destination) {
                     destination.splice(0, destination.length);
                     var parameters = {
-                        action: "tituleById",
+                        action: "treeByTituleId",
                         data: {
                             id: tituleId,
                             sessionId: $espreso.sessionId
@@ -406,20 +408,22 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
             controller: "MontageSchemeController",
             active: true
         },
-        {
-            id: 2,
-            title: "Эскиз",
-            templateUrl: "client/templates/titules/virtual_map.html",
-            controller: "VirtualMapController",
-            active: false
-        },
-        {
-            id: 3,
-            title: "Линейная схема",
-            templateUrl: "client/templates/titules/linear_scheme.html",
-            controller: "LinearSchemeController",
-            active: false
-        },
+        /*
+         {
+         id: 2,
+         title: "Эскиз",
+         templateUrl: "client/templates/titules/virtual_map.html",
+         controller: "VirtualMapController",
+         active: false
+         },
+         {
+         id: 3,
+         title: "Линейная схема",
+         templateUrl: "client/templates/titules/linear_scheme.html",
+         controller: "LinearSchemeController",
+         active: false
+         },
+         */
         {
             id: 4,
             title: "Документация",
@@ -449,7 +453,7 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         $scope.titules.currentTituleFiles.push(temp_file);
     };
 
-    uploader.onCompleteAll = function() {
+    uploader.onCompleteAll = function () {
         console.info('onCompleteAll');
         uploader.clearQueue();
     };
@@ -462,14 +466,14 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         Array.prototype.push.apply(item.formData, formData);
     };
 
-    uploader.onAfterAddingFile = function(fileItem) {
+    uploader.onAfterAddingFile = function (fileItem) {
         console.info('onAfterAddingFile', fileItem);
         uploader.uploadAll();
     };
 
     /* Устанавливает активну вкладку */
     $scope.setActiveTab = function (index) {
-        if (index !== undefined ) {
+        if (index !== undefined) {
             $log.log("$index = ", index);
             angular.forEach($scope.tabs, function (tab, key) {
                 if (key === index) {
@@ -511,6 +515,16 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         $location.url("/new-trace-part");
     };
 
+
+    $scope.deleteFileCallback = function (data) {
+        if (parseInt(data) !== 0) {
+            $log.log(data);
+            angular.forEach($scope.titules.currentTituleFiles, function (file, key) {
+                if (file.id.value === $scope.titules.currentFileId.value)
+                    $scope.titules.currentTituleFiles.splice(key, 1);
+            });
+        }
+    };
 
 
 }]);

@@ -47,8 +47,19 @@ var filters = angular.module("espreso.filters", [])
         });
 
         $filterProvider.register("dateDisplay", function () {
-           return function (input) {
+            return function (input) {
                 return moment.unix(input).format("DD MMM в HH:mm");
-           };
+            };
+        });
+
+        $filterProvider.register("fileSize", function () {
+            return function (input) {
+                var result = input / 1024;
+                if ((result / 1024) >= 1)
+                    return (result / 1024).toFixed(2) + " мб";
+                else
+                    return result.toFixed(0) + " кб";
+
+            };
         });
     });

@@ -548,7 +548,7 @@ body img {
 
     .table tbody tr td.loading {
         text-align: center;
-        padding-top: 30px;
+        padding-top: 50px;
         padding-bottom: 30px;
         vertical-align: middle;
     }
@@ -797,7 +797,7 @@ body img {
 }
 
 .no-data {
-    padding-top: 20px;
+    padding-top: 50px !important;
     font-size: 18px;
     color: gray;
     text-shadow: rgb(255, 255, 255) 0px 1px 0px;

@@ -12,9 +12,21 @@
             ng-class="{'active': file.isActive}"
             ng-click="files.setCurrentFile(file.id.value, titules.currentTituleFiles, titules.currentFileId)">
             <td>
-                <a href="{{ file.url.value }}">{{ file.title.value }}</a><span>{{" (" + file.size.value + ")" }}</span><br>
-                <span class="description caption">Добавил: </span>
-                <span class="description">{{ users.users.find("id", file.userId.value).fio.value + ", " + (file.added.value | dateDisplay) }}</span>
+                <img src="" alt=""/>
+            </td>
+            <td>
+                <a href="{{ file.url.value }}">{{ file.title.value }}</a><br>
+                <span class="description caption">размер:</span>
+                <span class="description">{{ file.size.value | fileSize}}</span>
+                <span class="description caption">&nbsp;  добавил: </span>
+                <span class="description">{{ users.users.find("id", file.userId.value).fio.value }}</span>
+                <span class="description caption">&nbsp; добавлен:</span>
+                <span class="description">{{ file.added.value | dateDisplay }}</span>
+            </td>
+        </tr>
+        <tr class="no-hover" ng-show="titules.currentTituleFiles.length === 0 && files.isLoading === false">
+            <td class="no-data text-center">
+                Файлы отсутствуют
             </td>
         </tr>
         </tbody>

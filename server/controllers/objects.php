@@ -30,6 +30,12 @@
                 case "tituleById":
                     get_objects_by_titule_id($postdata);
                     break;
+
+
+                /* ex */
+                case "treeByTituleId":
+                    get_tree_by_titule_id($postdata);
+                    break;
             }
         }
         oci_close($connection);
@@ -173,6 +179,59 @@
         else
             echo json_encode($result);
 
+    };
+
+
+
+    function get_tree_by_titule_id ($postdata) {
+        global $connection;
+        $data = $postdata -> data;
+        $cursor = oci_new_cursor($connection);
+        $result = array();
+
+        if (!$statement = oci_parse($connection, "begin pkg_objects.p_get_child_nodes(:ttl_id, :session_id, :child_nodes); end;")) {
+            $error = oci_error();
+            echo $error["message"];
+        } else {
+
+            if (!oci_bind_by_name($statement, ":ttl_id", $data -> tituleId, -1, OCI_DEFAULT)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+
+            if (!oci_bind_by_name($statement, ":session_id", $data -> sessionId, -1, OCI_DEFAULT)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+
+            if (!oci_bind_by_name($statement, ":child_nodes", $cursor, -1, OCI_B_CURSOR)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+
+            if (!oci_execute($statement)) {
+                $error = oci_error();
+                echo $error["message"];
+            } else {
+                if (!oci_execute($cursor)) {
+                    $error = oci_error();
+                    echo $error["message"];
+                } else {
+                    while ($child_node = oci_fetch_assoc($cursor))
+                        array_push($result, $child_node);
+                }
+            }
+        }
+
+        /* Освобождение ресурсов */
+        oci_free_statement($statement);
+        oci_free_statement($cursor);
+
+        /* Возврат результата */
+        if (sizeof($result) == 0)
+            echo json_encode(0);
+        else
+            echo json_encode($result);
     };
 
 ?>

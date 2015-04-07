@@ -17,14 +17,20 @@ var files = angular.module("espreso.files", [])
                 }
             };
 
-            /*** Помечает файл с идентификатором fileId как текущий ***/
+            /**
+             * Помечает файл с идентификатором fileId как текущий
+             * @param fileId - идентификатор объекта
+             * @param files - массив объектов типа FileItem
+             * @param destination - приемник найденного оюъекта
+             */
             module.setCurrentFile = function (fileId, files, destination) {
-                if (fileId !== undefined && files !== undefined && destination !== undefined) {
+                if (fileId !== undefined && files !== undefined && files.constructor === Array && destination !== undefined) {
                     $log.log("destination start value = ", destination.value);
                     angular.forEach(files, function (file) {
                         if (file.id.value === fileId) {
                             if (file.isActive === false) {
                                 file.setToActive(true);
+                                //destination = file;
                                 destination.value = file.id.value;
                             } else {
                                 file.setToActive(false);
@@ -37,6 +43,29 @@ var files = angular.module("espreso.files", [])
                     $log.log("destination id = ", destination.value);
                 }
             };
+
+            /**
+             *
+             * @param fileId
+             * @param files
+             */
+            module.setCurrent = function (fileId, files) {
+                if (fileId !== undefined && files !== undefined) {
+                    angular.forEach(files, function (file) {
+                        if (file.id.value === fileId) {
+                            if (file.isActive === true) {
+                                file.setToActive(true);
+                                return file;
+                            } else {
+                                file.setToActive(false);
+                            }
+                        } else {
+                            file.setToActive(false);
+                        }
+                    });
+                }
+            };
+
 
             /*** Получает файлы по id титула ***/
             module.getFilesByTituleId = function (tituleId, destination) {
@@ -82,6 +111,30 @@ var files = angular.module("espreso.files", [])
                                 var temp_file = new FileItem();
                                 temp_file.fromSOURCE(data);
                                 destination.push(temp_file);
+                            }
+                        }
+                    );
+                }
+            };
+
+
+            /**
+             * Удаляет файл с идентификатором fileId
+             * @param {number} fileId Идентификатор файла
+             * @param {function} callbackFn Callback-функция
+             */
+            module.delete = function (fileId, callbackFn) {
+                if (fileId !== undefined) {
+                    var params = {
+                        action: "deleteById",
+                        data: {
+                            id: fileId
+                        }
+                    };
+                    $http.post("server/controllers/files-controller.php", params)
+                        .success(function (data) {
+                            if (callbackFn !== undefined) {
+                                callbackFn(data);
                             }
                         }
                     );

@@ -56,16 +56,20 @@
 .toolbar .controls label {
   display: inline-block;
   line-height: 21px !important;
+  clear: both;
 }
 .toolbar .controls input[type="file"] {
   display: none;
 }
+.toolbar .controls input {
+  padding: 0px;
+}
 .round-button {
-  display: inline-block;
+  display: table-cell;
   width: 20px;
   height: 20px;
   text-align: center;
-  vertical-align: text-bottom;
+  vertical-align: bottom;
   font-family: Arial;
   font-size: 15px;
   line-height: 20px;
@@ -104,4 +108,7 @@
 }
 .round-button.action:hover {
   background: #4B8CD1;
+}
+.round-button.icon {
+  font-family: "Lucida Sans Unicode";
 }

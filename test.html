@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="/cars/client/libs/cheesejs/cheese.js"></script>
+<script>
+
+    function Food () {
+        this.id = new Field({ default: 0, source: "food_id", value: 0 });
+        this.title = new Field({ default: "", source: "food_title", value: "" });
+        this.calories = new Field({ default: 0, source: "food_calories", value: 0 });
+    };
+    Food.prototype = new Model({ _controller: "path-to-controller.py" });
+    Food.prototype.constructor = Food;
+
+    var foods = new Storage({ _model: new Food() });
+
+
+    var mango = new Food();
+    var mango_json = {
+        food_id: 5,
+        food_title: "mango"
+        //food_calories: 150
+    };
+
+
+    mango._fromJSON(mango_json);
+    //mango._model.state.setActive(true);
+    //mango._model.state.setEditMode(true);
+    //mango._model.setupBackup();
+    console.log(mango);
+    console.log(foods);
+</script>
+
+</body>
+</html>

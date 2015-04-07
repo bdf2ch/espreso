@@ -46,6 +46,7 @@
     height: 100%;
     padding: 5px;
     vertical-align: middle;
+
     .separator {
       display: inline-block;
       //float: left;
@@ -56,23 +57,30 @@
       margin-right: 3px;
       border-right: 1px solid lightgray;
     }
+
     label {
       display: inline-block;
       line-height: 21px !important;
+      clear: both;
     }
+
     input[type="file"] {
       display: none;
+    }
+
+    input {
+      padding: 0px;
     }
   }
 }
 
 
 .round-button {
-  display: inline-block;
+  display: table-cell;
   width: 20px;
   height: 20px;
   text-align: center;
-  vertical-align: text-bottom;
+  vertical-align: bottom;
   font-family: Arial;
   font-size: 15px;
   line-height: 20px;
@@ -115,6 +123,10 @@
     &:hover {
       background: #4B8CD1;
     }
+  }
+
+  &.icon {
+    font-family: "Lucida Sans Unicode";
   }
 
 }

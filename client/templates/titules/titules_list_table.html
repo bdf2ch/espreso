@@ -118,14 +118,22 @@
         </div>
         <!-- Элементы управления разделом документации -->
         <div class="controls" ng-show="currentTabId === 4">
-            <button class="round-button success"
-                    title="Добавить соединение с текущим объектом"
+            <!--<button class="round-button action icon"
+                    title="Скачать файл"
                     ng-show="titules.currentFileId.value !== -1"
-                    ng-click="gotoAddTracePartForm()" >
-                +
+                    ng-click="" >
+                &#8595;
             </button>
+            -->
+            <button class="round-button error"
+                    title="Удалить файл"
+                    ng-show="titules.currentFileId.value !== -1"
+                    ng-click="files.delete(titules.currentFileId.value, deleteFileCallback)" >
+                &#8722;
+            </button>
+
             <span class="separator" ng-show="titules.currentFileId.value !== -1"></span>
-            <label for="file-upload" class="round-button success" title="Добавить файл"  ng-show="titules.currentTituleId !== -1">+</label>
+            <label for="file-upload" class="round-button success" title="Добавить файл"  ng-show="titules.currentTituleId !== -1">&#43;</label>
             <input type="file" id="file-upload" nv-file-select uploader="uploader"/>
         </div>
     </div>
