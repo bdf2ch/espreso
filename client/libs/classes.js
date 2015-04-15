@@ -486,9 +486,11 @@ function Point () {
     this.y = new Field({ source: "Y", value: "" });                          // Y - координата
     this.description = new Field({ source: "DESCRIPTION", value: "" });     // Описание
     this.typeahead = "";
+    this.coordinates = "";
 
     this.onInit = function () {
         this.typeahead = this.title.value + " [" + this.latitude.value + ", " + this.longitude.value + ", " + this.altitude.value + "]";
+        this.coordinates = this.latitude.value + ", " + this.longitude.value + ", " + this.latitude.value;
     };
 
     this.reset = function () {
@@ -511,18 +513,27 @@ Point.prototype.constructor = Point;
  * Класс объекта
  *****/
 function Obj () {
-    this.id = new Field({ source: "ID", value: 0 });                        // Идентификатор
+    this.id = new Field({ source: "NODE_ID", value: 0 });                        // Идентификатор
     this.pointId = new Field({ source: "POINT_ID", value: 0 });             // Идентификатор географической точки
     this.tituleId = new Field({ source: "TITULE_ID", value: 0 });
     this.titulePartId = new Field({ source: "TITULE_PART_ID", value: 0 });
+    this.links = new Field({ source: "OUT_LINKS", value: 0 });
+    this.children = [];
     this.objectTypeId = 0;
 
     this.reset = function () {
 
     };
+
+    this.onInit = function () {
+        //this.levels.splice(0, this.levels.length);
+        //for (var i = 1; i < this.level.value; i++) {
+            //this.levels.push(i);
+        //}
+    };
 };
 Obj.prototype = new DataModel();
-Object.prototype.constructor = Obj;
+Obj.prototype.constructor = Obj;
 
 
 function ObjectType () {
@@ -595,7 +606,7 @@ ContractorType.prototype.constructor = ContractorType;
  * Класс опоры
  *****/
 function Pylon () {
-    this.id = new Field({ source: "OBJECT_ID", value: 0 });
+    this.id = new Field({ source: "NODE_ID", value: 0 });
     //this.objectId = new Field({ source: "OBJECT_ID", value: 0 });
     this.objectTypeId = new Field({ source: "OBJECT_TYPE_ID", value: 1 });
     this.pointId = new Field({ source: "POINT_ID", value: 0 });
@@ -603,11 +614,18 @@ function Pylon () {
     this.pylonSchemeTypeId = new Field({ source: "PYLON_SCHEME_TYPE_ID", value: 0 });
     this.powerLineId = new Field({ source: "POWER_LINE_ID", value: 0 });
     this.number = new Field({ source: "PYLON_NUMBER", value: 0 });
+    this.links = new Field({ source: "OUT_LINKS", value: 0 });
+    this.children = [];
     this.objectTypeId = 1;
     this.typeahead = "";
 
     this.onInit = function () {
         this.typeahead = "#" + this.number.value;
+
+        //this.levels.splice(0, this.levels.length);
+        //for (var i = 1; i < this.level.value; i++) {
+        //    this.levels.push(i);
+        //}
     };
 
     this.reset = function () {

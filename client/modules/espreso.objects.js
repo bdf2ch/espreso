@@ -8,7 +8,7 @@
 
 var objects = angular.module("espreso.objects", [])
     .config(function ($provide) {
-        $provide.factory("$objects", ["$log", "$http", "$window", function ($log, $http, $window) {
+        $provide.factory("$objects", ["$log", "$http", "$window", "$espreso", function ($log, $http, $window, $espreso) {
             var module = [];
 
             module.objectTypes = new Collection(new ObjectType());
@@ -98,6 +98,27 @@ var objects = angular.module("espreso.objects", [])
                              if (callback)
                                  callback();
                         });
+                }
+            };
+
+
+            /*** Получение дочерних узлов по id узла ***/
+            module.getChildNodes = function (nodeId, callback) {
+                if (nodeId !== undefined) {
+                    $log.log("callback called");
+                    var params = {
+                        action: "getChildNodes",
+                        data: {
+                            nodeId: nodeId,
+                            sessionId: $espreso.sessionId
+                        }
+                    };
+
+                    $http.post("server/controllers/nodes.php", params)
+                        .success(function (data) {
+                            callback(nodeId, data);
+                        }
+                    );
                 }
             };
 

@@ -16,11 +16,11 @@
             </td>
             <td>
                 <a href="{{ file.url.value }}">{{ file.title.value }}</a><br>
-                <span class="description caption">размер:</span>
+                <span class="description caption">Размер:</span>
                 <span class="description">{{ file.size.value | fileSize}}</span>
-                <span class="description caption">&nbsp;  добавил: </span>
+                <span class="description caption">&nbsp; &nbsp;  Добавил: </span>
                 <span class="description">{{ users.users.find("id", file.userId.value).fio.value }}</span>
-                <span class="description caption">&nbsp; добавлен:</span>
+                <span class="description caption">&nbsp; &nbsp; Добавлен:</span>
                 <span class="description">{{ file.added.value | dateDisplay }}</span>
             </td>
         </tr>

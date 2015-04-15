@@ -130,3 +130,123 @@
   }
 
 }
+
+
+/*** TREE ***/
+.tree {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 0px;
+
+  &.nested {
+    padding-left: 15px;
+  }
+
+  li {
+    padding: 5px;
+    list-style-type: none;
+    border-left: 1px dotted gray;
+  }
+}
+
+/*** MISC ***/
+.level {
+  position: relative;
+  display: inline-block;
+  float: left;
+  //clear: both;
+  width: 25px;
+  height: 47px;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  vertical-align: top;
+  //border: 1px solid red;
+
+    &:first-of-type {
+     margin-left: 10px;
+     //height: 100%;
+     //border-left: 2px solid lightblue;
+      .level-top {
+        border-left: 2px solid lightblue;
+      }
+
+      .level-bottom {
+        border-left: 2px solid lightblue;
+      }
+    }
+
+    &:last-of-type {
+    //border-left: 2px solid lightblue;
+    //border-bottom: 2px solid lightblue;
+      .level-top {
+        border-left: 2px solid lightblue;
+        border-bottom: 1px solid lightblue;
+      }
+    }
+
+
+    .level-top {
+      position: relative;
+      display: block;
+      height: 50%;
+      //background: blue;
+      border-bottom: 1px solid lightblue;
+
+      &:first-of-type {
+        //border-left: 2px solid lightblue;
+      }
+    }
+
+    .level-bottom {
+      position: relative;
+      display: block;
+      height: 50%;
+      //background: red;
+      border-top: 1px solid lightblue;
+
+      &:first-of-type {
+        border-left: 2px solid lightblue;
+      }
+    }
+}
+
+.level-container {
+  position: relative;
+  display: inline-block;
+  height: 50%;
+  &:first-child {
+    border: 1px solid red;
+
+  }
+}
+
+
+/*** STATES ***/
+.hover {
+  cursor: pointer;
+  &:hover {
+    background: #D3EDF5;
+  }
+}
+
+
+/*** NODES ***/
+.collapse {
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+  color: lightgrey;
+  vertical-align: text-top !important;
+
+  &:hover {
+    color: black;
+  }
+}
+
+.node-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: lightcyan;
+}

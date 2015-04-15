@@ -59,6 +59,7 @@ var titules = angular.module("espreso.titules", [])
 
             module.titules = new Collection(new Titule());
             module.parts = new Collection(new TitulePart());
+            module.currentTitule = new Titule();
             module.currentTituleId = -1;
             module.currentTitulePartId = -1;
             module.currentTitulePartsCount = 0;
@@ -246,17 +247,21 @@ var titules = angular.module("espreso.titules", [])
             module.getTituleById = function (tituleId, destination) {
                 if (tituleId && destination) {
                     destination.splice(0, destination.length);
+                    var titule = module.titules.find("id", tituleId);
                     var parameters = {
-                        action: "treeByTituleId",
+                        action: "getPath",
                         data: {
-                            id: tituleId,
+                            startNodeId: titule.startObjectId.value,
+                            endNodeId: titule.endObjectId.value,
                             sessionId: $espreso.sessionId
                         }
                     };
 
-                    $http.post("server/controllers/objects.php", parameters)
+
+                    $http.post("server/controllers/nodes.php", parameters)
                         .success(function (data) {
-                           if (data && parseInt(data) !== 0) {
+                            if (data && parseInt(data) !== 0) {
+
                                angular.forEach(data, function (value, key) {
                                    switch (parseInt(value["OBJECT_TYPE_ID"])) {
                                        case 0:
@@ -274,8 +279,11 @@ var titules = angular.module("espreso.titules", [])
                                            break;
                                    }
                                });
+
                            }
+
                         });
+
                 }
             };
 
@@ -296,6 +304,7 @@ var titules = angular.module("espreso.titules", [])
                             if (titule.isActive === false) {
                                 titule.setToActive(true);
                                 module.currentTituleId = titule.id.value;
+                                module.currentTitule = titule;
                                 module.currentObjectId = -1;
                                 module.getTituleById(tituleId, module.currentTituleObjects);
                                 $files.getFilesByTituleId(module.currentTituleId, module.currentTituleFiles);
@@ -345,6 +354,36 @@ var titules = angular.module("espreso.titules", [])
                             }
                         } else
                             object.setToActive(false);
+                    });
+                }
+            };
+
+
+            module.getChildNodes = function (nodeId, data) {
+                if (nodeId !== undefined) {
+                    $log.log("titules callback called");
+                    angular.forEach(module.currentTituleObjects, function (node) {
+                        if (node.id.value === nodeId) {
+                            node.children.splice(0, node.children.length);
+                            var temp_node = {};
+                            angular.forEach(data, function (child) {
+                                switch (parseInt(child["OBJECT_TYPE_ID"])) {
+                                    case 0:
+                                        $log.log("child is unknown objects");
+                                        temp_node = new Obj();
+                                        temp_node.fromSOURCE(child);
+                                        temp_node.onInit();
+                                        break;
+                                    case 1:
+                                        $log.log("child is pylon");
+                                        temp_node = new Pylon();
+                                        temp_node.fromSOURCE(child);
+                                        temp_node.onInit();
+                                        break;
+                                }
+                            });
+                            node.children.push(temp_node);
+                        }
                     });
                 }
             };
@@ -525,7 +564,6 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
             });
         }
     };
-
 
 }]);
 

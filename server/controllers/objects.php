@@ -189,7 +189,9 @@
         $cursor = oci_new_cursor($connection);
         $result = array();
 
-        if (!$statement = oci_parse($connection, "begin pkg_objects.p_get_child_nodes(:ttl_id, :session_id, :child_nodes); end;")) {
+        //echo(json_encode($data));
+
+        if (!$statement = oci_parse($connection, "begin pkg_objects.p_get_tree_by_titule_id(:ttl_id, :session_id, :tree); end;")) {
             $error = oci_error();
             echo $error["message"];
         } else {
@@ -204,7 +206,7 @@
                 echo $error["message"];
             }
 
-            if (!oci_bind_by_name($statement, ":child_nodes", $cursor, -1, OCI_B_CURSOR)) {
+            if (!oci_bind_by_name($statement, ":tree", $cursor, -1, OCI_B_CURSOR)) {
                 $error = oci_error();
                 echo $error["message"];
             }

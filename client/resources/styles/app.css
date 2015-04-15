@@ -488,6 +488,18 @@ body img {
     border-spacing: 0px;
     table-layout: auto;
 }
+.table.tree {
+    //margin-left: 10px;
+
+}
+    .table.tree .collapse {
+        //margin-left: -14px;
+    }
+    .table.tree td {
+        //border-left: 1px dotted lightgray;
+    }
+
+
     .table caption {
         padding-bottom: 5px;
         color: gray;
@@ -544,6 +556,20 @@ body img {
         padding-top: 8px;
         vertical-align: top;
         text-align: center;
+    }
+
+    .table tbody tr td.tree {
+        min-width: 1px;
+        width: auto;
+    }
+
+    .table tbody tr td.collapse {
+        vertical-align: middle !important;
+        width: 20px;
+    }
+
+    .table tbody tr td.icon {
+        width: 45px;
     }
 
     .table tbody tr td.loading {
@@ -830,18 +856,20 @@ body img {
 
 /* Описание объекта */
 .description {
+    //display: inline-block;
     color: grey;
     font-size: 15px;
     line-height: 12px !important;
     font-style: italic;
 }
     .description.caption {
+        display: inline-block;
         color: black;
     }
 
 /* Заголовок колонки */
 .column-caption {
-    display: block;
+    //display: block;
     text-align: left;
     text-transform: uppercase;
     color: gray;
