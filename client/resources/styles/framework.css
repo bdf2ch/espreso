@@ -278,6 +278,9 @@
 .node-icon.unknown {
   background: url("../img/unknown_object.png") center center;
 }
+.node-icon.pylon {
+  background: url("../img/pylon.png") center center;
+}
 .node-details {
   position: relative;
   display: inline-block;

@@ -16,7 +16,7 @@
                     <span class="expander">+</span>
                 </span>
 
-                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0}"></div>
+                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0, 'pylon': item.objectTypeId === 1}"></div>
                 <!-- Подробности об узле -->
                 <div class="node-details">
                     <!-- Если узел является опорой -->
@@ -41,7 +41,7 @@
             </div>
             <div ng-if="node.branches && node.branches.length > 0"
                  ng-include="'branches'"
-                 ng-init="node.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); scope = scope;">
+                 ng-init="node.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); this.scope = scope;">
             </div>
         </li>
     </ul>
@@ -88,7 +88,7 @@
                     </span>
                 </span>
 
-                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0}"></div>
+                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0, 'pylon': item.objectTypeId === 1}"></div>
                 <!-- Подробности об узле -->
                 <div class="node-details">
 

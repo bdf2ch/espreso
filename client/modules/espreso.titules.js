@@ -295,8 +295,8 @@ var titules = angular.module("espreso.titules", [])
                                            temp_pylon.fromSOURCE(value);
                                            temp_pylon.onInit();
                                            destination.push(temp_pylon);
-                                           module.objects.add(temp_obj);
-                                           module.currentTituleNodes.appendNode(temp_obj);
+                                           module.objects.add(temp_pylon);
+                                           module.currentTituleNodes.appendNode(temp_pylon);
                                            break;
                                    }
                                });
