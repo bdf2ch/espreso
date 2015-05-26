@@ -517,8 +517,8 @@ function Obj () {
     this.pointId = new Field({ source: "POINT_ID", value: 0 });             // Идентификатор географической точки
     this.tituleId = new Field({ source: "TITULE_ID", value: 0 });
     this.titulePartId = new Field({ source: "TITULE_PART_ID", value: 0 });
-    this.links = new Field({ source: "OUT_LINKS", value: 0 });
-    this.children = [];
+    this.branchesCount = new Field({ source: "OUT_PATHS", value: 0 });
+    //this.children = [];
     this.objectTypeId = 0;
 
     this.reset = function () {
@@ -530,6 +530,7 @@ function Obj () {
         //for (var i = 1; i < this.level.value; i++) {
             //this.levels.push(i);
         //}
+        //this.children.splice(0, this.children.length);
     };
 };
 Obj.prototype = new DataModel();
@@ -614,13 +615,14 @@ function Pylon () {
     this.pylonSchemeTypeId = new Field({ source: "PYLON_SCHEME_TYPE_ID", value: 0 });
     this.powerLineId = new Field({ source: "POWER_LINE_ID", value: 0 });
     this.number = new Field({ source: "PYLON_NUMBER", value: 0 });
-    this.links = new Field({ source: "OUT_LINKS", value: 0 });
-    this.children = [];
+    this.branchesCount = new Field({ source: "OUT_PATHS", value: 0 });
+    //this.children = [];
     this.objectTypeId = 1;
     this.typeahead = "";
 
     this.onInit = function () {
         this.typeahead = "#" + this.number.value;
+        //this.children.splice(0, this.children.length);
 
         //this.levels.splice(0, this.levels.length);
         //for (var i = 1; i < this.level.value; i++) {
@@ -791,7 +793,7 @@ UnionType.prototype = new DataModel();
  * Класс соединения
  *****/
 function TracePart () {
-    this.id = new Field({ source: "ID", value: 0 });
+    this.id = new Field({ source: "LINK_ID", value: 0 });
     this.startObjectId = new Field({ source: "START_OBJECT_ID", value: 0 });
     this.endObjectId = new Field({ source: "END_OBJECT_ID", value: 0 });
     this.tituleId = new Field({ source: "TITULE_ID", value: 0 });
@@ -817,6 +819,7 @@ function TracePart () {
 };
 TracePart.prototype = new DataModel();
 TracePart.prototype.constructor = TracePart;
+
 
 
 
@@ -1043,3 +1046,361 @@ function FileItem () {
 };
 FileItem.prototype = new DataModel();
 FileItem.prototype.constructor = FileItem;
+
+
+
+
+
+
+
+function TituleNodes () {
+    this.path = {
+        nodes: []
+    };
+    this.pathNodeIds = [];      // Массив идентификаторов узлов в пути титула
+    this.stack = [];            // Глобальный стек всех узлов титула
+
+
+    /**
+     * Добавляет узел в конец массива узлов пути и в глобальный стек узлов
+     * @param node - Добавляемый узел
+     */
+    this.appendNode = function (node) {
+        console.log(this);
+        if (this.path.nodes.length > 0) {
+            node.prevNodeIndex = this.path.nodes.length - 1;
+            node.prevNodeId = this.path.nodes[node.prevNodeIndex].id.value;
+            this.path.nodes[node.prevNodeIndex].nextNodeIndex = node.prevNodeIndex + 1;
+            this.path.nodes[node.prevNodeIndex].nextNodeId = node.id.value;
+        } else {
+            node.prevNodeIndex = -1;
+            node.prevNodeId = -1;
+        }
+        node.nextNodeIndex = -1;
+        node.nextNodeId = -1;
+        node.haveBranches = node.branchesCount.value > 0 ? true : false;
+        node.collapsed = true;
+
+        this.path.nodes.push(node);
+        this.stack.push(node);
+        console.log("appended node to path ", node);
+    };
+
+
+
+    /**
+     * Добавляет узел после узла, заданного идентификатором prevNodeId
+     * @param prevNodeId - Идентификатор узла, за которым будет добавлен новый узел
+     * @param node - Узел, который будет добавлен
+     * @returns {boolean}
+     */
+    this.insertNodeAfter = function (prevNodeId, node) {
+        for (var i = 0; i < this.path.nodes.length; i++) {
+            if (this.path.nodes[i].id.value === prevNodeId) {
+                node.prevNodeIndex = i;
+                node.nextNodeIndex = this.path.nodes[i].nextNodeIndex;
+                node.nextNodeId = this.path.nodes[i].nextNodeId;
+                node.prevNodeId = this.path.nodes[i].id.value;
+                node.haveBranches = node.branchesCount.value > 0 ? true : false;
+                node.collapsed = true;
+                this.path.nodes[i].nextNodeId = node.id.value;
+                if (this.path.nodes[i + 1] !== undefined) {
+                    this.path.nodes[i + 1].prevNodeIndex = i + 1;
+                    this.path.nodes[i + 1].prevNodeId = node.id.value;
+                }
+                if (this.path.nodes[i].parentId !== undefined) {
+                    for (var y = 0; y < this.stack.length; y++) {
+                        if (this.stack[y] === this.path.nodes[i].parentId) {
+                            this.appendChild(this.stack[y].id.value, node);
+                        }
+                    }
+                }
+                this.path.nodes.splice(i + 1, 0 , node);
+                this.stack.splice(i + 1, 0, node);
+            }
+        }
+    };
+
+
+    /**
+     * Добавляет узел после узла, заданного идентификатором prevNodeId в ответвление, заданное идентификатором branchId
+     * @param nodeId {Number}
+     * @param branchId {Number}
+     * @param prevNodeId {Number}
+     * @param node {Object}
+     */
+    this.insertNodeAfterToBranch = function (nodeId, branchId, prevNodeId, node) {
+        if (nodeId !== undefined && branchId !== undefined && prevNodeId !== undefined && node !== undefined) {
+            var length = this.stack.length;
+            var branch_length = 0;
+            var i, x = 0;
+
+            for (i = 0; i < length; i++) {
+                if (this.stack[i].id.value === nodeId) {
+                    if (this.stack[i].branches !== undefined && this.stack[i].branches[branchId] !== undefined) {
+                        branch_length = this.stack[i].branches[branchId].length;
+                        for (x = 0; x < branch_length; x++) {
+                            if (this.stack[i].branches[branchId][x].id.value === prevNodeId) {
+                                node.prevNodeIndex = x;
+                                node.nextNodeIndex = this.stack[i].branches[branchId][x].nextNodeIndex;
+                                node.nextNodeId = this.stack[i].branches[branchId][x].nextNodeId;
+                                node.prevNodeId = this.stack[i].branches[branchId][x].id.value;
+                                node.haveBranches = node.branchesCount.value > 0 ? true : false;
+                                node.collapsed = true;
+
+                                /* Вносим изменения в предыдущий него */
+                                this.stack[i].branches[branchId][x].nextNodeIndex = x + 1;
+                                this.stack[i].branches[branchId][x].nextNodeId = node.id.value;
+
+
+                                /* Если в ответвлении существует следующий после текущего узел, то вносим изменения в него */
+                                if (this.stack[i].branches[branchId][x + 1] !== undefined) {
+                                    this.stack[i].branches[branchId][x + 1].prevNodeIndex = x + 1;
+                                    this.stack[i].branches[branchId][x + 1].prevNodeId = node.id.value;
+                                }
+
+                                this.stack[i].branches[branchId].splice(x + 1, 0, node);
+                                this.stack.push(node);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+
+    /**
+     * Добавляет узел в ответвление от заданного узла
+     * @param nodeId
+     * @param node
+     */
+
+    this.addBranch = function (nodeId, node) {
+        var length = this.stack.length;
+        for (var i = 0; i < length; i++) {
+            if (this.stack[i].id.value === nodeId) {
+                this.stack[i].children = [];
+                node.prevNodeIndex = i;
+                node.prevNodeId = this.stack[node.prevNodeIndex].id.value;
+                node.nextNodeIndex = -1;
+                node.nextNodeId = -1;
+                this.stack[i].children.push(node);
+                this.stack.push(node);
+            }
+        }
+    };
+
+
+    /**
+     * Добавляет дочерний узел в заданный узел
+     * @param nodeIndex
+     * @param child
+     */
+    this.appendChild = function (nodeId, child) {
+        for (var i = 0; i < this.stack.length; i++) {
+            if (this.stack[i].id.value === nodeId) {
+                if (this.stack[i].children === undefined)
+                    this.stack[i].children = [];
+                child.parentId = this.stack[i].id.value;
+                child.haveChildren = child.links.value > 0 ? true : false;
+                child.prevNodeIndex = this.stack[i].children.length > 0 ? this.stack[i].children.length - 1 : -1;
+                child.prevNodeId = child.prevNodeIndex === -1 ? -1 : this.stack[i].children[child.prevNodeIndex].id.value;
+                child.nextNodeIndex = -1;
+                child.nextNodeId = -1;
+                this.stack[i].children.push(child);
+                this.stack.push(child);
+                console.log(child, " appended to ", child.parentId);
+                console.log(this.stack[i].children);
+            }
+        }
+
+    };
+
+
+    /**
+     * Добавляет узел в указанное ответвление
+     * @param nodeId {Number} - Идентификатор узла, в ответвление которого требуется добавить узел
+     * @param branchId {number} - Идентификатор пути ответвления
+     * @param node {Object} - Узел, который требуется добавить
+     */
+    this.appendNodeToBranch = function (nodeId, branchId, node) {
+        var length = this.stack.length;
+        var i = 0;
+        var prevNodeIndex = -1;
+
+        for (i = 0; i < length; i++) {
+            if (this.stack[i].id.value === nodeId) {
+
+                /* Если у узла отстуствует массив с ответвлениями - добавляем его */
+                if (this.stack[i].branches === undefined)
+                    this.stack[i].branches = [];
+
+                /* Если у узла отсутсвует ответвление с идентификатором branchId - добавляем его в массив ответвлений */
+                if (this.stack[i].branches[branchId] === undefined)
+                    this.stack[i].branches[branchId] = [];
+
+                node.parentId = nodeId;
+                node.pathId = branchId;
+                prevNodeIndex = this.stack[i].branches[branchId].length > 0 ? this.stack[i].branches[branchId].length - 1 : -1;
+                node.prevNodeId = prevNodeIndex !== -1 ? this.stack[i].branches[branchId][prevNodeIndex].id.value : -1;
+                if (prevNodeIndex !== -1)
+                    this.stack[i].branches[branchId][prevNodeIndex].nextNodeId = node.id.value;
+                node.nextNodeId = -1;
+                node.haveBranches = node.branchesCount.value > 0 ? true : false;
+                node.collapsed = true;
+                this.stack[i].branches[branchId].push(node);
+                this.stack[i].isOpened = true;
+                this.stack.push(node);
+                console.log(this.stack[i]);
+            }
+        }
+    };
+
+
+
+    /**
+     * Отмечает узел как активный
+     * @param nodeIndex {Number} - Идентификатор узла, который требуется отметить как активный
+     */
+    this.select = function (nodeId) {
+        var selectedNodeId = -1;
+        var i = 0;
+
+        for (i = 0; i < this.stack.length; i++) {
+            if (this.stack[i].id.value === nodeId) {
+                if (this.stack[i].isActive === false) {
+                    selectedNodeId = this.stack[i].id.value;
+                    this.stack[i].isActive = true;
+                    console.log("node id = ", this.stack[i].id.value);
+                    console.log("prev node id = ", this.stack[i].prevNodeId);
+                    console.log("next node id = ", this.stack[i].nextNodeId);
+                    console.log(this.stack[i]);
+                } else {
+                    this.stack[i].isActive = false;
+                    selectedNodeId = -1;
+                }
+            } else {
+                this.stack[i].isActive = false;
+            }
+        }
+        //console.log("selected = ", selectedNode);
+        return selectedNodeId;
+    };
+
+
+    this.expand = function (nodeId) {
+        if (nodeId !== undefined) {
+            var length = this.stack.length;
+            var i = 0;
+            for (i = 0; i < length; i++) {
+                if (this.stack[i].id.value === nodeId) {
+                    this.stack[i].collapsed = false;
+                }
+            }
+        }
+    };
+
+
+    this.collapse = function (nodeId) {
+        if (nodeId !== undefined) {
+            var length = this.stack.length;
+            var i = 0;
+
+            for (i = 0; i < length; i++) {
+                if (this.stack[i].id.value === nodeId) {
+                    this.stack[i].collapsed = true;
+                }
+            }
+        }
+    };
+
+
+    /**
+     * Проверяет, является ли узел активным
+     * @param nodeId - Идентификатор узла
+     * @returns {boolean} - Возвращает флаг, является ли узел активным
+     */
+    this.isNodeActive = function (nodeId) {
+        if (nodeId !== undefined) {
+            var length = this.stack.length;
+            for (var i = 0; i < length; i++) {
+                if (this.stack[i].id.value === nodeId) {
+                    return this.stack[i].isActive;
+                }
+            }
+        }
+    };
+
+
+    /**
+     * Ищет и возвращает узел из стека узлов
+     * @param nodeId - Идентификатор искомого узла
+     * @returns {{}} - Возвращает узел из стека
+     */
+    this.getNode = function (nodeId) {
+        if (nodeId !== undefined) {
+            var result = undefined;
+            for (var i = 0; i < this.stack.length; i++) {
+                if (this.stack[i].id.value === nodeId) {
+                    result =  this.stack[i];
+                }
+            }
+            return result;
+        }
+    };
+
+
+    this.setNodeHaveChildren = function (nodeId, flag) {
+        if (nodeId !== undefined && flag !== undefined && flag.constructor === Boolean) {
+            for (var i = 0; i < this.path.length; i++) {
+                if (this.nodes[i].id.value === nodeId)
+                    this.nodes[i].haveChildren = true;
+            }
+        }
+    };
+
+    this.clearNodes = function () {
+        this.path.nodes.splice(0, this.path.nodes.length);
+        this.stack.splice(0, this.stack.length);
+    };
+
+    this.getChildNodes = function (nodeId) {
+        var result = false;
+        for (var i = 0; i < this.stack.length; i++) {
+            if (this.stack[i].id.value === nodeId) {
+                if (this.stack[i].children !== undefined)
+                    result = this.stack[i].children;
+            }
+        }
+        return result;
+    };
+
+
+    this.getBranches = function (nodeId) {
+        var result = false;
+        var length = this.stack.length;
+        for (var i = 0; i < length; i++) {
+            if (this.stack[i].id.value === nodeId) {
+                if (this.stack[i].branches !== undefined)
+                    result = this.stack[i].branches;
+            }
+        }
+        return result;
+    };
+
+
+    this.isOpened = function (nodeId) {
+        if (nodeId !== undefined) {
+            var length = this.stack.length;
+            for (var i = 0; i < length; i++) {
+                if (this.stack[i].id.value === nodeId)
+                    return this.stack[i].isOpened;
+            }
+        }
+    };
+
+};
+
+
+

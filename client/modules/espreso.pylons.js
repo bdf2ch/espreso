@@ -66,7 +66,7 @@ var pylons = angular.module("espreso.pylons", [])
 
 
             return module;
-        }])
+        }]);
     })
     .run(function () {
 

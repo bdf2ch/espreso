@@ -1,0 +1,69 @@
+<div class="container">
+    <form class="form" action="">
+        <fieldset>
+            <legend>{{ objects.objectTypes.find("id", node.objectTypeId).title.value + " #" + node.id.value }}</legend>
+            <label for="point">Точка расположения объекта</label><span class="required">*</span>
+            <typeahead
+                    placeholder="Точка расположения"
+                    id="point"
+                    ng-model="node.pointId.value"
+                    collection="stuff.points.items"
+                    collection-value="id"
+                    ng-disabled="!node.inEditMode"
+                    ng-change="node.setToChanged()">
+            </typeahead>
+
+            <label for="objectType">Тип объекта</label><span class="required">*</span>
+            <select
+                    name="objectType"
+                    id="objectType"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:pointObjects.objectTypesIds"
+                    ng-model="node.objectTypeId"
+                    ng-init="node.objectTypeId"
+                    ng-disabled="pointObjects.states.ready === false || !node.inEditMode"
+                    ng-change="node.setToChanged()">
+            </select>
+
+            <!-- Если тип объекта в начальной точке - опора -->
+            <div class="nested-form" ng-show="node.objectTypeId == 1">
+                <label for="powerLine">Линия</label><span class="required">*</span>
+                <select
+                        name="powerLine"
+                        id="powerLine"
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: pointObjects.powerLinesIds"
+                        ng-model="powerLineId"
+                        ng-disabled="pointObjects.states.ready == false"
+                        ng-change="node.setToChanged()">
+                </select>
+
+                <label for="pylonNumber">№ опоры</label><span class="required">*</span>
+                <typeahead
+                        placeholder="Опора"
+                        id="pylonNumber"
+                        ng-model="node.id.value"
+                        collection="pointObjects.pylons"
+                        collection-value="id"
+                        ng-disabled="pointObjects.states.ready == false"
+                        ng-change="node.setToChanged()">
+                </typeahead>
+            </div>
+
+
+            <div class="controls" ng-show="!currentTitule.currentTituleIsDeleted">
+                <input type="button" class="button-link" value="Изменить" ng-show="!node.inEditMode && !node.inDeleteMode && pointObjects.states.ready" ng-click="node.setToEditMode()"/>
+                <!-- <input type="button" class="button-link" ng-show="!currentTitule.inDeleteMode && !currentTitule.inEditMode" value="Удалить" ng-click="currentTitule.setToDeleteMode()"/> -->
+                <input type="button" class="button-link" ng-show="node.inEditMode && node.isChanged == true" value="Сохранить изменения" ng-click="saveChanges()"/>
+                <!-- <input type="button" class="button-link" ng-show="currentTitule.inDeleteMode" value="Подтвердить удаление" ng-disabled="currentTitule.deleteInProgress" ng-click="titules.deleteTitule(titules.currentTitule)"/> -->
+                <input type="button" class="button-link" ng-show="node.inDeleteMode || node.inEditMode" value="Отмена" ng-click="node.cancelModes();"/>
+            </div>
+
+            <!-- Ошибки при валидации формы -->
+            <div class="error" ng-show="errors.length > 0">
+                <div class="error-item" ng-repeat="error in errors track by $index">{{ error }}</div>
+            </div>
+
+            <!-- Сообщение об успешном удалении -->
+            <div class="success" ng-show="newTitule.tituleDeletedSuccessfully">Титул успешно удален</div>
+        </fieldset>
+    </form>
+</div>

@@ -22,7 +22,8 @@ var espreso = angular.module("Espreso",
         "espreso.objects",
         "espreso.filters",
         "espreso.localData",
-        "espreso.files"
+        "espreso.files",
+        "espreso.links"
     ])
     .config(function ($provide, $routeProvider) {
         /* Сервис основного приложения - каркаса */

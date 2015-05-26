@@ -35,7 +35,7 @@ var filters = angular.module("espreso.filters", [])
                                 types.push(type);
                                 break;
                             default:
-                                if (supported.indexOf(typeId) != -1)
+                                if (supported.indexOf(typeId) !== -1)
                                     types.unshift(type);
                                 break;
                         }

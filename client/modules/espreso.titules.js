@@ -55,6 +55,13 @@ var titules = angular.module("espreso.titules", [])
                     url: "/new-trace-part",
                     template: "client/templates/titules/trace_part_add_form.html",
                     controller: "AddTracePartController"
+                })
+                .link({
+                    id: "editobject",
+                    parentMenuId: "titules",
+                    url: "/objects/:objectId",
+                    template: "client/templates/titules/object_edit_form.html",
+                    controller: "EditObjectController"
                 });
 
             module.titules = new Collection(new Titule());
@@ -64,8 +71,13 @@ var titules = angular.module("espreso.titules", [])
             module.currentTitulePartId = -1;
             module.currentTitulePartsCount = 0;
             module.currentObjectId = -1;
+            module.currentNodePathId = -1;
             module.currentTituleIsDeleted = false;
             module.currentTituleObjects = [];
+            module.currentTituleNodes = new TituleNodes();
+            module.currentPathId = -1;
+            module.isLoading = false;
+            module.objects = new Collection();
             module.currentTituleFiles = [];
             module.currentFileId = {
                 value: -1
@@ -74,6 +86,7 @@ var titules = angular.module("espreso.titules", [])
             module.currentFile = new FileItem();
             module.newTracePartStartObjectIndex = -1;
             module.currentTitulePartIsDeleted = false;
+            module.currentNode = undefined;
 
 
             /* Получает список титулов */
@@ -141,7 +154,7 @@ var titules = angular.module("espreso.titules", [])
 
             /* Сохраняет измененный титул */
             module.editTitule = function (titule) {
-                if (titule && titule.constructor == Titule) {
+                if (titule && titule.constructor === Titule) {
                     var ttl = module.titules.find("id", titule.id.value);
                     var params = {
                         action: "edit",
@@ -160,7 +173,7 @@ var titules = angular.module("espreso.titules", [])
 
                     $http.post("server/controllers/titules.php", params)
                         .success(function (data) {
-                            if (data && parseInt(data) != 0) {
+                            if (data && parseInt(data) !== 0) {
                                 angular.forEach(data, function (titule) {
                                     var edited_titule = new Titule();
                                     edited_titule.fromSOURCE(titule);
@@ -249,16 +262,20 @@ var titules = angular.module("espreso.titules", [])
                     destination.splice(0, destination.length);
                     var titule = module.titules.find("id", tituleId);
                     var parameters = {
-                        action: "getPath",
+                        action: "getTituleById",
                         data: {
-                            startNodeId: titule.startObjectId.value,
-                            endNodeId: titule.endObjectId.value,
+                            tituleId: tituleId,
+                            titulePartId: module.currentTitulePartId,
+                            //startNodeId: titule.startObjectId.value,
+                            //endNodeId: titule.endObjectId.value,
+                            nodeId: module.currentObjectId,
+                            pathId: module.currentPathId,
                             sessionId: $espreso.sessionId
                         }
                     };
-
-
-                    $http.post("server/controllers/nodes.php", parameters)
+                    module.currentTituleNodes.clearNodes();
+                    module.isLoading = true;
+                    $http.post("server/controllers/titules.php", parameters)
                         .success(function (data) {
                             if (data && parseInt(data) !== 0) {
 
@@ -269,6 +286,8 @@ var titules = angular.module("espreso.titules", [])
                                            var temp_obj = new Obj();
                                            temp_obj.fromSOURCE(value);
                                            destination.push(temp_obj);
+                                           module.objects.add(temp_obj);
+                                           module.currentTituleNodes.appendNode(temp_obj);
                                            break;
                                        case 1:
                                            $log.log(key + ": pylon");
@@ -276,12 +295,14 @@ var titules = angular.module("espreso.titules", [])
                                            temp_pylon.fromSOURCE(value);
                                            temp_pylon.onInit();
                                            destination.push(temp_pylon);
+                                           module.objects.add(temp_obj);
+                                           module.currentTituleNodes.appendNode(temp_obj);
                                            break;
                                    }
                                });
 
                            }
-
+                            module.isLoading = false;
                         });
 
                 }
@@ -301,6 +322,7 @@ var titules = angular.module("espreso.titules", [])
                 if (tituleId !== undefined) {
                     angular.forEach(module.titules.items, function (titule) {
                         if (titule.id.value === tituleId) {
+                            $log.log("curentTituleId = ", tituleId);
                             if (titule.isActive === false) {
                                 titule.setToActive(true);
                                 module.currentTituleId = titule.id.value;
@@ -312,6 +334,7 @@ var titules = angular.module("espreso.titules", [])
                                 titule.setToActive(false);
                                 module.currentTituleId = -1;
                                 module.currentTituleFiles.splice(0, module.currentTituleFiles.length);
+                                module.currentTituleNodes.clearNodes();
                             }
                             module.resetCurrentTitulePart();
                         } else {
@@ -343,8 +366,9 @@ var titules = angular.module("espreso.titules", [])
             /* Устанавливает текущий Объект */
             module.setCurrentObject = function (objectId) {
                 if (objectId !== undefined && module.currentTituleObjects.length !== 0) {
-                    angular.forEach(module.currentTituleObjects, function (object) {
+                    angular.forEach(module.objects.items, function (object) {
                         if (object.id.value === objectId) {
+                            $log.log("currentObjectId = ", objectId);
                             if (object.isActive === false) {
                                 object.setToActive(true);
                                 module.currentObjectId = object.id.value;
@@ -364,25 +388,31 @@ var titules = angular.module("espreso.titules", [])
                     $log.log("titules callback called");
                     angular.forEach(module.currentTituleObjects, function (node) {
                         if (node.id.value === nodeId) {
-                            node.children.splice(0, node.children.length);
-                            var temp_node = {};
-                            angular.forEach(data, function (child) {
-                                switch (parseInt(child["OBJECT_TYPE_ID"])) {
-                                    case 0:
-                                        $log.log("child is unknown objects");
-                                        temp_node = new Obj();
-                                        temp_node.fromSOURCE(child);
-                                        temp_node.onInit();
-                                        break;
-                                    case 1:
-                                        $log.log("child is pylon");
-                                        temp_node = new Pylon();
-                                        temp_node.fromSOURCE(child);
-                                        temp_node.onInit();
-                                        break;
-                                }
-                            });
-                            node.children.push(temp_node);
+                            //node.children.splice(0, node.children.length);
+                            $log.log("length of data = ", data.length);
+                            //node.children = [];
+                            if (data.length > 0) {
+                                node.children = [];
+                                var temp_node = {};
+                                angular.forEach(data, function (child) {
+                                    switch (parseInt(child["OBJECT_TYPE_ID"])) {
+                                        case 0:
+                                            $log.log("child is unknown objects");
+                                            temp_node = new Obj();
+                                            temp_node.fromSOURCE(child);
+                                            temp_node.onInit();
+                                            break;
+                                        case 1:
+                                            $log.log("child is pylon");
+                                            temp_node = new Pylon();
+                                            temp_node.fromSOURCE(child);
+                                            temp_node.onInit();
+                                            break;
+                                    }
+                                    node.children.push(temp_node);
+                                    module.objects.add(temp_node);
+                                });
+                            }
                         }
                     });
                 }
@@ -391,8 +421,9 @@ var titules = angular.module("espreso.titules", [])
             return module;
         }]);
     })
-    .run(function ($menu, $titules, $espreso, $window) {
+    .run(function ($menu, $titules, $espreso, $window, $rootScope) {
         $menu.register($titules.menu);
+        $rootScope.titules = $titules;
 
         if ($window.localStorage) {
             /* Проверка актуальности коллеции титулов */
@@ -463,6 +494,13 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
          active: false
          },
          */
+        {
+            id: 2,
+            title: "О титуле",
+            templateUrl: "client/templates/titules/titule_about.html",
+            controller: "MontageSchemeController",
+            active: false
+        },
         {
             id: 4,
             title: "Документация",
@@ -554,6 +592,12 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         $location.url("/new-trace-part");
     };
 
+    $scope.gotoEditObjectForm = function () {
+        if ($scope.titules.currentObjectId !== -1) {
+            $location.url("/objects/" + $scope.titules.currentObjectId);
+        }
+    };
+
 
     $scope.deleteFileCallback = function (data) {
         if (parseInt(data) !== 0) {
@@ -562,6 +606,31 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
                 if (file.id.value === $scope.titules.currentFileId.value)
                     $scope.titules.currentTituleFiles.splice(key, 1);
             });
+        }
+    };
+
+    $scope.onSuccessGetBranches = function (nodeId, data) {
+        if (nodeId !== undefined && data !== undefined) {
+            var node = {};
+            angular.forEach(data, function (child) {
+                switch (parseInt(child["OBJECT_TYPE_ID"])) {
+                    case 1:
+                        console.log("PYLON");
+                        node = new Pylon();
+                        node.fromSOURCE(child);
+                        node.onInit();
+                        break;
+                    case 0:
+                        console.log("UNKNOWN");
+                        node = new Obj();
+                        node.fromSOURCE(child);
+                        node.onInit();
+                        break;
+                }
+                node.pathId = parseInt(child["PATH_ID"]);
+                $scope.titules.currentTituleNodes.appendNodeToBranch(nodeId, parseInt(child["PATH_ID"]), node);
+            });
+            $scope.titules.currentTituleNodes.expand(nodeId);
         }
     };
 
@@ -1095,20 +1164,185 @@ titules.controller("MontageSchemeController", ["$log", "$scope", "$location", "$
 
 
 
-titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$titules", "$nomenklature", "$objects", function ($log, $scope, $location, $titules, $nomenklature, $objects) {
+titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$titules", "$nomenklature", "$objects", "$links", "$rootScope", function ($log, $scope, $location, $titules, $nomenklature, $objects, $links, $rootScope) {
     $scope.titules = $titules;
     $scope.stuff = $nomenklature;
     $scope.objects = $objects;
+    $scope.links = $links;
+    $scope.$root = $rootScope;
     $scope.startObject = {};
-    //$scope.
+    $scope.startObjectIndex = 0;
+    $scope.startObjectPathId = -1;
+    //$scope.nextNodeIndex = 0;
+    //$scope.nextnodeId
+    //$scope.nextNode = {};
+    $scope.tracePartType = 1;
+    $scope.currentNodePathId = -1;
 
-    $log.log("newTraceStartObjcetindex = ", $scope.titules.newTracePartStartObjectIndex);
-    if ($scope.titules.newTracePartStartObjectIndex != -1) {
-        $scope.startObject = $scope.titules.currentTituleObjects[$scope.titules.newTracePartStartObjectIndex];
-        $log.log("point = ", $scope.startObject.pointId.value);
+    $scope.endPointId = 0;
+    $scope.endPointObjects = new ObjectList();
+    $scope.endPointObjectTypeId = 0;
+    $scope.endPointObjectId = 0;
+    $scope.endPointPowerLineId = -1;
+
+    $scope.linkAddedSuccessfully = false;
+    $scope.errors = [];
+
+    if ($scope.titules.currentObjectId !== 0 ) {
+        $scope.startObject = $scope.titules.currentTituleNodes.getNode($scope.titules.currentObjectId);
+        //$scope.nextNode = $scope.titules.currentTituleNodes.getNode($scope.startObject.nextNodeId);
+        console.dir($scope.startObject);
+
+        if ($scope.startObject.pathId !== undefined)
+            $scope.currentNodePathId = $scope.startObject.pathId;
+        else
+            $scope.currentNodePathId = -1;
+
+        $log.log("current node path id = ", $scope.currentNodePathId);
+        //console.log("end obj = ", $scope.nextNode);
+        /*
+        angular.forEach($scope.titules.objects.items, function (obj, key) {
+            if (obj.id.value === $scope.titules.currentObjectId) {
+                $scope.startObject = obj;
+                $scope.startObjectIndex = key;
+                if ($scope.titules.objects[key + 1] !== undefined) {
+                    $scope.nextNode = $scope.titules.objects[key + 1];
+                    $log.log("next node id = ", $scope.nextNode.id.value);
+                }
+            }
+        });
+        */
     }
-}]);
 
+    /* Ожидание изменения конечной точки */
+    $scope.$watch("endPointId", function (newVal, oldVal) {
+        if (newVal !== undefined) {
+            if (newVal !== oldVal && newVal !== 0) {
+                $scope.objects.getObjectsByPointId(newVal, $scope.endPointObjects);
+                $scope.endPointPowerLineId = -1;
+                $scope.endPointObjectId = 0;
+            } else if (newVal === 0 && newVal !== oldVal) {
+                $scope.endPointObjectId = 0;
+                $scope.endPointPowerLineId = -1;
+            }
+        }
+    });
+
+
+    /**
+     *
+     */
+    $scope.append = function () {
+        $scope.errors.splice(0, $scope.errors.length);
+        $scope.linkAddedSuccessfully = false;
+
+
+        if ($scope.endPointId === 0)
+            $scope.errors.push("Вы не выбрали конечную точку");
+        if ($scope.endPointObjectTypeId === 1) {
+            if ($scope.endPointPowerLineId === -1)
+                $scope.errors.push("Вы не выбрали линию для опоры в конечной точке");
+            if ($scope.endPointObjectId === 0)
+                $scope.errors.push("Вы не выбрали опору в конечной точке");
+        }
+
+
+        if ($scope.errors.length === 0)
+            switch ($scope.tracePartType) {
+                case 1:
+                    $scope.links.append(
+                        $scope.titules.currentTituleId,     // Идентификатор титула
+                        $scope.titules.currentTitulePartId, // Идентификатор участка титула
+                        $scope.startObject.id.value,        // Идентифмкатор узла в начале соединения
+                        $scope.currentNodePathId,           // Идентификатор пути, исходящего из узла
+                        $scope.startObject.nextNodeId,      // Идентификатор узла, ранее бывшего конечным в соединении
+                        $scope.endPointId,                  // Идентификатор точки нахождения конечного узла соединения
+                        $scope.endPointObjectTypeId,        // Идентификатор типа конечного узла соединения
+                        $scope.endPointObjectId,            // Идентификатор конечного узла соединения
+                        $scope.onAppendLinkSuccess          // Callback-функция
+                    );
+                    break;
+                case 2:
+                    $scope.links.branch(
+                        $scope.titules.currentTituleId,     // Идентификатор титула
+                        $scope.titules.currentTitulePartId, // Идентификатор участка титула
+                        $scope.startObject.id.value,        // Идентификатор узла в начале соединения
+                        $scope.endPointId,                  // Идентификатор точки нахождения конечного узла соединения
+                        $scope.endPointObjectTypeId,        // Идентификатор типа конечного узла соединения
+                        $scope.endPointObjectId,            // Идентификатор узла конечного соединения
+                        $scope.onBranchLinkSuccess          // Callback-функция
+                    );
+                    break;
+            }
+    };
+
+
+
+    /**
+     * Обработчик результата добавления последовательного соединения
+     * @param data
+     */
+    $scope.onAppendLinkSuccess = function (data) {
+        if (data !== undefined) {
+            angular.forEach(data, function (node) {
+                var temp_node = {};
+                switch (parseInt(node["OBJECT_TYPE_ID"])) {
+                    case 0:
+                        temp_node = new Obj();
+                        temp_node.fromSOURCE(node);
+                        temp_node.onInit();
+                        break;
+                    case 1:
+                        temp_node = new Pylon();
+                        temp_node.fromSOURCE(node);
+                        temp_node.onInit();
+                        break;
+                }
+                $scope.titules.currentTituleObjects.splice($scope.startObjectIndex + 1, 0, temp_node);
+
+                if ($scope.startObject.parentId !== undefined)
+                    $scope.titules.currentTituleNodes.insertNodeAfterToBranch($scope.startObject.parentId, $scope.currentNodePathId, $scope.startObject.id.value, temp_node);
+                else
+                    $scope.titules.currentTituleNodes.insertNodeAfter($scope.startObject.id.value, temp_node);
+
+            });
+            $scope.linkAddedSuccessfully = true;
+        }
+    };
+
+
+    /**
+     * Обработчик результата добавления ветвящегося соединения
+     * @param data
+     */
+    $scope.onBranchLinkSuccess = function (data) {
+        if (data !== undefined) {
+            var temp_node = {};
+            angular.forEach(data, function (node) {
+                switch (parseInt(node["OBJECT_TYPE_ID"])) {
+                    case 0:
+                        temp_node = new Obj();
+                        temp_node.fromSOURCE(node);
+                        temp_node.onInit();
+                        break;
+                    case 1:
+                        temp_node = new Pylon();
+                        temp_node.fromSOURCE(node);
+                        temp_node.onInit();
+                        break;
+                }
+                //$scope.titules.currentTituleObjects[$scope.startObjectIndex].children = [];
+                //$scope.titules.currentTituleObjects[$scope.startObjectIndex].children.push(temp_node);
+                //$scope.titules.currentTituleObjects.splice($scope.startObjectIndex + 1, 0, temp_node);
+                $scope.titules.currentTituleNodes.addBranch($scope.startObject.id.value, temp_node);
+                //$scope.titules.currentTituleNodes.setNodeHaveChildren($scope.startObject.id.value, true);
+            });
+
+            $scope.linkAddedSuccessfully = true;
+        }
+    };
+
+}]);
 
 
 /*****

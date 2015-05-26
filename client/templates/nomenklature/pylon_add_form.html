@@ -1,27 +1,41 @@
 <div class="container">
 
-    <form class="form" ng-submit="stuff.addPylon()">
+    <form class="form" ng-submit="addPylon()">
         <fieldset>
             <legend>Новая опора</legend>
 
+            <label for="point">Точка расположения опоры</label><span class="required">*</span>
+            <typeahead
+                    placeholder="Точка расположения"
+                    id="point"
+                    ng-model="pylon.pointId.value"
+                    collection="stuff.points.items"
+                    collection-value="id">
+            </typeahead>
+
             <label for="pylonPowerLine">Линия</label>
-            <select name="pylonPowerLine" id="pylonPowerLine" placeholder="Выберите линию" ng-model="stuff.newPylon.powerLineId.value" ng-options="powerline.id.value as powerline.title.value for powerline in stuff.powerlines.items"></select>
+            <select name="pylonPowerLine"
+                    id="pylonPowerLine"
+                    placeholder="Выберите линию"
+                    ng-model="pylon.powerLineId.value"
+                    ng-options="powerline.id.value as powerline.title.value for powerline in stuff.powerlines.items">
+            </select>
 
             <label for="pylonNumber">№ опоры</label>
-            <input type="text" name="pylonNumber" id="pylonNumber"  placeholder="№ опоры" ng-model="stuff.newPylon.number.value" />
+            <input type="text" name="pylonNumber" id="pylonNumber"  placeholder="№ опоры" ng-model="pylon.number.value" />
 
             <label for="pylonType">Тип опоры</label>
-            <select name="pylonTypee" id="pylonType" placeholder="Выберите тип опоры" ng-model="stuff.newPylon.pylonTypeId.value" ng-options="type.id.value as type.title.value for type in stuff.pylonTypes.items"></select>
+            <select name="pylonType" id="pylonType" placeholder="Выберите тип опоры" ng-model="pylon.pylonTypeId.value" ng-options="type.id.value as type.title.value for type in stuff.pylonTypes.items"></select>
 
             <input type="submit" class="button-link block" value="Добавить опору"/>
 
             <!-- Ошибки при валидации формы -->
-            <div class="error" ng-show="stuff.pylons.errors.length > 0">
-                <div class="error-item" ng-repeat="error in stuff.pylons.errors track by $index">{{ error }}</div>
+            <div class="error" ng-show="errors.length > 0">
+                <div class="error-item" ng-repeat="error in errors track by $index">{{ error }}</div>
             </div>
 
             <!-- Сообщение об успешном добавлении -->
-            <div class="success" ng-show="stuff.pylonAddedSuccessfully">Опора успешно добавлена</div>
+            <div class="success" ng-show="pylonAddedSuccessfully">Опора успешно добавлена</div>
         </fieldset>
     </form>
 

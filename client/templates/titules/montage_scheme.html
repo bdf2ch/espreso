@@ -1,135 +1,126 @@
-<div id="montage-scheme">
-    <!--
-    <ul class="tree">
-        <li class="hover" ng-repeat="node in titules.currentTituleObjects track by $index">
-            <span ng-show="node.objectTypeId === 1">
-                {{ "Опора #" + node.number.value }}<br>
-                <span class="description caption">Линия:</span>
-                <span class="description">{{ stuff.powerlines.find("id", node.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", node.powerLineId.value).voltage.value + " кВ)" }}</span>
-                &nbsp; &nbsp; &nbsp;
-                <span class="description caption">Тип опоры:</span>
-                <span class="description">{{ stuff.pylonTypes.find("id", node.pylonTypeId.value).title.value }}</span>
-            </span>
-            <ul class="tree nested" ng-show="node.links.value > 0">
-                <li class="hover">out link object</li>
-            </ul>
+<script type="text/ng-template" id="branches">
+    <ul class="tree nested" ng-repeat="branch in item.branches track by $index">
+        <li ng-repeat="node in branch track by $index">
+            <div class="node-item hover"
+                 ng-class="{'active': scope.titules.currentTituleNodes.isNodeActive(node.id.value)}"
+                 ng-click="scope.titules.currentObjectId = scope.titules.currentTituleNodes.select(node.id.value)">
+                <span class="collapse" ng-show="node.haveBranches === false">
+                    <div class="tree-top nested" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom nested" ng-class="{'last': $index === branch.length - 1}"></div>
+                </span>
+                <span class="collapse"
+                      ng-show="node.haveBranches === true"
+                      ng-click="scope.objects.getBranches(scope.titules.currentTituleId, scope.titules.currentTitulePartId, node.id.value, scope.onSuccessGetBranches)">
+                    <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
+                    <span class="expander">+</span>
+                </span>
+
+                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0}"></div>
+                <!-- Подробности об узле -->
+                <div class="node-details">
+                    <!-- Если узел является опорой -->
+                    <span ng-show="node.objectTypeId === 1">{{ "Опора #" + node.number.value }}</span>
+                    <br ng-show="node.objectTypeId === 1">
+                    <span ng-show="node.objectTypeId === 1" class="description caption">ВЛ:</span>
+                    <span ng-show="node.objectTypeId === 1" class="description">{{ stuff.powerlines.find("id", node.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", node.powerLineId.value).voltage.value + " кВ)" }}</span>
+                    <span ng-show="node.objectTypeId === 1">&nbsp; &nbsp; &nbsp;</span>
+                    <span ng-show="node.objectTypeId === 1" class="description caption">Тип опоры:</span>
+                    <span ng-show="node.objectTypeId === 1" class="description">{{ stuff.pylonTypes.find("id", node.pylonTypeId.value).title.value }}</span>
+
+                    <!-- Если узел является неформализованным объектом -->
+                    <span ng-show="node.objectTypeId === 0">Неформализованный объект</span><br>
+                    <span ng-show="node.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
+                </div>
+                <div class="node-point">
+                    {{ stuff.points.find("id", node.pointId.value).title.value }}<br>
+                        <span class="description right">
+                            {{ stuff.points.find("id", node.pointId.value).coordinates }}
+                        </span>
+                </div>
+            </div>
+            <div ng-if="node.branches && node.branches.length > 0"
+                 ng-include="'branches'"
+                 ng-init="node.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); scope = scope;">
+            </div>
         </li>
     </ul>
-    -->
+</script>
 
-    <table class="table tree" width="100%">
-        <tbody>
-        <tr class="hover"
-            ng-repeat="node in titules.currentTituleObjects track by $index"
-            ng-class="{'active': node.isActive}"
-            ng-click="titules.setCurrentObject(node.id.value)">
 
-            <!-- Резвернуть/свернуть дочерние узлы этого узла -->
-            <td class="collapse">
-                <span class="collapse"
-                      ng-show="node.links.value > 0"
-                      ng-click="objects.getChildNodes(node.id.value, titules.getChildNodes)">+</span>
-            </td>
 
-            <!-- Пиктограмма узла -->
-            <td class="icon">
-                <div class="node-icon"></div>
-            </td>
 
-            <!-- Подробности об узле -->
-            <td>
-                 <!-- Если узел является опорой -->
-                <span ng-show="node.objectTypeId === 1">{{ "Опора #" + node.number.value }}</span><br ng-show="node.objectTypeId === 1">
-                <span ng-show="node.objectTypeId === 1" class="description caption">ВЛ:</span>
-                <span ng-show="node.objectTypeId === 1" class="description">{{ stuff.powerlines.find("id", node.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", node.powerLineId.value).voltage.value + " кВ)" }}</span>
-                <span ng-show="node.objectTypeId === 1">&nbsp; &nbsp; &nbsp;</span>
-                <span ng-show="node.objectTypeId === 1" class="description caption">Тип опоры:</span>
-                <span ng-show="node.objectTypeId === 1" class="description">{{ stuff.pylonTypes.find("id", node.pylonTypeId.value).title.value }}</span>
 
-                <!-- Если узел является неформализованным объектом -->
-                <span ng-show="node.objectTypeId === 0">Неформализованный объект</span><br>
-                <span ng-show="node.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
+<div id="montage-scheme">
+    <!-- Заглушка на время загрузки узлов титула -->
+    <div class="no-hover" ng-show="titules.isLoading === true">
+        <div class="loading">
+            <img src="client/resources/img/loader.gif" alt=""/>
+            Подождите, идет загрузка...
+        </div>
+    </div>
 
-                <!-- Дочерние узлы текущего узла -->
-                <table class="table" ng-show="node.children.length > 0">
-                    <tbody>
-                    <tr ng-repeat="child in node.children">
-                        <td class="collapse">
-                            <span class="collapse"
-                                ng-show="child.links.value > 0"
-                                ng-click="objects.getChildNodes(child.id.value, titules.getChildNodes)">+</span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <ul class="tree">
+        <li ng-repeat="item in titules.currentTituleNodes.path.nodes track by $index">
 
-            </td>
+            <div class="node-item hover"
+                 ng-class="{'active': titules.currentTituleNodes.isNodeActive(item.id.value)}"
+                 ng-click="titules.currentObjectId = titules.currentTituleNodes.select(item.id.value)">
 
-            <!-- Точка, в которой находится узел -->
-            <td class="right">
-                точка {{ node.pointId.value }}
-                {{ stuff.points.find("id", node.pointId.value).title.value }}<br>
-                <span class="description">
-                    {{ stuff.points.find("id", node.pointId.value).coordinates }}
+                <span class="collapse" ng-show="item.haveBranches === false">
+                    <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
                 </span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-
-    <table class="table" width="100%">
-        <tbody>
-            <tr class="link"
-                ng-repeat="obj in titules.currentTituleObjects track by $index"
-                ng-class="{'active': obj.isActive}"
-                ng-click="titules.setCurrentObject(obj.id.value)">
-                <!--
-                <td class="controls">
-                    <a ng-href="{{ '#/titule-parts/' + part.id.value }}">
-                        <img src="client/resources/img/application_form_edit_16x16.png" alt=""/>
-                    </a>
-                </td>
-                -->
-
-                <!-- Если тип объекта - опора -->
-                <td ng-show="obj.objectTypeId == 1">
-                    <div class="level" ng-show="obj.level.value > 1" ng-repeat="lvl in obj.levels track by $index">
-                        <span class="level-top"></span>
-                        <span class="level-bottom"></span>
-                    </div>
-                    <div style="float: left">
-                        <div>{{ "Опора #" + obj.number.value }}</div>
-                        <span class="description caption">ВЛ:</span>
-                        <span class="description">{{ stuff.powerlines.find("id", obj.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", obj.powerLineId.value).voltage.value + " кВ)" }}</span>
-                        &nbsp; &nbsp; &nbsp;
-                        <span class="description caption">Тип опоры:</span>
-                        <span class="description">{{ stuff.pylonTypes.find("id", obj.pylonTypeId.value).title.value }}</span>
-                    </div>
-
-                   <!-- {{ "Опора #" + obj.number.value + ",&nbsp; ВЛ: " + stuff.powerlines.find("id", obj.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", obj.powerLineId.value).voltage.value + " кВ),&nbsp; тип опоры: " + stuff.pylonTypes.find("id", obj.pylonTypeId.value).title.value }}<br> -->
-
-                </td>
-
-                <!-- Если тип объекта - неформализованный объект -->
-                <td ng-show="obj.objectTypeId == 0">
-                    <!--<div class="level-container"> -->
-                        <span class="level" ng-show="obj.level.value > 1" ng-repeat="lvl in obj.levels track by $index">
-                            <span class="level-top"></span>
-                            <span class="level-bottom"></span>
-                        </span>
-                    <!--</div>-->
-                    Неформализованный объект
-                </td>
-
-                <td class="right">
-                    {{ stuff.points.find("id", obj.pointId.value).title.value }}<br>
-                    <span class="description">
-                        {{ stuff.points.find("id", obj.pointId.value).coordinates }}
+                <span class="collapse" ng-show="item.haveBranches === true">
+                    <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
+                    <span class="expander"
+                          title="Развернуть"
+                          ng-show="item.haveBranches === true && item.collapsed === true"
+                          ng-click="objects.getBranches(titules.currentTituleId, titules.currentTitulePartId, item.id.value, onSuccessGetBranches)">
+                        +
                     </span>
-               </td>
+                    <span class="expander"
+                          title="Свернуть"
+                          ng-show="item.collapsed === false"
+                          ng-click="titules.currentTituleNodes.collapse(item.id.value)">
+                        -
+                    </span>
+                </span>
 
-            </tr>
-        </tbody>
-    </table>
+                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0}"></div>
+                <!-- Подробности об узле -->
+                <div class="node-details">
+
+                    <!-- Если узел является опорой -->
+                    <span ng-show="item.objectTypeId === 1">{{ "Опора #" + item.number.value }}</span>
+                    <br ng-show="item.objectTypeId === 1">
+                    <span ng-show="item.objectTypeId === 1" class="description caption">ВЛ:</span>
+                    <span ng-show="item.objectTypeId === 1" class="description">{{ stuff.powerlines.find("id", item.powerLineId.value).title.value + " (" + stuff.powerlines.find("id", item.powerLineId.value).voltage.value + " кВ)" }}</span>
+                    <span ng-show="item.objectTypeId === 1">&nbsp; &nbsp; &nbsp;</span>
+                    <span ng-show="item.objectTypeId === 1" class="description caption">Тип опоры:</span>
+                    <span ng-show="item.objectTypeId === 1" class="description">{{ stuff.pylonTypes.find("id", item.pylonTypeId.value).title.value }}</span>
+
+                    <!-- Если узел является неформализованным объектом -->
+                    <span ng-show="item.objectTypeId === 0">Неформализованный объект</span><br>
+                    <span ng-show="item.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
+                </div>
+                <div class="node-point">
+                    {{ stuff.points.find("id", item.pointId.value).title.value }}<br>
+                        <span class="description right">
+                            {{ stuff.points.find("id", item.pointId.value).coordinates }}
+                        </span>
+                </div>
+            </div>
+
+            <div ng-show="item.branches && item.branches.length > 0 && item.collapsed == false"
+                 ng-include="'branches'"
+                 ng-init="this.branches = titules.currentTituleNodes.getBranches(item.id.value); scope = this">
+            </div>
+        </li>
+
+    </ul>
+
+
+
 </div>

@@ -33,8 +33,8 @@
                     get_titules();
                     break;
                 /* Получение титула по идентификатору */
-                case "tituleById":
-                    get_titule_by_id($postdata);
+                case "getTituleById":
+                    get_path($postdata);
                     break;
             }
         }
@@ -269,22 +269,38 @@
     };
 
 
-    /* Функция получения объектов начала и конца титула по идентификатору титула */
-    function get_titule_by_id ($postdata) {
+    /* Функция получения объектов титула */
+    function get_path ($postdata) {
         global $connection;
         $cursor = oci_new_cursor($connection);
         $data = $postdata -> data;
         $result = array();
 
-        if (!$statement = oci_parse($connection, "begin pkg_titules.p_get_titule_by_id(:titule_id, :objects); end;")) {
+        if (!$statement = oci_parse($connection, "begin PKG_PATHS.p_get_path(:p_titule_id, :p_titule_part_id, :p_node_id, :p_path_id, :session_id, :p_nodes); end;")) {
             $error = oci_error();
             echo $error["message"];
         } else {
-            if (!oci_bind_by_name($statement, ":titule_id", $data -> id, -1, OCI_DEFAULT)) {
+            if (!oci_bind_by_name($statement, ":p_titule_id", $data -> tituleId, -1, OCI_DEFAULT)) {
                 $error = oci_error();
                 echo $error["message"];
             }
-            if (!oci_bind_by_name($statement, ":objects", $cursor, -1, OCI_B_CURSOR)) {
+            if (!oci_bind_by_name($statement, ":p_titule_part_id", $data -> titulePartId, -1, OCI_DEFAULT)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+            if (!oci_bind_by_name($statement, ":p_node_id", $data -> nodeId, -1, OCI_DEFAULT)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+            if (!oci_bind_by_name($statement, ":p_path_id", $data -> pathId, -1, OCI_DEFAULT)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+            if (!oci_bind_by_name($statement, ":session_id", $data -> sessionId, -1, OCI_DEFAULT)) {
+                $error = oci_error();
+                echo $error["message"];
+            }
+            if (!oci_bind_by_name($statement, ":p_nodes", $cursor, -1, OCI_B_CURSOR)) {
                 $error = oci_error();
                 echo $error["message"];
             }
@@ -296,11 +312,11 @@
                     $error = oci_error();
                     echo $error["message"];
                 } else {
-                    while ($object = oci_fetch_assoc($cursor))
-                        array_push($result, $object);
-                }
+                    while ($node = oci_fetch_assoc($cursor))
+                        array_push($result, $node);
                 }
             }
+        }
 
         /* Освобождение ресурсов */
         oci_free_statement($statement);

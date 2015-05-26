@@ -8,7 +8,7 @@
 
 var objects = angular.module("espreso.objects", [])
     .config(function ($provide) {
-        $provide.factory("$objects", ["$log", "$http", "$window", "$espreso", function ($log, $http, $window, $espreso) {
+        $provide.factory("$objects", ["$log", "$http", "$window", "$espreso", "$titules", function ($log, $http, $window, $espreso, $titules) {
             var module = [];
 
             module.objectTypes = new Collection(new ObjectType());
@@ -103,12 +103,13 @@ var objects = angular.module("espreso.objects", [])
 
 
             /*** Получение дочерних узлов по id узла ***/
-            module.getChildNodes = function (nodeId, callback) {
+            module.getChildNodesInTitule = function (tituleId, nodeId, callback) {
                 if (nodeId !== undefined) {
                     $log.log("callback called");
                     var params = {
-                        action: "getChildNodes",
+                        action: "getChildNodesInTitule",
                         data: {
+                            tituleId: tituleId,
                             nodeId: nodeId,
                             sessionId: $espreso.sessionId
                         }
@@ -120,6 +121,125 @@ var objects = angular.module("espreso.objects", [])
                         }
                     );
                 }
+            };
+
+
+            /**
+             * Возвращает дочерние узлы заданного узла
+             * @param tituleId {Number} - Идентификатор титула
+             * @param titulePartId {Number} - Идентификатор участка титула
+             * @param nodeId {Number} - Идентификатор узла
+             * @param callback {Function} - Callback-функция
+             */
+            module.getChildNodes = function (tituleId, titulePartId, nodeId, callback) {
+                if (tituleId !== undefined && titulePartId !== undefined && nodeId !== undefined) {
+                    var params = {
+                        action: "getChildNodes",
+                        data: {
+                            tituleId: tituleId,
+                            titulePartId: titulePartId,
+                            nodeId: nodeId,
+                            sessionId: $espreso.sessionId
+                        }
+                    };
+                    $http.post("server/controllers/nodes.php", params)
+                        .success(function (data) {
+                            if (data !== undefined) {
+                                callback(nodeId, data);
+                            }
+                        }
+                    );
+                }
+            };
+
+
+            module.getBranches = function (tituleId, titulePartId, nodeId, callback) {
+                if (tituleId !== undefined && titulePartId !== undefined && nodeId !== undefined) {
+                    //if ($titules.currentTituleNodes.getNode(nodeId).branches === undefined) {
+                        var params = {
+                            action: "getBranches",
+                            data: {
+                                tituleId: tituleId,
+                                titulePartId: titulePartId,
+                                nodeId: nodeId
+                            }
+                        };
+                        $http.post("server/controllers/nodes.php", params)
+                            .success(function (data) {
+                                callback(nodeId, data);
+                            }
+                        );
+                    //}
+                }
+            };
+
+
+            /**
+             * Заменяет указанный узел на другой узел
+             * @param nodeId
+             * @param newNodeId
+             * @param tituleId
+             * @param titulePartId
+             * @param nodePathId
+             * @param callback
+             */
+            module.change = function (nodeId, newNodeId, tituleId, titulePartId, nodePathId, callback) {
+                var params = {
+                    action: "change",
+                    data: {
+                        nodeId: nodeId,
+                        newNodeId: newNodeId,
+                        tituleId: tituleId,
+                        titulePartId: titulePartId,
+                        nodePathId: nodePathId
+                    }
+                };
+                $http.post("server/controllers/nodes.php", params)
+                    .success(function (data) {
+                        if (callback !== undefined)
+                            callback(data);
+                    }
+                );
+            };
+
+
+            /**
+             *
+             * @param objectTypeId
+             * @param pointId
+             * @param pylonTypeId
+             * @param pylonSchemeTypeId
+             * @param powerLineId
+             * @param pylonNumber
+             * @param callback
+             */
+            module.add = function (
+                nodeTypeId,
+                pointId,
+                pylonTypeId,
+                pylonSchemeTypeId,
+                powerLineId,
+                pylonNumber,
+                callback ) {
+
+                var params = {
+                    action: "add",
+                    data: {
+                        nodeTypeId: nodeTypeId,
+                        pointId: pointId,
+                        pylonTypeId: pylonTypeId,
+                        pylonSchemeTypeId: pylonSchemeTypeId,
+                        powerLineId: powerLineId,
+                        pylonNumber: pylonNumber
+                    }
+                };
+
+                $http.post("server/controllers/nodes.php", params)
+                    .success(function (data) {
+                        if (callback !== undefined)
+                            callback(data);
+                    }
+                );
             };
 
             return module;
@@ -159,5 +279,53 @@ objects.filter("powerlines", function () {
             return powerlines;
         } else
             return input;
-    }
+    };
 });
+
+
+
+objects.controller("EditObjectController", ["$log", "$scope", "$objects", "$titules", "$espreso", "$nomenklature", "$routeParams", function ($log, $scope, $objects, $titules, $espreso, $nomenklature, $routeParams) {
+    $scope.titules = $titules;
+    $scope.objects = $objects;
+    $scope.stuff = $nomenklature;
+    $scope.node = undefined;
+    $scope.pointObjects = new ObjectList();
+    $scope.powerLineId = 0;
+
+    if ($scope.titules.currentTituleNodes.getNode(parseInt($routeParams.objectId)) !== undefined) {
+        $scope.node = $scope.titules.currentTituleNodes.getNode(parseInt($routeParams.objectId));
+        $scope.objects.getObjectsByPointId($scope.node.pointId.value, $scope.pointObjects);
+        $log.log($scope.pointObjects);
+        $log.log("node for edit = ", $scope.node);
+    }
+
+    /* Ждем изменения значения id точки узла */
+    $scope.$watch("node.pointId.value", function (newVal, oldVal) {
+        if (oldVal !== undefined && newVal !== oldVal) {
+            $log.log("POINT WATCHER");
+            $scope.objects.getObjectsByPointId($scope.node.pointId.value, $scope.pointObjects);
+            $scope.powerLineId = 0;
+        }
+        if (oldVal !== undefined && newVal === 0) {
+            $log.log("end point 0");
+            $scope.pointObjects.pylons.splice(0, $scope.pointObjects.pylons.length);
+            $scope.pointObjects.objectTypesIds.splice(0, $scope.pointObjects.objectTypesIds.length);
+            $scope.pointObjects.powerLinesIds.splice(0, $scope.pointObjects.powerLinesIds.length);
+        }
+        $scope.node.objectTypeId = 0;
+    });
+
+
+    /**
+     * Производит замену узла на другой
+     */
+    $scope.saveChanges = function () {
+        $scope.objects.change (
+            $scope.node.backup.id,              // Идентификатор узла, который требуется заменить
+            $scope.node.id.value,               // Идентификатор узла, на который будет произведена замена
+            $scope.titules.currentTituleId,     // Идентификатор титула
+            $scope.titules.currentTitulePartId, // Идентификатор участка титула
+            $scope.titules.currentNodePathId    // Идентификатор пути, исходящег оиз узла
+        );
+    };
+}]);

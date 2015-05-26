@@ -105,12 +105,12 @@
             <button class="round-button action"
                     title="Редактировать объект"
                     ng-show="titules.currentObjectId !== -1"
-                    ng-click="gotoEditTitulePartForm()">
+                    ng-click="gotoEditObjectForm()">
                 <img src="client/resources/img/edit.png"/>
             </button>
             <span class="separator" ng-show="titules.currentObjectId !== -1 && titules.currentObjectId !== titules.currentTitule.endObjectId.value"></span>
             <button class="round-button success"
-                    title="Добавить объект, следующий за текущим"
+                    title="Добавить соединение с текущим объектом"
                     ng-show="titules.currentObjectId !== -1 && titules.currentObjectId !== titules.currentTitule.endObjectId.value"
                     ng-click="gotoAddTracePartForm()" >
                 +

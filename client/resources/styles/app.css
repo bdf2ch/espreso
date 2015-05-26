@@ -856,7 +856,7 @@ body img {
 
 /* Описание объекта */
 .description {
-    //display: inline-block;
+    display: inline-block;
     color: grey;
     font-size: 15px;
     line-height: 12px !important;
@@ -870,7 +870,7 @@ body img {
 /* Заголовок колонки */
 .column-caption {
     //display: block;
-    text-align: left;
+    //text-align: left;
     text-transform: uppercase;
     color: gray;
     font-weight: bold;

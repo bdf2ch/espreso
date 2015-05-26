@@ -1649,11 +1649,53 @@ nomenklature.controller("PylonsCtrl", ["$log", "$scope", "$location", "$nomenkla
 /*****
  * Контроллер добавления опоры
  *****/
-nomenklature.controller("AddPylonCtrl", ["$log", "$scope", "$nomenklature", function ($log, $scope, $nomenklature) {
+nomenklature.controller("AddPylonCtrl", ["$log", "$scope", "$nomenklature", "$objects", function ($log, $scope, $nomenklature, $objects) {
     $scope.stuff = $nomenklature;
+    $scope.objects = $objects;
+    $scope.pylon = new Pylon();
+    $scope.errors = [];
 
-    $scope.stuff.pylonAddedSuccessfully = false;
-    $scope.stuff.pylons.clearErrors();
+    $scope.pylonAddedSuccessfully = false;
+    //$scope.stuff.pylons.clearErrors();
+
+    $scope.addPylon = function () {
+        $scope.errors.splice(0, $scope.errors.length);
+
+        if ($scope.pylon.pointId.value === 0)
+            $scope.errors.push("Вы не указали точку нахождения опоры");
+
+        if ($scope.pylon.pylonTypeId.value === 0)
+            $scope.errors.push("Вы не выбрали тип опоры");
+
+        if ($scope.pylon.powerLineId.value === 0)
+            $scope.errors.push("Вы не выбрали линию");
+
+        if ($scope.pylon.number.value === 0 || $scope.pylon.number.value === "")
+            $scope.errors.push("Вы не указали номер опоры");
+
+        if ($scope.errors.length === 0) {
+            $scope.objects.add(
+                1,                              // Идентификатор типа добавляемого узла
+                $scope.pylon.pointId.value,     // Идентификатор точки нахождения опоры
+                $scope.pylon.pylonTypeId.value, // Идентификатор типа опоры
+                0,                              // Идентификатор типа схемы опоры
+                $scope.pylon.powerLineId.value, // Идентификатор линии
+                $scope.pylon.number.value,      // Номер опоры
+                $scope.onSuccess                // Callback-функция
+            );
+        }
+    };
+
+    $scope.onSuccess = function (data) {
+        $log.log(data);
+        if (data !== 0) {
+            $scope.pylonAddedSuccessfully = true;
+            $scope.pylon.pointId.value = 0;
+            $scope.pylon.powerLineId.value = 0;
+            $scope.pylon.number.value = 0;
+            $scope.pylon.pylonTypeId.value = 0;
+        }
+    };
 }]);
 
 

@@ -1,0 +1,34 @@
+<div id="titule_about"> ABOUT
+    <table class="table" width="100%">
+        <tbody>
+        <tr class="no-hover" ng-show="files.isLoading === true">
+            <td class="loading">
+                <img src="client/resources/img/loader.gif" alt=""/>
+                Подождите, идет загрузка...
+            </td>
+        </tr>
+        <tr class="link"
+            ng-repeat="file in titules.currentTituleFiles track by $index"
+            ng-class="{'active': file.isActive}"
+            ng-click="files.setCurrentFile(file.id.value, titules.currentTituleFiles, titules.currentFileId)">
+            <td>
+                <img src="" alt=""/>
+            </td>
+            <td>
+                <a href="{{ file.url.value }}">{{ file.title.value }}</a><br>
+                <span class="description caption">Размер:</span>
+                <span class="description">{{ file.size.value | fileSize}}</span>
+                <span class="description caption">&nbsp; &nbsp;  Добавил: </span>
+                <span class="description">{{ users.users.find("id", file.userId.value).fio.value }}</span>
+                <span class="description caption">&nbsp; &nbsp; Добавлен:</span>
+                <span class="description">{{ file.added.value | dateDisplay }}</span>
+            </td>
+        </tr>
+        <tr class="no-hover" ng-show="titules.currentTituleFiles.length === 0 && files.isLoading === false">
+            <td class="no-data text-center">
+                Файлы отсутствуют
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
