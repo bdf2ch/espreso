@@ -10,11 +10,11 @@ var filters = angular.module("espreso.filters", [])
         /* Фильтр опор по id линии */
         $filterProvider.register("pylonsByPowerLine", ["$log", function ($log) {
             return function (input, powerLineId) {
-                if (powerLineId && parseInt(powerLineId) > 0 && input.length > 0) {
-                    $log.log("powerLineId = ", powerLineId);
+                if (powerLineId !== undefined && parseInt(powerLineId) > 0) {
+                    //$log.log("powerLineId = ", powerLineId);
                     var pylons = [];
                     angular.forEach(input, function (pylon) {
-                        if (pylon.powerLineId.value == parseInt(powerLineId))
+                        if (pylon.powerLineId.value === parseInt(powerLineId))
                             pylons.push(pylon);
                     });
                     return pylons;

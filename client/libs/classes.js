@@ -1146,6 +1146,8 @@ function TituleNodes () {
                                 node.nextNodeId = this.stack[i].branches[branchId][x].nextNodeId;
                                 node.prevNodeId = this.stack[i].branches[branchId][x].id.value;
                                 node.haveBranches = node.branchesCount.value > 0 ? true : false;
+                                node.pathId = branchId;
+                                node.parentId = nodeId;
                                 node.collapsed = true;
 
                                 /* Вносим изменения в предыдущий него */
@@ -1304,6 +1306,7 @@ function TituleNodes () {
 
     this.collapse = function (nodeId) {
         if (nodeId !== undefined) {
+            console.log("node for collapse = ", nodeId);
             var length = this.stack.length;
             var i = 0;
 

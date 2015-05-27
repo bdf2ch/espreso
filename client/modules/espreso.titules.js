@@ -494,13 +494,13 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
          active: false
          },
          */
-        {
+        /*{
             id: 2,
             title: "О титуле",
             templateUrl: "client/templates/titules/titule_about.html",
             controller: "MontageSchemeController",
             active: false
-        },
+        },*/
         {
             id: 4,
             title: "Документация",
@@ -611,25 +611,27 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
 
     $scope.onSuccessGetBranches = function (nodeId, data) {
         if (nodeId !== undefined && data !== undefined) {
-            var node = {};
-            angular.forEach(data, function (child) {
-                switch (parseInt(child["OBJECT_TYPE_ID"])) {
-                    case 1:
-                        console.log("PYLON");
-                        node = new Pylon();
-                        node.fromSOURCE(child);
-                        node.onInit();
-                        break;
-                    case 0:
-                        console.log("UNKNOWN");
-                        node = new Obj();
-                        node.fromSOURCE(child);
-                        node.onInit();
-                        break;
-                }
-                node.pathId = parseInt(child["PATH_ID"]);
-                $scope.titules.currentTituleNodes.appendNodeToBranch(nodeId, parseInt(child["PATH_ID"]), node);
-            });
+            if (data !== 0) {
+                var node = {};
+                angular.forEach(data, function (child) {
+                    switch (parseInt(child["OBJECT_TYPE_ID"])) {
+                        case 1:
+                            console.log("PYLON");
+                            node = new Pylon();
+                            node.fromSOURCE(child);
+                            node.onInit();
+                            break;
+                        case 0:
+                            console.log("UNKNOWN");
+                            node = new Obj();
+                            node.fromSOURCE(child);
+                            node.onInit();
+                            break;
+                    }
+                    node.pathId = parseInt(child["PATH_ID"]);
+                    $scope.titules.currentTituleNodes.appendNodeToBranch(nodeId, parseInt(child["PATH_ID"]), node);
+                });
+            }
             $scope.titules.currentTituleNodes.expand(nodeId);
         }
     };

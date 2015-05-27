@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="branches">
-    <ul class="tree nested" ng-repeat="branch in item.branches track by $index">
+    <ul class="tree nested" ng-repeat="branch in this.branches track by $index">
         <li ng-repeat="node in branch track by $index">
             <div class="node-item hover"
                  ng-class="{'active': scope.titules.currentTituleNodes.isNodeActive(node.id.value)}"
@@ -8,15 +8,27 @@
                     <div class="tree-top nested" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
                     <div class="tree-bottom nested" ng-class="{'last': $index === branch.length - 1}"></div>
                 </span>
-                <span class="collapse"
-                      ng-show="node.haveBranches === true"
-                      ng-click="scope.objects.getBranches(scope.titules.currentTituleId, scope.titules.currentTitulePartId, node.id.value, scope.onSuccessGetBranches)">
+                <span class="collapse" ng-show="node.haveBranches === true">
                     <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
                     <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
-                    <span class="expander">+</span>
+                    <!--<span class="expander">+</span>-->
+                    <span class="expander"
+                          title="Развернуть"
+                          ng-show="node.haveBranches === true && node.collapsed === true"
+                          ng-click="scope.objects.getBranches(titules.currentTituleId, titules.currentTitulePartId, node.id.value, scope.onSuccessGetBranches)">
+                        +
+                    </span>
+                    <span class="expander"
+                          title="Свернуть"
+                          ng-show="node.collapsed === false"
+                          ng-click="scope.titules.currentTituleNodes.collapse(this.id.value)">
+                        -
+                    </span>
                 </span>
 
-                <div class="node-icon" ng-class="{'unknown': item.objectTypeId === 0, 'pylon': item.objectTypeId === 1}"></div>
+                <div class="node-icon" ng-class="{'unknown': node.objectTypeId === 0, 'pylon': node.objectTypeId === 1}"></div>
+                <!--<div class="node-icon unknown" ng-show="node.objectTypeId === 0"></div>
+                <div class="node-icon pylon" ng-show="node.objectTypeId === 1"></div>-->
                 <!-- Подробности об узле -->
                 <div class="node-details">
                     <!-- Если узел является опорой -->
@@ -39,9 +51,9 @@
                         </span>
                 </div>
             </div>
-            <div ng-if="node.branches && node.branches.length > 0"
+            <div ng-if="node.branches !== undefined && node.branches.length > 0 && node.collapsed === false"
                  ng-include="'branches'"
-                 ng-init="node.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); this.scope = scope;">
+                 ng-init="this.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); this.scope = scope;">
             </div>
         </li>
     </ul>
@@ -113,7 +125,7 @@
                 </div>
             </div>
 
-            <div ng-show="item.branches && item.branches.length > 0 && item.collapsed == false"
+            <div ng-if="item.branches !== undefined && item.branches.length > 0 && item.collapsed == false"
                  ng-include="'branches'"
                  ng-init="this.branches = titules.currentTituleNodes.getBranches(item.id.value); scope = this">
             </div>

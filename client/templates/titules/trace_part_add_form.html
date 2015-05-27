@@ -112,7 +112,7 @@
                         placeholder="Опора"
                         id="endPylonNumber"
                         ng-model="endPointObjectId"
-                        collection="endPointObjects.pylons"
+                        collection="endPointObjects.pylons | pylonsByPowerLine:endPointPowerLineId"
                         collection-value="id">
                 </typeahead>
             </div>

@@ -1690,8 +1690,8 @@ nomenklature.controller("AddPylonCtrl", ["$log", "$scope", "$nomenklature", "$ob
         $log.log(data);
         if (data !== 0) {
             $scope.pylonAddedSuccessfully = true;
-            $scope.pylon.pointId.value = 0;
-            $scope.pylon.powerLineId.value = 0;
+            //$scope.pylon.pointId.value = 0;
+            //$scope.pylon.powerLineId.value = 0;
             $scope.pylon.number.value = 0;
             $scope.pylon.pylonTypeId.value = 0;
         }

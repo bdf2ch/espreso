@@ -155,7 +155,7 @@ var objects = angular.module("espreso.objects", [])
 
             module.getBranches = function (tituleId, titulePartId, nodeId, callback) {
                 if (tituleId !== undefined && titulePartId !== undefined && nodeId !== undefined) {
-                    //if ($titules.currentTituleNodes.getNode(nodeId).branches === undefined) {
+                    if ($titules.currentTituleNodes.getNode(nodeId).branches === undefined) {
                         var params = {
                             action: "getBranches",
                             data: {
@@ -166,10 +166,13 @@ var objects = angular.module("espreso.objects", [])
                         };
                         $http.post("server/controllers/nodes.php", params)
                             .success(function (data) {
-                                callback(nodeId, data);
+                                if (callback !== undefined)
+                                    callback(nodeId, data);
                             }
                         );
-                    //}
+                    } else {
+                        callback(nodeId, 0);
+                    }
                 }
             };
 

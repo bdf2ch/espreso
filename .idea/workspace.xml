@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89566420-f6e0-4973-97a3-0e2c5455749d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/libs/classes.js" afterPath="$PROJECT_DIR$/client/libs/classes.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.filters.js" afterPath="$PROJECT_DIR$/client/modules/espreso.filters.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.nomenklature.js" afterPath="$PROJECT_DIR$/client/modules/espreso.nomenklature.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.objects.js" afterPath="$PROJECT_DIR$/client/modules/espreso.objects.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.titules.js" afterPath="$PROJECT_DIR$/client/modules/espreso.titules.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/resources/styles/framework.css" afterPath="$PROJECT_DIR$/client/resources/styles/framework.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/resources/styles/framework.less" afterPath="$PROJECT_DIR$/client/resources/styles/framework.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/templates/titules/montage_scheme.html" afterPath="$PROJECT_DIR$/client/templates/titules/montage_scheme.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html" afterPath="$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html" />
     </list>
     <ignored path="espreso.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,14 +29,14 @@
     <favorites_list name="espreso" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.7346939">
+    <splitter split-orientation="horizontal" split-proportion="0.7564802">
       <split-first>
         <leaf>
-          <file leaf-file-name="classes.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="classes.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/libs/classes.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.94188035">
-                  <caret line="1089" column="0" selection-start-line="1089" selection-start-column="0" selection-end-line="1089" selection-end-column="0" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="1316" column="13" selection-start-line="1316" selection-start-column="13" selection-end-line="1316" selection-end-column="13" />
                   <folding />
                 </state>
               </provider>
@@ -42,7 +46,7 @@
             <entry file="file://$PROJECT_DIR$/client/modules/espreso.objects.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="171" column="23" selection-start-line="171" selection-start-column="23" selection-end-line="171" selection-end-column="23" />
+                  <caret line="173" column="44" selection-start-line="173" selection-start-column="44" selection-end-line="173" selection-end-column="44" />
                   <folding />
                 </state>
               </provider>
@@ -82,7 +86,7 @@
             <entry file="file://$PROJECT_DIR$/client/modules/espreso.filters.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
+                  <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
                   <folding />
                 </state>
               </provider>
@@ -92,7 +96,7 @@
             <entry file="file://$PROJECT_DIR$/client/modules/espreso.titules.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="57" />
+                  <caret line="628" column="34" selection-start-line="628" selection-start-column="34" selection-end-line="628" selection-end-column="34" />
                   <folding />
                 </state>
               </provider>
@@ -118,11 +122,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="montage_scheme.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="montage_scheme.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/templates/titules/montage_scheme.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-13.538462">
-                  <caret line="46" column="9" selection-start-line="46" selection-start-column="9" selection-end-line="46" selection-end-column="9" />
+                <state vertical-scroll-proportion="0.5978898">
+                  <caret line="30" column="76" selection-start-line="30" selection-start-column="76" selection-end-line="30" selection-end-column="76" />
                   <folding />
                 </state>
               </provider>
@@ -162,11 +166,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="trace_part_add_form.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="trace_part_add_form.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="46.653847">
-                  <caret line="5" column="54" selection-start-line="5" selection-start-column="54" selection-end-line="5" selection-end-column="54" />
+                <state vertical-scroll-proportion="0.8569754">
+                  <caret line="114" column="70" selection-start-line="114" selection-start-column="70" selection-end-line="114" selection-end-column="70" />
                   <folding />
                 </state>
               </provider>
@@ -185,7 +189,7 @@
           <file leaf-file-name="pylon_add_form.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/templates/nomenklature/pylon_add_form.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
+                <state vertical-scroll-proportion="-26.807692">
                   <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
                   <folding />
                 </state>
@@ -196,7 +200,7 @@
             <entry file="file://$PROJECT_DIR$/client/modules/espreso.nomenklature.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="1694" column="42" selection-start-line="1694" selection-start-column="42" selection-end-line="1694" selection-end-column="42" />
+                  <caret line="1699" column="0" selection-start-line="1699" selection-start-column="0" selection-end-line="1699" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -212,10 +216,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="framework.less" pinned="false" current-in-tab="true">
+          <file leaf-file-name="framework.less" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/client/resources/styles/framework.less">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.42397138">
+                <state vertical-scroll-proportion="-0.0">
                   <caret line="345" column="11" selection-start-line="345" selection-start-column="11" selection-end-line="345" selection-end-column="11" />
                   <folding />
                 </state>
@@ -289,22 +293,22 @@
         <option value="$PROJECT_DIR$/client/resources/styles/app.css" />
         <option value="$PROJECT_DIR$/server/templates/app2.html" />
         <option value="$PROJECT_DIR$/client/modules/espreso.js" />
-        <option value="$PROJECT_DIR$/client/modules/espreso.filters.js" />
         <option value="$PROJECT_DIR$/server/controllers/titules.php" />
         <option value="$PROJECT_DIR$/server/controllers/links.php" />
         <option value="$PROJECT_DIR$/client/modules/espreso.links.js" />
-        <option value="$PROJECT_DIR$/client/libs/classes.js" />
         <option value="$PROJECT_DIR$/client/templates/titules/titule_about.html" />
         <option value="$PROJECT_DIR$/client/templates/titules/titules_list_table.html" />
         <option value="$PROJECT_DIR$/client/templates/titules/object_edit_form.html" />
         <option value="$PROJECT_DIR$/client/modules/espreso.pylons.js" />
         <option value="$PROJECT_DIR$/client/templates/nomenklature/pylon_add_form.html" />
         <option value="$PROJECT_DIR$/server/controllers/nodes.php" />
+        <option value="$PROJECT_DIR$/client/resources/styles/framework.less" />
         <option value="$PROJECT_DIR$/client/modules/espreso.nomenklature.js" />
         <option value="$PROJECT_DIR$/client/modules/espreso.objects.js" />
-        <option value="$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html" />
         <option value="$PROJECT_DIR$/client/modules/espreso.titules.js" />
-        <option value="$PROJECT_DIR$/client/resources/styles/framework.less" />
+        <option value="$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html" />
+        <option value="$PROJECT_DIR$/client/modules/espreso.filters.js" />
+        <option value="$PROJECT_DIR$/client/libs/classes.js" />
         <option value="$PROJECT_DIR$/client/templates/titules/montage_scheme.html" />
       </list>
     </option>
@@ -321,10 +325,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="x" value="-7" />
+    <option name="y" value="2" />
+    <option name="width" value="1786" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -371,6 +375,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -579,7 +584,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -897,10 +901,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-7" y="2" width="1786" height="1038" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16145833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16132723" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32893288" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35753575" sideWeight="0.5002869" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1258,14 +1262,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/modules/espreso.filters.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="23" selection-start-line="33" selection-start-column="23" selection-end-line="33" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/modules/espreso.pylons.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1282,14 +1278,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/templates/nomenklature/pylon_add_form.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/controllers/nodes.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1298,26 +1286,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/modules/espreso.nomenklature.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1694" column="42" selection-start-line="1694" selection-start-column="42" selection-end-line="1694" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/templates/titules/object_edit_form.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="35" column="56" selection-start-line="34" selection-start-column="72" selection-end-line="35" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="46.653847">
-          <caret line="5" column="54" selection-start-line="5" selection-start-column="54" selection-end-line="5" selection-end-column="54" />
           <folding />
         </state>
       </provider>
@@ -1332,16 +1304,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/resources/styles/framework.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42397138">
+        <state vertical-scroll-proportion="0.0">
           <caret line="345" column="11" selection-start-line="345" selection-start-column="11" selection-end-line="345" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/templates/titules/montage_scheme.html">
+    <entry file="file://$PROJECT_DIR$/client/templates/nomenklature/pylon_add_form.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.538462">
-          <caret line="46" column="9" selection-start-line="46" selection-start-column="9" selection-end-line="46" selection-end-column="9" />
+        <state vertical-scroll-proportion="-26.807692">
+          <caret line="41" column="6" selection-start-line="41" selection-start-column="6" selection-end-line="41" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/modules/espreso.nomenklature.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1699" column="0" selection-start-line="1699" selection-start-column="0" selection-end-line="1699" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1349,7 +1329,7 @@
     <entry file="file://$PROJECT_DIR$/client/modules/espreso.objects.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="171" column="23" selection-start-line="171" selection-start-column="23" selection-end-line="171" selection-end-column="23" />
+          <caret line="173" column="44" selection-start-line="173" selection-start-column="44" selection-end-line="173" selection-end-column="44" />
           <folding />
         </state>
       </provider>
@@ -1357,15 +1337,39 @@
     <entry file="file://$PROJECT_DIR$/client/modules/espreso.titules.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="272" column="57" selection-start-line="272" selection-start-column="57" selection-end-line="272" selection-end-column="57" />
+          <caret line="628" column="34" selection-start-line="628" selection-start-column="34" selection-end-line="628" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8569754">
+          <caret line="114" column="70" selection-start-line="114" selection-start-column="70" selection-end-line="114" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/modules/espreso.filters.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="35" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/libs/classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.94188035">
-          <caret line="1089" column="0" selection-start-line="1089" selection-start-column="0" selection-end-line="1089" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1316" column="13" selection-start-line="1316" selection-start-column="13" selection-end-line="1316" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/templates/titules/montage_scheme.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5978898">
+          <caret line="30" column="76" selection-start-line="30" selection-start-column="76" selection-end-line="30" selection-end-column="76" />
           <folding />
         </state>
       </provider>
