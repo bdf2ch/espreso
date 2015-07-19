@@ -44,7 +44,7 @@
                     <span ng-show="node.objectTypeId === 0">Неформализованный объект</span><br>
                     <span ng-show="node.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
                 </div>
-                <div class="node-point">
+                <div class="node-point" ng-show="node.id.value === titules.currentTitule.startObjectId.value || node.id.value === titules.currentTitule.endObjectId.value">
                     {{ stuff.points.find("id", node.pointId.value).title.value }}<br>
                         <span class="description right">
                             {{ stuff.points.find("id", node.pointId.value).coordinates }}
@@ -117,11 +117,13 @@
                     <span ng-show="item.objectTypeId === 0">Неформализованный объект</span><br>
                     <span ng-show="item.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
                 </div>
-                <div class="node-point">
+                <div class="node-point" ng-show="item.id.value === titules.currentTitule.startObjectId.value || item.id.value === titules.currentTitule.endObjectId.value">
                     {{ stuff.points.find("id", item.pointId.value).title.value }}<br>
+                        <!--
                         <span class="description right">
                             {{ stuff.points.find("id", item.pointId.value).coordinates }}
                         </span>
+                        -->
                 </div>
             </div>
 
