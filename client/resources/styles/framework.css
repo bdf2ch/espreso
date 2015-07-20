@@ -197,19 +197,17 @@
   border-left: 1px dotted black;
   border-bottom: 1px dotted black;
 }
-.tree-top-left.first {
-  border-left: none;
-}
 .tree-top-left.nested {
   border-left: none;
   border-bottom: none;
 }
 .tree-top-right {
   height: 25px;
+  border-left: 1px dotted black;
   border-bottom: 1px dotted black;
 }
 .tree-top-right.first {
-  border-bottom: 1px dotted black;
+  border-left: none;
 }
 .tree-top-right.nested {
   border-left: 1px dotted black;
@@ -221,10 +219,6 @@
   height: 25px;
   border-left: 1px dotted black;
 }
-.tree-bottom-left.last {
-  border-left: none;
-  border-top: 1px dotted black;
-}
 .tree-bottom-left.nested {
   border-left: none;
 }
@@ -233,12 +227,17 @@
 }
 .tree-bottom-right {
   height: 25px;
+  border-left: 1px dotted black;
+}
+.tree-bottom-right.last {
+  border-left: none;
+  border-top: 1px dotted black;
 }
 .tree-bottom-right.nested.not-last-branch {
   border-left: 1px dotted black;
 }
-.tree-bottom-right.nested.last-node-in-last-branch {
-  border-left: none;
+.tree-bottom-right.nested.last-node-in-branch {
+  border-left: 1px dotted black;
 }
 .collapse {
   position: relative;
@@ -333,14 +332,16 @@
 /*** TREE ***/
 .tree {
   margin-top: 0px;
-  margin-bottom: 0px;
-  padding-left: 10px;
   list-style-type: none;
 }
 .tree li {
-  margin-left: 10px;
+  margin-left: 13px;
 }
 .tree.nested {
   padding-left: 10px;
   border-left: 1px dotted black;
+}
+.tree.nested .tree.nested {
+  margin-left: 15px;
+  padding-left: 10px;
 }

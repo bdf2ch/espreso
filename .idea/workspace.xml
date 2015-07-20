@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c618a0c-767a-4cb4-bb60-00657d285eb0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/libs/classes.js" afterPath="$PROJECT_DIR$/client/libs/classes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.filters.js" afterPath="$PROJECT_DIR$/client/modules/espreso.filters.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.objects.js" afterPath="$PROJECT_DIR$/client/modules/espreso.objects.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.pylons.js" afterPath="$PROJECT_DIR$/client/modules/espreso.pylons.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.titules.js" afterPath="$PROJECT_DIR$/client/modules/espreso.titules.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/modules/espreso.ui.js" afterPath="$PROJECT_DIR$/client/modules/espreso.ui.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/resources/styles/framework.css" afterPath="$PROJECT_DIR$/client/resources/styles/framework.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/resources/styles/framework.less" afterPath="$PROJECT_DIR$/client/resources/styles/framework.less" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/templates/titules/montage_scheme.html" afterPath="$PROJECT_DIR$/client/templates/titules/montage_scheme.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html" afterPath="$PROJECT_DIR$/client/templates/titules/trace_part_add_form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="espreso.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,8 +91,8 @@
       <file leaf-file-name="montage_scheme.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/templates/titules/montage_scheme.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.115385">
-              <caret line="17" column="87" selection-start-line="17" selection-start-column="87" selection-end-line="17" selection-end-column="87" />
+            <state vertical-scroll-proportion="-9.153846">
+              <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -109,8 +101,8 @@
       <file leaf-file-name="framework.less" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/resources/styles/framework.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.68112546">
-              <caret line="467" column="8" selection-start-line="467" selection-start-column="8" selection-end-line="467" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.4618992">
+              <caret line="452" column="4" selection-start-line="452" selection-start-column="4" selection-end-line="452" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -509,16 +501,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/templates/titules/montage_scheme.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.115385">
-          <caret line="17" column="87" selection-start-line="17" selection-start-column="87" selection-end-line="17" selection-end-column="87" />
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="14" column="42" selection-start-line="14" selection-start-column="42" selection-end-line="14" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/resources/styles/framework.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68112546">
-          <caret line="467" column="8" selection-start-line="467" selection-start-column="8" selection-end-line="467" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.4618992">
+          <caret line="452" column="4" selection-start-line="452" selection-start-column="4" selection-end-line="452" selection-end-column="4" />
           <folding />
         </state>
       </provider>

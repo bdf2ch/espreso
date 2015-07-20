@@ -10,7 +10,7 @@
                 </span>
                 <span class="collapse nested" ng-class="{'first-nested-node': $index === 0}">
                     <div class="tree-top-right nested" ng-class="{'not-first-node-in-branch': $index !== 0, 'first': node.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-last-branch': $index === branch.length - 1, 'not-last-branch': $index < branches.length - 1}"></div>
+                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-branch': node.lastNodeInBranch === true, 'not-last-branch': $index < branches.length - 1}"></div>
                     <!--<span class="expander">+</span>-->
                     <span class="expander"
                           title="Развернуть"
@@ -82,7 +82,7 @@
                  ng-class="{'active': titules.currentTituleNodes.isNodeActive(item.id.value), 'addnew': titules.currentTituleNodes.isNodeActive(item.id.value)}"
                  ng-click="titules.currentObjectId = titules.currentTituleNodes.select(item.id.value)">
 
-                <span class="collapse">
+                <span class="collapse" ng-hide="true">
                     <div class="tree-top-left" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
                     <div class="tree-bottom-left" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
                 </span>
