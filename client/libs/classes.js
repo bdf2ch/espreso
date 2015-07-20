@@ -540,6 +540,7 @@ Obj.prototype.constructor = Obj;
 function ObjectType () {
     this.id = new Field({ source: "ID", value: 0 });
     this.title = new Field({ source: "TITLE", value: "" });
+    this.isBaseObject = new Field({ source: "IS_BASE_OBJECT", value: 0 });
 };
 ObjectType.prototype = new DataModel();
 ObjectType.prototype.constructor = ObjectType;
@@ -616,6 +617,7 @@ function Pylon () {
     this.powerLineId = new Field({ source: "POWER_LINE_ID", value: 0 });
     this.number = new Field({ source: "PYLON_NUMBER", value: 0 });
     this.branchesCount = new Field({ source: "OUT_PATHS", value: 0 });
+    this.isBaseObject = new Field({ source: "IS_BASE_OBJECT", value: 0 });
     //this.children = [];
     this.objectTypeId = 1;
     this.typeahead = "";
@@ -1238,16 +1240,29 @@ function TituleNodes () {
                 if (this.stack[i].branches === undefined)
                     this.stack[i].branches = [];
 
+
+                //if (this.stack[i].branches.length > 0) {
+                //    console.log(this.stack[i].branches);
+                //    for (var x = 0; x <= this.stack[i].branches.length; x++) {
+                //        this.stack[i].branches[x].lastBranch = false;
+                //    }
+                //}
+
                 /* Если у узла отсутсвует ответвление с идентификатором branchId - добавляем его в массив ответвлений */
-                if (this.stack[i].branches[branchId] === undefined)
+                if (this.stack[i].branches[branchId] === undefined) {
                     this.stack[i].branches[branchId] = [];
+                    this.stack[i].branches[branchId].lastBranch = true;
+                }
 
                 node.parentId = nodeId;
                 node.pathId = branchId;
+                node.lastNodeInBranch = true;
                 prevNodeIndex = this.stack[i].branches[branchId].length > 0 ? this.stack[i].branches[branchId].length - 1 : -1;
                 node.prevNodeId = prevNodeIndex !== -1 ? this.stack[i].branches[branchId][prevNodeIndex].id.value : -1;
-                if (prevNodeIndex !== -1)
+                if (prevNodeIndex !== -1) {
                     this.stack[i].branches[branchId][prevNodeIndex].nextNodeId = node.id.value;
+                    this.stack[i].branches[branchId][prevNodeIndex].lastNodeInBranch = false;
+                }
                 node.nextNodeId = -1;
                 node.haveBranches = node.branchesCount.value > 0 ? true : false;
                 node.collapsed = true;
@@ -1278,6 +1293,7 @@ function TituleNodes () {
                     console.log("prev node id = ", this.stack[i].prevNodeId);
                     console.log("next node id = ", this.stack[i].nextNodeId);
                     console.log(this.stack[i]);
+                    console.log("branches count = ", this.stack[i].branches.length);
                 } else {
                     this.stack[i].isActive = false;
                     selectedNodeId = -1;

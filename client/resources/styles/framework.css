@@ -192,29 +192,53 @@
   text-align: right;
 }
 /*** NODES ***/
-.tree-top {
+.tree-top-left {
   height: 25px;
   border-left: 1px dotted black;
-}
-.tree-top.first {
-  border-left: none;
-}
-.tree-top.nested {
-  margin-top: -5px;
-}
-.tree-top.nested.first {
   border-bottom: 1px dotted black;
 }
-.tree-bottom {
-  height: 25px;
-  border-top: 1px dotted black;
-  border-left: 1px dotted black;
-}
-.tree-bottom.last {
+.tree-top-left.first {
   border-left: none;
 }
-.tree-bottom.nested {
+.tree-top-left.nested {
+  border-left: none;
   border-bottom: none;
+}
+.tree-top-right {
+  height: 25px;
+  border-bottom: 1px dotted black;
+}
+.tree-top-right.first {
+  border-bottom: 1px dotted black;
+}
+.tree-top-right.nested {
+  border-left: 1px dotted black;
+}
+.tree-top-right.nested.not-first-node-in-branch {
+  border-bottom: none;
+}
+.tree-bottom-left {
+  height: 25px;
+  border-left: 1px dotted black;
+}
+.tree-bottom-left.last {
+  border-left: none;
+  border-top: 1px dotted black;
+}
+.tree-bottom-left.nested {
+  border-left: none;
+}
+.tree-bottom-left.nested.last-node-in-branch {
+  border-top: none;
+}
+.tree-bottom-right {
+  height: 25px;
+}
+.tree-bottom-right.nested.not-last-branch {
+  border-left: 1px dotted black;
+}
+.tree-bottom-right.nested.last-node-in-last-branch {
+  border-left: none;
 }
 .collapse {
   position: relative;
@@ -265,6 +289,21 @@
 .node-item.active {
   background: #F5E7D3;
 }
+.node-item.addnew a {
+  display: block;
+  padding-left: 70px;
+  color: lightblue;
+  text-decoration: none;
+}
+.node-branch-link {
+  position: relative;
+  height: 10px;
+  z-index: 5px;
+  margin-left: 55px;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  border-left: 1px dotted black;
+}
 .node-icon {
   position: relative;
   display: block;
@@ -293,16 +332,15 @@
 }
 /*** TREE ***/
 .tree {
-  margin-left: -10px;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-left: 0px;
+  padding-left: 10px;
   list-style-type: none;
 }
-.tree.nested {
-  margin-left: 15px;
-}
 .tree li {
-  margin-left: 25px;
-  padding: 0px;
+  margin-left: 10px;
+}
+.tree.nested {
+  padding-left: 10px;
+  border-left: 1px dotted black;
 }

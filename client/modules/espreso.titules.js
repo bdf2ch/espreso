@@ -1180,6 +1180,7 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
     //$scope.nextNode = {};
     $scope.tracePartType = 1;
     $scope.currentNodePathId = -1;
+    $scope.powerLinePylons = new Collection();
 
     $scope.endPointId = 0;
     $scope.endPointObjects = new ObjectList();
@@ -1217,6 +1218,7 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
     }
 
     /* Ожидание изменения конечной точки */
+    /*
     $scope.$watch("endPointId", function (newVal, oldVal) {
         if (newVal !== undefined) {
             if (newVal !== oldVal && newVal !== 0) {
@@ -1229,6 +1231,12 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
             }
         }
     });
+    */
+
+    $scope.$watch("endPointPowerLineId", function (newVal, oldVal) {
+        $scope.objects.getPylonsByPowerLineId(newVal, $scope.powerLinePylons);
+        $scope.endPointObjectId = 0;
+    });
 
 
     /**
@@ -1239,8 +1247,8 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
         $scope.linkAddedSuccessfully = false;
 
 
-        if ($scope.endPointId === 0)
-            $scope.errors.push("Вы не выбрали конечную точку");
+        //if ($scope.endPointId === 0)
+        //    $scope.errors.push("Вы не выбрали конечную точку");
         if ($scope.endPointObjectTypeId === 1) {
             if ($scope.endPointPowerLineId === -1)
                 $scope.errors.push("Вы не выбрали линию для опоры в конечной точке");

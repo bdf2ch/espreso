@@ -15,7 +15,7 @@ var pylons = angular.module("espreso.pylons", [])
 
             /*** Получает список всех опор на линии по идентификатору линии ***/
             module.getPylonsByPowerlineId = function (powerlineId, destination) {
-                if (powerlineId && destination && destination.constructor == Collection) {
+                if (powerlineId && destination && destination.constructor === Collection) {
                     destination.isLoaded = false;
                     destination.items.splice(0, destination.items.length);
                     var params = {

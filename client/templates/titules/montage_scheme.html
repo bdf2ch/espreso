@@ -1,16 +1,16 @@
 <script type="text/ng-template" id="branches">
     <ul class="tree nested" ng-repeat="branch in this.branches track by $index">
-        <li ng-repeat="node in branch track by $index">
+        <li ng-repeat="node in branch track by $index" class="nested">
             <div class="node-item hover"
                  ng-class="{'active': scope.titules.currentTituleNodes.isNodeActive(node.id.value)}"
                  ng-click="scope.titules.currentObjectId = scope.titules.currentTituleNodes.select(node.id.value)">
-                <span class="collapse" ng-show="node.haveBranches === false">
-                    <div class="tree-top nested" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom nested" ng-class="{'last': $index === branch.length - 1}"></div>
+                <span class="collapse">
+                    <div class="tree-top-left nested" ng-class="{'first': $index === 0}"></div>
+                    <div class="tree-bottom-left nested" ng-class="{'last-node-in-branch': $index === branch.length - 1}"></div>
                 </span>
-                <span class="collapse" ng-show="node.haveBranches === true">
-                    <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
+                <span class="collapse nested" ng-class="{'first-nested-node': $index === 0}">
+                    <div class="tree-top-right nested" ng-class="{'not-first-node-in-branch': $index !== 0, 'first': node.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-last-branch': $index === branch.length - 1, 'not-last-branch': $index < branches.length - 1}"></div>
                     <!--<span class="expander">+</span>-->
                     <span class="expander"
                           title="Развернуть"
@@ -21,7 +21,7 @@
                     <span class="expander"
                           title="Свернуть"
                           ng-show="node.collapsed === false"
-                          ng-click="scope.titules.currentTituleNodes.collapse(this.id.value)">
+                          ng-click="scope.titules.currentTituleNodes.collapse(node.id.value)">
                         -
                     </span>
                 </span>
@@ -44,17 +44,20 @@
                     <span ng-show="node.objectTypeId === 0">Неформализованный объект</span><br>
                     <span ng-show="node.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
                 </div>
+                <!--
                 <div class="node-point">
                     {{ stuff.points.find("id", node.pointId.value).title.value }}<br>
                         <span class="description right">
                             {{ stuff.points.find("id", node.pointId.value).coordinates }}
                         </span>
                 </div>
+                -->
             </div>
             <div ng-if="node.branches !== undefined && node.branches.length > 0 && node.collapsed === false"
                  ng-include="'branches'"
                  ng-init="this.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); this.scope = scope;">
             </div>
+            <div class="node-branch-link" ng-show="$index < branch.length - 1"></div>
         </li>
     </ul>
 </script>
@@ -76,16 +79,16 @@
         <li ng-repeat="item in titules.currentTituleNodes.path.nodes track by $index">
 
             <div class="node-item hover"
-                 ng-class="{'active': titules.currentTituleNodes.isNodeActive(item.id.value)}"
+                 ng-class="{'active': titules.currentTituleNodes.isNodeActive(item.id.value), 'addnew': titules.currentTituleNodes.isNodeActive(item.id.value)}"
                  ng-click="titules.currentObjectId = titules.currentTituleNodes.select(item.id.value)">
 
-                <span class="collapse" ng-show="item.haveBranches === false">
-                    <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
+                <span class="collapse">
+                    <div class="tree-top-left" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom-left" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
                 </span>
-                <span class="collapse" ng-show="item.haveBranches === true">
-                    <div class="tree-top" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
+                <span class="collapse">
+                    <div class="tree-top-right" ng-class="{'first': item.id.value === titules.currentTitule.startObjectId.value}"></div>
+                    <div class="tree-bottom-right" ng-class="{'last': item.id.value === titules.currentTitule.endObjectId.value}"></div>
                     <span class="expander"
                           title="Развернуть"
                           ng-show="item.haveBranches === true && item.collapsed === true"
@@ -117,12 +120,20 @@
                     <span ng-show="item.objectTypeId === 0">Неформализованный объект</span><br>
                     <span ng-show="item.objectTypeId === 0" class="description">Тип этого объекта не задан</span>
                 </div>
-                <div class="node-point">
+                <div class="node-point" ng-show="item.id.value === titules.currentTitule.startObjectId.value || item.id.value === titules.currentTitule.endObjectId.value">
                     {{ stuff.points.find("id", item.pointId.value).title.value }}<br>
+                    <!--
                         <span class="description right">
                             {{ stuff.points.find("id", item.pointId.value).coordinates }}
                         </span>
+                     -->
                 </div>
+
+                <!--
+                <div class="node-addnew" ng-show="titules.currentTituleNodes.isNodeActive(item.id.value)">
+                    <a href>Добавить соединение с текущим объектом</a>
+                </div>
+                -->
             </div>
 
             <div ng-if="item.branches !== undefined && item.branches.length > 0 && item.collapsed == false"

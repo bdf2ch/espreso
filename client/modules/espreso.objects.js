@@ -245,6 +245,33 @@ var objects = angular.module("espreso.objects", [])
                 );
             };
 
+
+            module.getPylonsByPowerLineId = function (powerLineId, destination) {
+                if (powerLineId !== undefined && destination !== undefined && destination.constructor === Collection) {
+                    var params = {
+                        action: "pylonsByPowerLine",
+                        data: {
+                            powerLineId: powerLineId
+                        }
+                    };
+
+                    destination.clear();
+                    $http.post("server/controllers/pylons.php", params)
+                        .success(function (data) {
+                            if (data !== undefined && parseInt(data) !== 0) {
+                                angular.forEach(data, function (pylon) {
+                                    var temp_pylon = new Pylon();
+                                    temp_pylon.fromSOURCE(pylon);
+                                    temp_pylon.onInit();
+                                    temp_pylon.isBaseObject.value = 1;
+                                    destination.add(temp_pylon);
+                                });
+                            }
+                        }
+                    );
+                }
+            };
+
             return module;
         }]);
     })

@@ -245,37 +245,78 @@
 
 
 /*** NODES ***/
-.tree-top {
+.tree-top-left {
   height: 25px;
   border-left: 1px dotted black;
+  border-bottom: 1px dotted black;
 
   &.first {
     border-left: none;
+    //border-bottom: 1px dotted black;
   }
 
   &.nested {
-    margin-top: -5px;
-
-    &.first {
-      border-bottom: 1px dotted black;
-    }
-  }
-}
-
-.tree-bottom {
-  height: 25px;
-  border-top: 1px dotted black;
-  border-left: 1px dotted black;
-
-  &.last {
     border-left: none;
-  }
-
-  &.nested {
     border-bottom: none;
 
   }
 }
+
+
+.tree-top-right {
+  height: 25px;
+  border-bottom: 1px dotted black;
+
+  &.first {
+    border-bottom: 1px dotted black;
+  }
+
+  &.nested {
+    border-left: 1px dotted black;
+
+    &.not-first-node-in-branch {
+      border-bottom: none;
+    }
+  }
+}
+
+
+.tree-bottom-left {
+  height: 25px;
+  border-left: 1px dotted black;
+
+  &.last {
+    border-left: none;
+    border-top: 1px dotted black;
+  }
+
+  &.nested {
+    border-left: none;
+
+    &.last-node-in-branch {
+      border-top: none;
+    }
+  }
+}
+
+
+.tree-bottom-right {
+  height: 25px;
+
+  &.nested {
+    //border-left: 1px dotted black;
+
+    &.not-last-branch {
+      border-left: 1px dotted black;
+    }
+
+    &.last-node-in-last-branch {
+      border-left: none;
+    }
+  }
+}
+
+
 
 .collapse {
   position: relative;
@@ -297,6 +338,11 @@
   &:hover {
     color: black;
   }
+
+  &.first-nested-node {
+    //width: 2px;
+  }
+
 }
 
 
@@ -337,7 +383,33 @@
   &.active {
     background: #F5E7D3;
   }
+
+  &.addnew {
+    //height: 55px;
+
+    a {
+      display: block;
+      //margin-bottom: 15px;
+      padding-left: 70px;
+      color: lightblue;
+      text-decoration: none;
+    }
+  }
+
+
 }
+
+.node-branch-link {
+  position: relative;
+  height: 10px;
+  z-index: 5px;
+  margin-left: 55px;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  border-left: 1px dotted black;
+  //background: red;
+}
+
 
 .node-icon {
   position: relative;
@@ -374,21 +446,41 @@
 
 /*** TREE ***/
 .tree {
-  margin-left: -10px;
+  //margin-left: -10px;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-left: 0px;
+  padding-left: 10px;
   list-style-type: none;
   //margin-bottom: 10px;
 
-  &.nested {
-    margin-left: 15px;
+  li {
+    margin-left: 10px;
   }
 
-  li {
-    margin-left: 25px;
-    padding: 0px;
+  &.nested {
+    //margin-left: -10px;
+    padding-left: 10px;
+    //margin-top: -5px;
+    //margin-left: 0px;
+    border-left: 1px dotted black;
+    
+    li {
+      //margin-left: 15px;
+      //padding-left: 0px !important;
+    }
+
+    .tree {
+      &.nested {
+        //margin-left: 15px;
+        //padding-left: 2px;
+      }
+    }
   }
+
+  //li {
+  //  margin-left: 25px;
+  //  padding: 0px;
+  //}
 }
 
 

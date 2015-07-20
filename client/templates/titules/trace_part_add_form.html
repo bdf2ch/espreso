@@ -32,6 +32,7 @@
                     ng-options="type.id as type.title for type in links.linkTypes">
             </select>
 
+            <!--
             <label for="startPoint">Начальная точка</label><span class="required">*</span>
             <typeahead
                     ng-disabled="true"
@@ -42,12 +43,13 @@
                     collection-value="id"
                     ng-change="currentTitulePart.setToChanged()">
             </typeahead>
+            -->
 
             <label for="startObjectType">Тип объекта в начальной точке</label>
             <select
                     name="startObjectType"
                     id="startObjectType"
-                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:startPointObjects.objectTypesIds"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items"
                     ng-model="startObject.objectTypeId"
                     ng-disabled="true"
                     ng-change="currentTitulePart.setToChanged()">
@@ -77,6 +79,7 @@
                 </typeahead>
             </div>
 
+            <!--
             <label for="endPoint">Конечная точка</label><span class="required">*</span>
             <typeahead
                     placeholder="Конечная точка"
@@ -85,14 +88,14 @@
                     collection="stuff.points.items"
                     collection-value="id">
             </typeahead>
+            -->
 
             <label for="endObjectType">Тип объекта в конечной точке</label>
             <select
                     name="endObjectType"
                     id="endObjectType"
-                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | types:endPointObjects.objectTypesIds"
+                    ng-options="type.id.value as type.title.value for type in objects.objectTypes.items | baseObjects"
                     ng-model="endPointObjectTypeId"
-                    ng-disabled="endPointObjects.states.ready == false"
                     ng-init="0">
             </select>
 
@@ -102,9 +105,8 @@
                 <select
                         name="endPylonPowerLine"
                         id="endPylonPowerLine"
-                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: endPointObjects.powerLinesIds"
-                        ng-model="endPointPowerLineId"
-                        ng-disabled="endPointObjects.states.ready == false">
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items"
+                        ng-model="endPointPowerLineId">
                 </select>
 
                 <label for="endPylonNumber">№ опоры</label><span class="required">*</span>
@@ -112,7 +114,7 @@
                         placeholder="Опора"
                         id="endPylonNumber"
                         ng-model="endPointObjectId"
-                        collection="endPointObjects.pylons | pylonsByPowerLine:endPointPowerLineId"
+                        collection="powerLinePylons.items"
                         collection-value="id">
                 </typeahead>
             </div>

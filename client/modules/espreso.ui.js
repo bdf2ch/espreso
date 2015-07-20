@@ -165,8 +165,9 @@ ui.directive("typeahead", ["$log", "$document", function ($log) {
                 $log.log("index = ", index);
                 scope.display = matches[index].typeahead;
                 if (matches[index][scope.collectionValue]) {
+                    $log.log("selected item = ", matches[index]);
                     $log.log(matches[index].typeahead);
-                    $log.log(scope.collectionValue + " = " + matches[index][scope.collectionValue].value);
+                    $log.log(scope.collectionValue + " =* " + matches[index][scope.collectionValue].value);
                     scope.ctrl.$setViewValue(parseInt(matches[index][scope.collectionValue].value));
                 }
                 else

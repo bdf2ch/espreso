@@ -62,4 +62,29 @@ var filters = angular.module("espreso.filters", [])
 
             };
         });
+
+
+        $filterProvider.register("pylonsByPowerLineId", ["$log", function ($log) {
+            return function (input, powerLineId) {
+                var result = [];
+                if (input.length > 0 && powerLineId !== undefined && powerLineId !== 0) {
+                    angular.forEach(input, function (pylon) {
+                        if (pylon.powerLineId.value === powerLineId)
+                            result.push(pylon);
+                    });
+                }
+                return result;
+            };
+        }]);
+
+        $filterProvider.register("baseObjects", ["$log", function ($log) {
+            return function (input) {
+                var result = [];
+                angular.forEach(input, function (objectType) {
+                    if (objectType.isBaseObject.value === 1)
+                        result.push(objectType);
+                });
+                return result;
+            };
+        }]);
     });
