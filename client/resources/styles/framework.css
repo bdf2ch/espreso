@@ -237,7 +237,7 @@
   border-left: 1px dotted black;
 }
 .tree-bottom-right.nested.last-node-in-branch {
-  border-left: 1px dotted black;
+  border-left: none;
 }
 .collapse {
   position: relative;

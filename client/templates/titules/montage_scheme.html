@@ -10,7 +10,7 @@
                 </span>
                 <span class="collapse nested" ng-class="{'first-nested-node': $index === 0}">
                     <div class="tree-top-right nested" ng-class="{'not-first-node-in-branch': $index !== 0, 'first': node.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-branch': node.lastNodeInBranch === true, 'not-last-branch': $index < branches.length - 1}"></div>
+                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-branch': node.lastNodeInBranch === true}"></div>
                     <!--<span class="expander">+</span>-->
                     <span class="expander"
                           title="Развернуть"
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    <ul class="tree">
+    <ul class="tree" id="montage-scheme-tree">
         <li ng-repeat="item in titules.currentTituleNodes.path.nodes track by $index">
 
             <div class="node-item hover"
