@@ -276,6 +276,15 @@
 
     &.not-first-node-in-branch {
       border-bottom: none;
+      border-break: 1px dotted black;
+    }
+
+    &.last-branch {
+      border-left: none;
+    }
+
+    &.first-node-in-branch {
+      border-left: 1px dotted black;
     }
   }
 }
@@ -314,6 +323,14 @@
 
     &.last-node-in-branch {
       border-left: none;
+    }
+
+    &.last-branch {
+      border-left: none;
+    }
+
+    &.not-last-node {
+      border-left: 1px dotted black;
     }
   }
 }

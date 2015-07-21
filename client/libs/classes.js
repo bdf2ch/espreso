@@ -1191,6 +1191,9 @@ function TituleNodes () {
                 node.nextNodeId = -1;
                 this.stack[i].children.push(node);
                 this.stack.push(node);
+
+
+
             }
         }
     };
@@ -1230,10 +1233,12 @@ function TituleNodes () {
      */
     this.appendNodeToBranch = function (nodeId, branchId, node) {
         var length = this.stack.length;
-        var i = 0;
         var prevNodeIndex = -1;
+        var branch = [];
+        var branch_found = false;
+        var branch_index = -1;
 
-        for (i = 0; i < length; i++) {
+        for (var i = 0; i < length; i++) {
             if (this.stack[i].id.value === nodeId) {
 
                 /* Если у узла отстуствует массив с ответвлениями - добавляем его */
@@ -1241,34 +1246,44 @@ function TituleNodes () {
                     this.stack[i].branches = [];
 
 
-                //if (this.stack[i].branches.length > 0) {
-                //    console.log(this.stack[i].branches);
-                //    for (var x = 0; x <= this.stack[i].branches.length; x++) {
-                //        this.stack[i].branches[x].lastBranch = false;
-                //    }
-                //}
-
-                /* Если у узла отсутсвует ответвление с идентификатором branchId - добавляем его в массив ответвлений */
-                if (this.stack[i].branches[branchId] === undefined) {
-                    this.stack[i].branches[branchId] = [];
-                    this.stack[i].branches[branchId].lastBranch = true;
+                for (var z = 0; z < this.stack[i].branches.length; z++) {
+                    if (this.stack[i].branches[z].id === branchId) {
+                        branch_index = z;
+                    }
                 }
 
                 node.parentId = nodeId;
                 node.pathId = branchId;
                 node.lastNodeInBranch = true;
-                prevNodeIndex = this.stack[i].branches[branchId].length > 0 ? this.stack[i].branches[branchId].length - 1 : -1;
-                node.prevNodeId = prevNodeIndex !== -1 ? this.stack[i].branches[branchId][prevNodeIndex].id.value : -1;
-                if (prevNodeIndex !== -1) {
-                    this.stack[i].branches[branchId][prevNodeIndex].nextNodeId = node.id.value;
-                    this.stack[i].branches[branchId][prevNodeIndex].lastNodeInBranch = false;
+
+                if (branch_index === -1) {
+                    branch.id = branchId;
+                    branch_index = (this.stack[i].branches.push(branch) - 1);
+                    node.prevNodeId = nodeId;
+                } else {
+                    prevNodeIndex = this.stack[i].branches[branch_index].length > 0 ? this.stack[i].branches[branch_index].length - 1 : -1;
+                    node.prevNodeId = prevNodeIndex !== -1 ? this.stack[i].branches[branch_index][prevNodeIndex].id.value : -1;
+                    if (prevNodeIndex !== -1) {
+                        this.stack[i].branches[branch_index][prevNodeIndex].nextNodeId = node.id.value;
+                        this.stack[i].branches[branch_index][prevNodeIndex].lastNodeInBranch = false;
+                    }
                 }
+
                 node.nextNodeId = -1;
                 node.haveBranches = node.branchesCount.value > 0 ? true : false;
                 node.collapsed = true;
-                this.stack[i].branches[branchId].push(node);
+                this.stack[i].branches[branch_index].push(node);
+
+
                 this.stack[i].isOpened = true;
                 this.stack.push(node);
+
+                //for (var o = 0; o < this.stack[i].branches.length; o++) {
+                //    if (this.stack[i].branches[o].id === branchId) {
+                //        this.stack[i].branches[o].push(node);
+                //    }
+                //}
+
                 console.log(this.stack[i]);
             }
         }
@@ -1293,7 +1308,7 @@ function TituleNodes () {
                     console.log("prev node id = ", this.stack[i].prevNodeId);
                     console.log("next node id = ", this.stack[i].nextNodeId);
                     console.log(this.stack[i]);
-                    console.log("branches count = ", this.stack[i].branches.length);
+                    //console.log("branches count = ", this.stack[i].branches.length);
                 } else {
                     this.stack[i].isActive = false;
                     selectedNodeId = -1;
@@ -1403,8 +1418,11 @@ function TituleNodes () {
             if (this.stack[i].id.value === nodeId) {
                 if (this.stack[i].branches !== undefined)
                     result = this.stack[i].branches;
+                //if (this.stack[i]._branches_ !== undefined)
+                //    result = this.stack[i]._branches_.items;
             }
         }
+        console.log("branches = ", result);
         return result;
     };
 

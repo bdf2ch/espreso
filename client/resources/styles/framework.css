@@ -214,6 +214,13 @@
 }
 .tree-top-right.nested.not-first-node-in-branch {
   border-bottom: none;
+  border-break: 1px dotted black;
+}
+.tree-top-right.nested.last-branch {
+  border-left: none;
+}
+.tree-top-right.nested.first-node-in-branch {
+  border-left: 1px dotted black;
 }
 .tree-bottom-left {
   height: 25px;
@@ -238,6 +245,12 @@
 }
 .tree-bottom-right.nested.last-node-in-branch {
   border-left: none;
+}
+.tree-bottom-right.nested.last-branch {
+  border-left: none;
+}
+.tree-bottom-right.nested.not-last-node {
+  border-left: 1px dotted black;
 }
 .collapse {
   position: relative;

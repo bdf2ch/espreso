@@ -1,16 +1,18 @@
 <script type="text/ng-template" id="branches">
-    <ul class="tree nested" ng-repeat="branch in this.branches track by $index">
-        <li ng-repeat="node in branch track by $index" class="nested">
+    <ul class="tree nested" ng-repeat="branch in this.branches track by $index" ng-init="ind = $index; first_branch = $first; last_branch = $last;">
+        <!-- {{ "branch_index = " + ind + ", first_branch = " + first_branch }} -->
+        <li ng-repeat="node in this.branch track by $id(node)" class="nested" ng-init="first_node = $first; last_node = $last; node_index = $index;">
+            <!--{{ "node_index = " + node_index + ", first_node = " + first_node }}-->
             <div class="node-item hover"
                  ng-class="{'active': scope.titules.currentTituleNodes.isNodeActive(node.id.value)}"
                  ng-click="scope.titules.currentObjectId = scope.titules.currentTituleNodes.select(node.id.value)">
                 <span class="collapse">
                     <div class="tree-top-left nested" ng-class="{'first': $index === 0}"></div>
-                    <div class="tree-bottom-left nested" ng-class="{'last-node-in-branch': $index === branch.length - 1}"></div>
+                    <div class="tree-bottom-left nested" ng-class=""></div>
                 </span>
                 <span class="collapse nested" ng-class="{'first-nested-node': $index === 0}">
-                    <div class="tree-top-right nested" ng-class="{'not-first-node-in-branch': $index !== 0, 'first': node.id.value === titules.currentTitule.startObjectId.value}"></div>
-                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-branch': node.lastNodeInBranch === true}"></div>
+                    <div class="tree-top-right nested" ng-class="{'not-first-node-in-branch': first_node === false, 'last-branch': last_branch === true, 'first-node-in-branch': first_node === true }"></div>
+                    <div class="tree-bottom-right nested" ng-class="{'last-node-in-branch': last_node === true && last_branch === true, 'last-branch': last_branch === true, 'not-last-node': last_node === false && last_branch === false }"></div>
                     <!--<span class="expander">+</span>-->
                     <span class="expander"
                           title="Развернуть"
@@ -53,11 +55,12 @@
                 </div>
                 -->
             </div>
+
             <div ng-if="node.branches !== undefined && node.branches.length > 0 && node.collapsed === false"
                  ng-include="'branches'"
                  ng-init="this.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); this.scope = scope;">
             </div>
-            <div class="node-branch-link" ng-show="$index < branch.length - 1"></div>
+            <div class="node-branch-link" ng-show="node.lastNodeInBranch === false"></div>
         </li>
     </ul>
 </script>
@@ -136,7 +139,7 @@
                 -->
             </div>
 
-            <div ng-if="item.branches !== undefined && item.branches.length > 0 && item.collapsed == false"
+            <div ng-if="item.branches !== undefined && item.branches.length > 0 && item.collapsed === false"
                  ng-include="'branches'"
                  ng-init="this.branches = titules.currentTituleNodes.getBranches(item.id.value); scope = this">
             </div>
