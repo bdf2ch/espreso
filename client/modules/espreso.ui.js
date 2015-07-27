@@ -116,7 +116,7 @@ ui.directive("typeahead", ["$log", "$document", function ($log) {
             /* Отслеживание изменения модели данных */
             scope.$watch("ctrl.$modelValue", function (newValue, oldValue) {
                 $log.log("new model value = ", newValue);
-                if (newValue == "") {
+                if (newValue === "") {
                     scope.display = "";
                     scope.ctrl.$setViewValue(0);
                 } else {

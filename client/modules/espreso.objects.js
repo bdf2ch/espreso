@@ -216,15 +216,7 @@ var objects = angular.module("espreso.objects", [])
              * @param pylonNumber
              * @param callback
              */
-            module.add = function (
-                nodeTypeId,
-                pointId,
-                pylonTypeId,
-                pylonSchemeTypeId,
-                powerLineId,
-                pylonNumber,
-                callback ) {
-
+            module.add = function (nodeTypeId, pointId, pylonTypeId, pylonSchemeTypeId, powerLineId, pylonNumber, callback ) {
                 var params = {
                     action: "add",
                     data: {
@@ -243,6 +235,33 @@ var objects = angular.module("espreso.objects", [])
                             callback(data);
                     }
                 );
+            };
+
+
+            module.delete = function (nodeId) {
+                if (nodeId !== undefined) {
+                    var node = $titules.currentTituleNodes.getNode(nodeId);
+                    var pathId = node.pathId === undefined ? -1 : node.pathId;
+                    var params = {
+                        action: "delete",
+                        data: {
+                            nodeId: nodeId,
+                            tituleId: $titules.currentTituleId,
+                            titulePartId: $titules.currentTitulePartId,
+                            pathId: pathId
+                        }
+                    };
+
+                    $http.post("server/controllers/nodes.php", params)
+                        .success(function (data) {
+                            if (data !== undefined) {
+                                if (data === "success") {
+
+                                }
+                            }
+                        }
+                    );
+                }
             };
 
 

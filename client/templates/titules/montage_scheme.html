@@ -60,7 +60,7 @@
                  ng-include="'branches'"
                  ng-init="this.branches = scope.titules.currentTituleNodes.getBranches(node.id.value); this.scope = scope;">
             </div>
-            <div class="node-branch-link" ng-show="node.lastNodeInBranch === false"></div>
+            <div class="node-branch-link" ng-show="last_node === false"></div>
         </li>
     </ul>
 </script>

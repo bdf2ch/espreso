@@ -476,7 +476,17 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
             title: "Монтажная ведомость",
             templateUrl: "client/templates/titules/montage_scheme.html",
             controller: "MontageSchemeController",
-            active: true
+            active: true,
+            visible: true
+        },
+
+        {
+            id: 2,
+            title: "Информация об объекте",
+            templateUrl: "client/templates/titules/node_details.html",
+            controller: "NodeDetailsController",
+            active: false,
+            visible: false
         },
         /*
          {
@@ -506,7 +516,8 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
             title: "Документация",
             templateUrl: "client/templates/titules/files.html",
             controller: "DocumentationController",
-            active: false
+            active: false,
+            visible: true
             //onSelect: function () {
             //    console.log("docs selected");
             //    $scope.files.getFilesByTituleId($scope.titules.currentTituleId, $scope.titules.currentTituleFiles);
@@ -1175,6 +1186,7 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
     $scope.startObject = {};
     $scope.startObjectIndex = 0;
     $scope.startObjectPathId = -1;
+    $scope.startObjectPylons = new Collection();
     //$scope.nextNodeIndex = 0;
     //$scope.nextnodeId
     //$scope.nextNode = {};
@@ -1193,8 +1205,6 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
 
     if ($scope.titules.currentObjectId !== 0 ) {
         $scope.startObject = $scope.titules.currentTituleNodes.getNode($scope.titules.currentObjectId);
-        //$scope.nextNode = $scope.titules.currentTituleNodes.getNode($scope.startObject.nextNodeId);
-        console.dir($scope.startObject);
 
         if ($scope.startObject.pathId !== undefined)
             $scope.currentNodePathId = $scope.startObject.pathId;
@@ -1202,40 +1212,14 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
             $scope.currentNodePathId = -1;
 
         $log.log("current node path id = ", $scope.currentNodePathId);
-        //console.log("end obj = ", $scope.nextNode);
-        /*
-        angular.forEach($scope.titules.objects.items, function (obj, key) {
-            if (obj.id.value === $scope.titules.currentObjectId) {
-                $scope.startObject = obj;
-                $scope.startObjectIndex = key;
-                if ($scope.titules.objects[key + 1] !== undefined) {
-                    $scope.nextNode = $scope.titules.objects[key + 1];
-                    $log.log("next node id = ", $scope.nextNode.id.value);
-                }
-            }
-        });
-        */
     }
 
-    /* Ожидание изменения конечной точки */
-    /*
-    $scope.$watch("endPointId", function (newVal, oldVal) {
-        if (newVal !== undefined) {
-            if (newVal !== oldVal && newVal !== 0) {
-                $scope.objects.getObjectsByPointId(newVal, $scope.endPointObjects);
-                $scope.endPointPowerLineId = -1;
-                $scope.endPointObjectId = 0;
-            } else if (newVal === 0 && newVal !== oldVal) {
-                $scope.endPointObjectId = 0;
-                $scope.endPointPowerLineId = -1;
-            }
-        }
-    });
-    */
 
     $scope.$watch("endPointPowerLineId", function (newVal, oldVal) {
-        $scope.objects.getPylonsByPowerLineId(newVal, $scope.powerLinePylons);
-        $scope.endPointObjectId = 0;
+        if (newVal !== -1) {
+            $scope.objects.getPylonsByPowerLineId(newVal, $scope.powerLinePylons);
+            $scope.endPointObjectId = 0;
+        }
     });
 
 
@@ -1328,7 +1312,9 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
     $scope.onBranchLinkSuccess = function (data) {
         if (data !== undefined) {
             var temp_node = {};
+            var branchId = 0;
             angular.forEach(data, function (node) {
+                branchId = parseInt(data["PATH_ID"]);
                 switch (parseInt(node["OBJECT_TYPE_ID"])) {
                     case 0:
                         temp_node = new Obj();
@@ -1345,6 +1331,7 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
                 //$scope.titules.currentTituleObjects[$scope.startObjectIndex].children.push(temp_node);
                 //$scope.titules.currentTituleObjects.splice($scope.startObjectIndex + 1, 0, temp_node);
                 $scope.titules.currentTituleNodes.addBranch($scope.startObject.id.value, temp_node);
+                console.log("pathId = ", branchId);
                 //$scope.titules.currentTituleNodes.setNodeHaveChildren($scope.startObject.id.value, true);
             });
 

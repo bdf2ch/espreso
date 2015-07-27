@@ -100,15 +100,29 @@
 <div id="titules-details">
     <div id="titules-details-controls" class="toolbar">
         <span class="caption">Подробности</span>
+
         <!-- Элементы управления разделом монтажной ведомости -->
         <div class="controls" ng-show="currentTabId === 1">
+
+            <!-- Кнопка редактирования узла -->
             <button class="round-button action"
                     title="Редактировать объект"
                     ng-show="titules.currentObjectId !== -1"
                     ng-click="gotoEditObjectForm()">
                 <img src="client/resources/img/edit.png"/>
             </button>
+
+            <!-- Кнопка удаления узла -->
+            <button class="round-button error"
+                    title="Удалить объект"
+                    ng-show="titules.currentObjectId !== -1"
+                    ng-click="gotoEditObjectForm()">
+                &#8722;
+            </button>
+
             <span class="separator" ng-show="titules.currentObjectId !== -1 && titules.currentObjectId !== titules.currentTitule.endObjectId.value"></span>
+
+            <!-- Кнопка добавления соединения с текущим узлом -->
             <button class="round-button success"
                     title="Добавить соединение с текущим объектом"
                     ng-show="titules.currentObjectId !== -1 && titules.currentObjectId !== titules.currentTitule.endObjectId.value"
@@ -116,6 +130,7 @@
                 +
             </button>
         </div>
+
         <!-- Элементы управления разделом документации -->
         <div class="controls" ng-show="currentTabId === 4">
             <!--<button class="round-button action icon"
@@ -137,12 +152,14 @@
             <input type="file" id="file-upload" nv-file-select uploader="uploader"/>
         </div>
     </div>
+
     <div id="titules-details-content" class="scrollable-area">
         <div id="titules-details-content-tabs-content" ng-include="currentTab.templateUrl"></div>
         <div id="titules-details-content-tabs" ng-show="titules.currentTituleId !== -1" class="toolbar bottom">
             <ul class="tabs">
                 <li ng-class="{'active': tab.active}"
                     ng-repeat="tab in tabs track by $index"
+                    ng-show="tab.visible === true"
                     ng-click="setActiveTab($index)">
                     {{ tab.title }}
                 </li>

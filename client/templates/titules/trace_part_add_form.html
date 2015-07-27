@@ -61,22 +61,23 @@
                 <select
                         name="startPylonPowerLine"
                         id="startPylonPowerLine"
-                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items | powerlines: startPointObjects.powerLinesIds"
+                        ng-options="pwl.id.value as pwl.title.value for pwl in stuff.powerlines.items"
                         ng-model="startObject.powerLineId.value"
-                        ng-disabled="startPointObjects.states.ready == false"
-                        ng-change="currentTitulePart.setToChanged()">
+                        ng-disabled="true">
                 </select>
 
                 <label for="startPylonNumber">№ опоры</label><span class="required">*</span>
+                <input type="text" ng-model="startObject.number.value" name="startPylonNumber" id="startPylonNumber" disabled/>
+                <!--
                 <typeahead
                         placeholder="Опора"
                         id="startPylonNumber"
                         ng-model="startObject.id.value"
                         collection="startPointObjects.pylons"
                         collection-value="id"
-                        ng-disabled=" startPointObjects.states.ready == false"
-                        ng-change="currentTitulePart.setToChanged()">
+                        ng-disabled="true">
                 </typeahead>
+                -->
             </div>
 
             <!--

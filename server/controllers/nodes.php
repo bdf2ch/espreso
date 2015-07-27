@@ -39,6 +39,10 @@
                 case "add":
                     add_node($postdata);
                     break;
+
+                case "delete":
+                    delete_node($postdata);
+                    break;
             }
             oci_close($connection);
         }
@@ -334,6 +338,51 @@
             echo json_encode(0);
         else
             echo json_encode($result);
+    };
+
+
+
+    function delete_node ($postdata) {
+         global $connection;
+         $data = $postdata -> data;
+         $result = "";
+
+         if (!$statement = oci_parse($connection, "begin PKG_NODES.P_DELETE_NODE(:n_id, :n_titule_id, :n_titule_part_id, :n_path_id, :res); end;")) {
+             $error = oci_error();
+             echo $error["message"];
+         } else {
+              if (!oci_bind_by_name($statement, ":n_id", $data -> nodeId, -1, OCI_DEFAULT)) {
+                  $error = oci_error();
+                  echo $error["message"];
+              }
+              if (!oci_bind_by_name($statement, ":n_titule_id", $data -> tituleId, -1, OCI_DEFAULT)) {
+                  $error = oci_error();
+                  echo $error["message"];
+              }
+              if (!oci_bind_by_name($statement, ":n_titule_part_id", $data -> titulePartId, -1, OCI_DEFAULT)) {
+                  $error = oci_error();
+                  echo $error["message"];
+              }
+              if (!oci_bind_by_name($statement, ":n_path_id", $data -> pathId, -1, OCI_DEFAULT)) {
+                  $error = oci_error();
+                  echo $error["message"];
+              }
+              if (!oci_bind_by_name($statement, ":res", $result, -1, OCI_DEFAULT)) {
+                  $error = oci_error();
+                  echo $error["message"];
+              }
+              if (!oci_execute($statement)) {
+                  $error = oci_error();
+                  echo $error["message"];
+              }
+         }
+
+         // Освобождение ресурсов
+         oci_free_statement($statement);
+         oci_free_statement($cursor);
+
+         // Возврат результата
+         echo json_encode($result);
     };
 
 ?>

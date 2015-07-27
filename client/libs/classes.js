@@ -623,7 +623,7 @@ function Pylon () {
     this.typeahead = "";
 
     this.onInit = function () {
-        this.typeahead = "#" + this.number.value;
+        this.typeahead = this.number.value.toString();
         //this.children.splice(0, this.children.length);
 
         //this.levels.splice(0, this.levels.length);
@@ -1139,32 +1139,36 @@ function TituleNodes () {
 
             for (i = 0; i < length; i++) {
                 if (this.stack[i].id.value === nodeId) {
-                    if (this.stack[i].branches !== undefined && this.stack[i].branches[branchId] !== undefined) {
-                        branch_length = this.stack[i].branches[branchId].length;
-                        for (x = 0; x < branch_length; x++) {
-                            if (this.stack[i].branches[branchId][x].id.value === prevNodeId) {
-                                node.prevNodeIndex = x;
-                                node.nextNodeIndex = this.stack[i].branches[branchId][x].nextNodeIndex;
-                                node.nextNodeId = this.stack[i].branches[branchId][x].nextNodeId;
-                                node.prevNodeId = this.stack[i].branches[branchId][x].id.value;
-                                node.haveBranches = node.branchesCount.value > 0 ? true : false;
-                                node.pathId = branchId;
-                                node.parentId = nodeId;
-                                node.collapsed = true;
+                    if (this.stack[i].branches !== undefined) {
+                        for (var y = 0; y < this.stack[i].branches.length; y++) {
+                            if (this.stack[i].branches[y].id === branchId) {
+                                branch_length = this.stack[i].branches[y].length;
+                                for (x = 0; x < branch_length; x++) {
+                                    if (this.stack[i].branches[y][x].id.value === prevNodeId) {
+                                        node.prevNodeIndex = x;
+                                        node.nextNodeIndex = this.stack[i].branches[y][x].nextNodeIndex;
+                                        node.nextNodeId = this.stack[i].branches[y][x].nextNodeId;
+                                        node.prevNodeId = this.stack[i].branches[y][x].id.value;
+                                        node.haveBranches = node.branchesCount.value > 0 ? true : false;
+                                        node.pathId = branchId;
+                                        node.parentId = nodeId;
+                                        node.collapsed = true;
 
-                                /* Вносим изменения в предыдущий него */
-                                this.stack[i].branches[branchId][x].nextNodeIndex = x + 1;
-                                this.stack[i].branches[branchId][x].nextNodeId = node.id.value;
+                                        /* Вносим изменения в предыдущий него */
+                                        this.stack[i].branches[y][x].nextNodeIndex = x + 1;
+                                        this.stack[i].branches[y][x].nextNodeId = node.id.value;
 
 
-                                /* Если в ответвлении существует следующий после текущего узел, то вносим изменения в него */
-                                if (this.stack[i].branches[branchId][x + 1] !== undefined) {
-                                    this.stack[i].branches[branchId][x + 1].prevNodeIndex = x + 1;
-                                    this.stack[i].branches[branchId][x + 1].prevNodeId = node.id.value;
+                                        /* Если в ответвлении существует следующий после текущего узел, то вносим изменения в него */
+                                        if (this.stack[i].branches[y][x + 1] !== undefined) {
+                                            this.stack[i].branches[y][x + 1].prevNodeIndex = x + 1;
+                                            this.stack[i].branches[y][x + 1].prevNodeId = node.id.value;
+                                        }
+
+                                        this.stack[i].branches[y].splice(x + 1, 0, node);
+                                        this.stack.push(node);
+                                    }
                                 }
-
-                                this.stack[i].branches[branchId].splice(x + 1, 0, node);
-                                this.stack.push(node);
                             }
                         }
                     }
@@ -1174,23 +1178,71 @@ function TituleNodes () {
     };
 
 
+    this.deleteNodeInPath = function (nodeId) {
+        if (nodeId !== undefined) {
+            var pathLength = this.path.nodes.length;
+            var stackLength = this.stack.length;
+            for (var i = 0; i < pathLength; i++) {
+                if (this.path.nodes[i].id.value === nodeId) {
+                    if (this.path.nodes[i].prevNodeId !== -1 && this.path.nodes[i].nextNodeId !== -1) {
+                        this.path.nodes[i-1].nextNodeId = this.path.nodes[i+1].id.value;
+                        this.path.nodes[i+1].prevNodeId = this.path.nodes[i-1].id.value;
+                    }
+                    this.path.nodes.splice(i, 1);
+                }
+            }
+        }
+    };
+
+
+    this.isBranchExists = function (nodeId, branchId) {
+        var result = false;
+        if (nodeId !== undefined && branchId !== undefined) {
+            var length = this.stack.length;
+            for (var i = 0; i < length; i++) {
+                if (this.stack[i].id.value === nodeId) {
+                    if (this.stack[i].branches !== undefined) {
+                        var branchesLength = this.stack[i].branches.length;
+                        for (var x = 0; x < branchesLength; x++) {
+                            if (this.stack[i].branches[x].id === branchId)
+                                result = true;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    };
+
+
     /**
      * Добавляет узел в ответвление от заданного узла
      * @param nodeId
      * @param node
      */
 
-    this.addBranch = function (nodeId, node) {
+    this.addBranch = function (nodeId, branchId, node) {
         var length = this.stack.length;
         for (var i = 0; i < length; i++) {
             if (this.stack[i].id.value === nodeId) {
                 this.stack[i].children = [];
+
+                if (this.stack[i].branches === undefined) {
+                    this.stack[i].branches = [];
+                }
+
+
+                /*
                 node.prevNodeIndex = i;
-                node.prevNodeId = this.stack[node.prevNodeIndex].id.value;
+                node.parentId = this.stack[i].id.value;
+                node.prevNodeId = this.stack[i].id.value;
                 node.nextNodeIndex = -1;
                 node.nextNodeId = -1;
                 this.stack[i].children.push(node);
                 this.stack.push(node);
+                */
+
+                this.appendNodeToBranch(nodeId, branchId, node);
 
 
 
