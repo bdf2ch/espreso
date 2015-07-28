@@ -1,0 +1,19 @@
+<div class="toolbar">
+    <span class="caption">НОВЫЙ ТИТУЛ</span>
+    <div class="controls">
+        <!-- <button class="btn inline right" ng-click="gotoAddTituleForm()">Добавить</button> -->
+        <button class="round-button action"
+                title="Редактировать титул"
+                ng-show="titules.currentTituleId != -1"
+                ng-click="gotoEditTituleForm()" >
+            <img src="client/resources/img/edit.png"/>
+        </button>
+        <span class="separator" ng-show="titules.currentTituleId != -1"></span>
+        <button class="round-button success"
+                title="Добавить титул"
+                ng-click="gotoAddTituleForm()">
+            +
+        </button>
+    </div>
+
+</div>

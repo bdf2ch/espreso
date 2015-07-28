@@ -1181,14 +1181,25 @@ function TituleNodes () {
     this.deleteNodeInPath = function (nodeId) {
         if (nodeId !== undefined) {
             var pathLength = this.path.nodes.length;
-            var stackLength = this.stack.length;
-            for (var i = 0; i < pathLength; i++) {
+            for (var i = 0; i < this.path.nodes.length; i++) {
                 if (this.path.nodes[i].id.value === nodeId) {
                     if (this.path.nodes[i].prevNodeId !== -1 && this.path.nodes[i].nextNodeId !== -1) {
                         this.path.nodes[i-1].nextNodeId = this.path.nodes[i+1].id.value;
                         this.path.nodes[i+1].prevNodeId = this.path.nodes[i-1].id.value;
                     }
                     this.path.nodes.splice(i, 1);
+                }
+            }
+        }
+    };
+
+
+    this.deleteNodeInBranch = function (branchId, nodeId) {
+        if (branchId !== undefined && nodeId !== undefined) {
+            var stackLength = this.stack.length;
+            for (var i = 0; i < stackLength; i++) {
+                if (this.stack[i].id.value === nodeId) {
+
                 }
             }
         }

@@ -115,8 +115,8 @@
             <!-- Кнопка удаления узла -->
             <button class="round-button error"
                     title="Удалить объект"
-                    ng-show="titules.currentObjectId !== -1"
-                    ng-click="gotoEditObjectForm()">
+                    ng-show="titules.currentObjectId !== -1 && titules.currentObjectId !== titules.currentTitule.startObjectId.value && titules.currentObjectId !== titules.currentTitule.endObjectId.value"
+                    ng-click="deleteNode(titules.currentObjectId)">
                 &#8722;
             </button>
 

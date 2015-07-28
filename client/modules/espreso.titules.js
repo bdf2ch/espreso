@@ -647,6 +647,12 @@ titules.controller("TitulesCtrl", ["$log", "$scope", "$location", "$titules", "$
         }
     };
 
+    $scope.deleteNode = function (nodeId) {
+        if (nodeId !== undefined) {
+            $scope.objects.delete(nodeId);
+        }
+    };
+
 }]);
 
 
@@ -1338,6 +1344,7 @@ titules.controller("AddTracePartController", ["$log", "$scope", "$location", "$t
             $scope.linkAddedSuccessfully = true;
         }
     };
+
 
 }]);
 

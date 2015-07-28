@@ -254,9 +254,12 @@ var objects = angular.module("espreso.objects", [])
 
                     $http.post("server/controllers/nodes.php", params)
                         .success(function (data) {
+                            console.log(data);
                             if (data !== undefined) {
-                                if (data === "success") {
 
+                                if (JSON.parse(data) === "success") {
+                                    $log.log("data = ", data);
+                                    $titules.currentTituleNodes.deleteNodeInPath(nodeId);
                                 }
                             }
                         }

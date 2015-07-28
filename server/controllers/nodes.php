@@ -345,7 +345,7 @@
     function delete_node ($postdata) {
          global $connection;
          $data = $postdata -> data;
-         $result = "";
+         $result;
 
          if (!$statement = oci_parse($connection, "begin PKG_NODES.P_DELETE_NODE(:n_id, :n_titule_id, :n_titule_part_id, :n_path_id, :res); end;")) {
              $error = oci_error();
@@ -367,7 +367,7 @@
                   $error = oci_error();
                   echo $error["message"];
               }
-              if (!oci_bind_by_name($statement, ":res", $result, -1, OCI_DEFAULT)) {
+              if (!oci_bind_by_name($statement, ":res", $result, 300, SQLT_CHR)) {
                   $error = oci_error();
                   echo $error["message"];
               }
@@ -379,7 +379,6 @@
 
          // Освобождение ресурсов
          oci_free_statement($statement);
-         oci_free_statement($cursor);
 
          // Возврат результата
          echo json_encode($result);
